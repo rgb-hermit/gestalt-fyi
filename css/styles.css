@@ -7,7 +7,7 @@
 
   --forest: #163b32;
   --ivory: #f8f5eb;
-  --ochre: #dda15e;
+  --thistle: #deccf5;
   --body-ink: #e0e5db;
   --rule: rgba(248, 245, 235, 0.25);
 
@@ -62,7 +62,7 @@ a {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--ochre);
+  outline: 2px solid var(--thistle);
   outline-offset: 5px;
 }
 
@@ -109,11 +109,11 @@ a:focus-visible {
   width: 12px;
   height: 12px;
   flex: 0 0 auto;
-  color: var(--ochre);
+  color: var(--thistle);
 }
 
 .bracketed {
-  color: var(--ochre);
+  color: var(--thistle);
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 400;
@@ -149,7 +149,7 @@ a:focus-visible {
   width: min(100%, 360px);
   height: 10px;
   margin-bottom: 34px;
-  color: var(--ochre);
+  color: var(--thistle);
   overflow: visible;
 }
 
@@ -198,7 +198,7 @@ h1 {
   gap: 12px;
   min-height: 38px;
   padding: 8px 13px 8px 16px;
-  border: 1px solid var(--ochre);
+  border: 1px solid var(--thistle);
   border-radius: 999px;
   background: transparent;
   color: var(--ivory);
@@ -215,7 +215,7 @@ h1 {
 
 .contact-trigger:hover,
 .contact-trigger[aria-expanded="true"] {
-  background: var(--ochre);
+  background: var(--thistle);
   color: var(--forest);
 }
 
@@ -241,7 +241,7 @@ h1 {
 
 .contact-label {
   margin: 0 0 8px;
-  color: var(--ochre);
+  color: var(--thistle);
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.1em;
@@ -265,7 +265,7 @@ h1 {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ochre);
+  color: var(--thistle);
   cursor: pointer;
   font-family: var(--mono);
   font-size: 10px;
@@ -316,11 +316,11 @@ h1 {
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
-  color: var(--ochre);
+  color: var(--thistle);
 }
 
 .footer-separator {
-  color: var(--ochre);
+  color: var(--thistle);
 }
 
 .footer-right {
@@ -334,7 +334,7 @@ h1 {
   width: 10px;
   height: 13px;
   flex: 0 0 auto;
-  color: var(--ochre);
+  color: var(--thistle);
 }
 
 
