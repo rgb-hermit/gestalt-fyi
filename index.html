@@ -12,41 +12,242 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="shell">
-    <header>
-      <a class="wordmark" href="#" aria-label="gestalt.fyi home">gestalt.fyi</a>
-      <span class="status">Work in progress</span>
+  <div class="page-shell">
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="gestalt.fyi home">
+        <span class="brand-name">gestalt.fyi</span>
+
+        <!-- Decorative asterisk -->
+        <svg
+          class="brand-mark"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+        >
+          <path
+            d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <span class="bracketed">[KAT BAK]</span>
+      </a>
+
+      <span class="site-status">UNDER CONSTRUCTION</span>
     </header>
 
-    <main>
-      <section class="hero" aria-labelledby="intro-title">
-        <p class="eyebrow">Hi, I'm Kat</p>
-        <h1 id="intro-title">Designing<br>for <span>people.</span></h1>
-        <p class="intro">I'm a UX designer and product professional interested in human behaviour, thoughtful product strategy, and making technology more useful, accessible and human-centred.</p>
-        <nav class="links" aria-label="Contact and social links">
-          <a class="button primary" href="mailto:hello@gestalt.fyi">Get in touch <span aria-hidden="true">↗</span></a>
-          <a class="button" href="https://www.linkedin.com/in/butwhoiskat/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
-          <a class="button" href="https://x.com/gestalt_fyi" target="_blank" rel="noopener noreferrer">X / Twitter <span aria-hidden="true">↗</span></a>
-          <a class="button" href="https://github.com/rgb-hermit" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-          <a class="button" href="https://codepen.io/rgb-hermit" target="_blank" rel="noopener noreferrer">CodePen <span aria-hidden="true">↗</span></a>
-        </nav>
-      </section>
+    <main class="hero">
+      <!-- Decorative wavy line -->
+      <svg
+        class="hero-wave"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 480 12"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M1 6
+             C11 6 11 2 21 2
+             S31 10 41 10
+             S51 2 61 2
+             S71 10 81 10
+             S91 2 101 2
+             S111 10 121 10
+             S131 2 141 2
+             S151 10 161 10
+             S171 2 181 2
+             S191 10 201 10
+             S211 2 221 2
+             S231 10 241 10
+             S251 2 261 2
+             S271 10 281 10
+             S291 2 301 2
+             S311 10 321 10
+             S331 2 341 2
+             S351 10 361 10
+             S371 2 381 2
+             S391 10 401 10
+             S411 2 421 2
+             S431 10 441 10
+             S451 2 461 2
+             S471 6 479 6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1"
+          stroke-linecap="round"
+        />
+      </svg>
 
-      <section class="field-guide" aria-labelledby="guide-title">
-        <div class="guide-label"><p class="eyebrow">More soon</p></div>
-        <h2 id="guide-title">A field guide to the ideas behind good digital experiences.</h2>
-        <p class="guide-copy">Clear, practical explanations of UX, product, psychology and the concepts that connect them.</p>
-        <div class="guide-bottom">
-          <a class="button" href="mailto:hello@gestalt.fyi?subject=gestalt.fyi">Follow along <span aria-hidden="true">↗</span></a>
-          <span class="meta">Resources, notes and updates coming soon.</span>
+      <h1>
+        People before technology.<br />
+        Technology for people.
+      </h1>
+
+      <div class="hero-copy">
+        <p>
+          I'm a product designer trying to make sense of the messy,
+          complicated business of being human: how people think and
+          behave, why systems work the way they do, and whether the
+          technology we're building actually makes anything better.
+          I like questioning assumptions, connecting the dots, and
+          looking at problems from different angles.
+        </p>
+
+        <p>
+          I work across product strategy and design, help bridge the
+          gap between design and development, and occasionally speak
+          about UX and technology.
+        </p>
+      </div>
+
+      <div class="contact">
+        <button
+          class="contact-trigger"
+          id="contact-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="contact-details"
+        >
+          <span>Get in touch</span>
+
+          <!-- External-style arrow, used as a visual accent -->
+          <svg
+            class="external-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 11 11 5M5 5h6v6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <div
+          class="contact-details"
+          id="contact-details"
+          hidden
+        >
+          <p class="contact-label">EMAIL</p>
+
+          <div class="contact-actions">
+            <span id="email-address" class="email-address"></span>
+
+            <button
+              class="copy-email"
+              id="copy-email"
+              type="button"
+            >
+              Copy email
+            </button>
+          </div>
+
+          <p
+            class="contact-feedback"
+            id="contact-feedback"
+            role="status"
+            aria-live="polite"
+          ></p>
         </div>
-      </section>
+      </div>
     </main>
 
-    <footer>
-      <span>© 2026 Kat · gestalt.fyi</span>
-      <span>Ideas / People / Better things</span>
+    <footer class="site-footer">
+      <div class="footer-left">
+
+        <!-- happytheythem -->
+              <svg
+          class="footer-smile"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+        >
+          <circle cx="5" cy="5.5" r="0.6" fill="currentColor" />
+          <circle cx="11" cy="5.5" r="0.6" fill="currentColor" />
+          <path
+            d="M3.5 8.5c1 2.2 2.5 3.3 4.5 3.3s3.5-1.1 4.5-3.3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <span>© 2026</span>
+        <span class="footer-separator" aria-hidden="true">·</span>
+        <span class="bracketed">[KAT BAK]</span>
+      </div>
+
+      <div class="footer-right">
+        <span>PEOPLE</span>
+
+        <!-- Decorative chevron -->
+        <svg
+          class="footer-chevron"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 12 16"
+          aria-hidden="true"
+        >
+          <path
+            d="m4 3.5 4 4.5-4 4.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+        <span>TECHNOLOGY</span>
+      </div>
     </footer>
+
   </div>
+
+  <script>
+    (() => {
+      const contactTrigger = document.getElementById("contact-trigger");
+      const contactDetails = document.getElementById("contact-details");
+      const emailAddress = document.getElementById("email-address");
+      const copyEmail = document.getElementById("copy-email");
+      const contactFeedback = document.getElementById("contact-feedback");
+
+      // Assemble the address at runtime rather than writing it
+      // as a complete address in the HTML.
+      const email = ["hello", "gestalt.fyi"].join("@");
+
+      contactTrigger.addEventListener("click", () => {
+        const isExpanded =
+          contactTrigger.getAttribute("aria-expanded") === "true";
+
+        contactTrigger.setAttribute("aria-expanded", String(!isExpanded));
+        contactDetails.hidden = isExpanded;
+        contactFeedback.textContent = "";
+
+        if (!isExpanded) {
+          emailAddress.textContent = email;
+        }
+      });
+
+      copyEmail.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(email);
+          contactFeedback.textContent = "Email address copied.";
+        } catch (error) {
+          contactFeedback.textContent =
+            "Copy isn't available here. You can select the email address and copy it manually.";
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
