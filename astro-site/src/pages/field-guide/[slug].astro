@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+  return [
+    {
+      params: { slug: 'accessibility' },
+      props: { title: 'Accessibility' },
+    },
+  ];
+}
+
+const { title } = Astro.props;
+---
+
+<Layout>
+  <main>
+    <a href="/field-guide/">← Back to Field Guide</a>
+    <h1>{title}</h1>
+    <p>This is a test entry. The content will eventually come from Notion.</p>
+  </main>
+</Layout>

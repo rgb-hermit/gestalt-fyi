@@ -1,0 +1,708 @@
+/* --------------------------------
+   1. Design tokens
+-------------------------------- */
+
+:root {
+  color-scheme: dark;
+
+  --forest: #163b32;
+  --ivory: #f8f5eb;
+  --thistle: #deccf5;
+  --body-ink: #e0e5db;
+  --rule: rgba(248, 245, 235, 0.25);
+
+  --display: "DM Sans", system-ui, sans-serif;
+  --body: "Inter", system-ui, sans-serif;
+  --mono: "Roboto Mono", "SFMono-Regular", Consolas, monospace;
+
+  --page-width: 1440px;
+  --page-gutter: clamp(24px, 5.5vw, 80px);
+}
+
+
+/* --------------------------------
+   2. Reset and page
+-------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--forest);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--forest);
+  color: var(--ivory);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--thistle);
+  outline-offset: 5px;
+}
+
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--page-width);
+  min-height: 100vh;
+  margin-inline: auto;
+  padding: 0 var(--page-gutter);
+}
+
+
+/* --------------------------------
+   3. Header
+-------------------------------- */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 30px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ivory);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand-name {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.brand-mark {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  color: var(--thistle);
+}
+
+.bracketed {
+  color: var(--thistle);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.035em;
+}
+
+  .site-status {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    color: var(--body-ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.09em;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+.site-status .footer-chevron {
+  display: block;
+  width: 10px;
+  height: 13px;
+  flex: 0 0 auto;
+  color: var(--thistle);
+}
+
+
+/* --------------------------------
+   4. Main introduction
+-------------------------------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+  padding-block: 100px 112px;
+}
+
+.hero-wave {
+  display: block;
+  width: min(100%, 360px);
+  height: 10px;
+  margin-bottom: 34px;
+  color: var(--thistle);
+  overflow: visible;
+}
+
+h1 {
+  max-width: 760px;
+  margin: 0;
+  color: var(--ivory);
+  font-family: var(--display);
+  font-size: clamp(38px, 5.4vw, 68px);
+  font-weight: 500;
+  letter-spacing: -0.065em;
+  line-height: 1.08;
+}
+
+.hero-copy {
+  max-width: 620px;
+  margin-top: 32px;
+  color: var(--body-ink);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+}
+
+.hero-copy p {
+  margin: 0;
+}
+
+.hero-copy p + p {
+  margin-top: 18px;
+}
+
+
+/* --------------------------------
+   5. Contact button and email
+-------------------------------- */
+
+.contact {
+  position: relative;
+  margin-top: 32px;
+}
+
+.contact-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 38px;
+  padding: 8px 13px 8px 16px;
+  border: 1px solid var(--thistle);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ivory);
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.contact-trigger:hover,
+.contact-trigger[aria-expanded="true"] {
+  background: var(--thistle);
+  color: var(--forest);
+}
+
+.external-arrow {
+  display: block;
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+.contact-details {
+  width: min(100%, 360px);
+  margin-top: 20px;
+  padding: 18px 20px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: transparent;
+}
+
+.contact-details[hidden] {
+  display: none;
+}
+
+.contact-label {
+  margin: 0 0 8px;
+  color: var(--thistle);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.email-address {
+  color: var(--ivory);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.copy-email {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--thistle);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+}
+
+.copy-email:hover {
+  text-decoration-color: currentColor;
+}
+
+.contact-feedback {
+  min-height: 0;
+  margin: 8px 0 0;
+  color: var(--body-ink);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* --------------------------------
+   6. Footer
+-------------------------------- */
+
+.site-footer {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1.2fr)
+    minmax(0, 2fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+  padding-block: 28px 36px;
+  border-top: 1px solid var(--rule);
+  color: var(--body-ink);
+}
+
+/* Identity */
+
+.footer-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  min-width: 0;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.footer-identity-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.035em;
+}
+
+.footer-smile {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: var(--thistle);
+}
+
+.footer-separator {
+  color: var(--thistle);
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  min-height: 20px;
+}
+
+/* Social icons */
+
+.social-link,
+.social-inactive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  color: var(--thistle);
+}
+
+.social-link svg,
+.social-inactive svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+}
+
+.social-link {
+  border-radius: 6px;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.social-link:hover {
+  color: var(--ivory);
+}
+
+.social-link:focus-visible {
+  color: var(--ivory);
+  outline: 2px solid var(--ivory);
+  outline-offset: 3px;
+}
+
+.social-inactive {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link {
+    transition: none;
+  }
+}
+
+/* Future navigation */
+
+.footer-navigation {
+  min-width: 0;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.footer-heading {
+  margin: 0;
+  color: var(--thistle);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--body-ink);
+  font-family: var(--body);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.footer-links li {
+  margin: 0;
+}
+
+/* Acknowledgement of Country */
+
+.footer-acknowledgement {
+  min-width: 0;
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.footer-acknowledgement p {
+  margin: 16px 0 0;
+  color: var(--body-ink);
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* Responsive footer */
+
+@media (max-width: 900px) {
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: 36px;
+  }
+
+  .footer-acknowledgement {
+    grid-column: 1 / -1;
+    max-width: 680px;
+  }
+
+  /* Tablet footer placement */
+
+  .footer-identity {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer-navigation {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .footer-acknowledgement {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding-block: 28px 36px;
+  }
+
+  .footer-navigation {
+    grid-row: 1;
+  }
+
+  .footer-acknowledgement {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .footer-identity {
+    grid-row: 3;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .footer-acknowledgement p {
+    font-size: 13px;
+  }
+
+  /* Mobile footer placement */
+
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-navigation {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer-acknowledgement {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .footer-identity {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+
+/* --------------------------------
+   7. Responsive layout
+-------------------------------- */
+
+@media (min-width: 1100px) {
+  .hero {
+    padding-block: 120px 140px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-shell {
+    padding-inline: 24px;
+  }
+
+  .site-header {
+    align-items: center;
+    padding-top: 24px;
+  }
+
+  .brand {
+    gap: 6px;
+  }
+
+  .brand-name {
+    font-size: 14px;
+  }
+
+  .bracketed {
+    font-size: 11px;
+  }
+
+  .site-status {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    color: var(--body-ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.09em;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .hero {
+    padding-block: 90px 100px;
+  }
+
+  .hero-wave {
+    width: min(100%, 260px);
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: clamp(36px, 9vw, 48px);
+    letter-spacing: -0.06em;
+  }
+
+  .hero-copy {
+    margin-top: 25px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .contact {
+    margin-top: 27px;
+  }
+
+  .site-footer {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 14px 20px;
+    padding-block: 18px 22px;
+  }
+
+  .footer-left,
+  .footer-right {
+    gap: 7px;
+  }
+
+  .footer-right {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .page-shell {
+    padding-inline: 18px;
+  }
+
+  .brand {
+    gap: 5px;
+  }
+
+  .brand-name {
+    font-size: 13px;
+  }
+
+  .bracketed {
+    font-size: 11px;
+  }
+
+  .site-status {
+    max-width: none;
+    font-size: 11px;
+  }
+
+  .footer-left,
+  .footer-right {
+    gap: 5px;
+  }
+}
+
+
+/* --------------------------------
+   8. Reduced motion
+-------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* --------------------------------
+   Contact button refinements
+-------------------------------- */
+
+.contact-trigger {
+  background-color: var(--thistle);
+  color: var(--forest);
+  border-color: var(--thistle);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.contact-trigger:hover {
+  background-color: var(--ivory);
+  border-color: var(--ivory);
+  color: var(--forest);
+}
+
+.contact-trigger:focus-visible {
+  outline: 2px solid var(--ivory);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-trigger {
+    transition: none;
+  }
+}
