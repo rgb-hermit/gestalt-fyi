@@ -14,9 +14,89 @@ const { title } = Astro.props;
 ---
 
 <Layout>
-  <main>
-    <a href="/field-guide/">← Back to Field Guide</a>
-    <h1>{title}</h1>
-    <p>This is a test entry. The content will eventually come from Notion.</p>
-  </main>
+  <link rel="stylesheet" href="/field-guide.css" />
+    <main class="field-guide-article">
+      <div class="article-content">
+        <a href="/field-guide/" class="article-back">← Field Guide</a>
+
+        <header class="article-header">
+          <p class="article-category">FIELD GUIDE · FOUNDATIONS</p>
+          <h1>{title}</h1>
+          <p class="article-summary">
+            Exploring accessibility as a fundamental consideration in how we
+            design and build digital experiences.
+          </p>
+          <div class="article-artwork" aria-hidden="true"></div>
+        </header>
+<div class="article-layout">
+<nav class="article-toc" aria-label="On this page">
+  <p class="toc-label">ON THIS PAGE</p>
+
+  <ol>
+    <li>
+      <a href="#beyond-compliance">Beyond compliance</a>
+    </li>
+    <li>
+      <a href="#designing-for-variation">Designing for variation</a>
+    </li>
+  </ol>
+</nav>
+
+          <div class="article-body">
+        <p>
+          Accessibility is the practice of designing digital experiences
+          that people with a wide range of abilities, circumstances and
+          technologies can use.
+        </p>
+
+        <p>
+          It is not a separate layer of design, or a final check before
+          something goes live. Accessibility shapes decisions about
+          structure, interaction, language and presentation throughout
+          the design process.
+        </p>
+
+        <h2 id="beyond-compliance">Beyond compliance</h2>
+
+        <p>
+          Standards and guidelines provide an important foundation, but
+          accessibility is ultimately about the people using what we make.
+          A technically compliant interface can still be confusing,
+          exhausting or difficult to navigate.
+        </p>
+
+        <p>
+          Considering accessibility early helps reveal assumptions about
+          how people perceive information, make decisions and interact
+          with technology.
+        </p>
+        <figure class="article-figure">
+          <div
+            class="article-image-placeholder"
+            role="img"
+            aria-label="Temporary abstract illustration using overlapping shapes in the gestalt.fyi colour palette"
+          ></div>
+
+          <figcaption>
+            Exploring variation through overlapping forms. Placeholder artwork for layout testing.
+          </figcaption>
+        </figure>
+        <h2="designing-for-vartiation">Designing for variation</h2>
+
+        <p>
+          People experience digital products in different ways. Some use
+          assistive technologies, while others navigate using a keyboard,
+          enlarge text, adjust contrast or interact in challenging
+          environments.
+        </p>
+
+        <p>
+          Designing for this variation encourages more flexible,
+          resilient experiences rather than assuming a single ideal user
+          or way of interacting.
+        </p>
+      </div>
+      </div>
+      </div>
+    </main>
 </Layout>

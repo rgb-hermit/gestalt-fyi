@@ -20,7 +20,6 @@
   --page-gutter: clamp(24px, 5.5vw, 80px);
 }
 
-
 /* --------------------------------
    2. Reset and page
 -------------------------------- */
@@ -76,7 +75,6 @@ a:focus-visible {
   margin-inline: auto;
   padding: 0 var(--page-gutter);
 }
-
 
 /* --------------------------------
    3. Header
@@ -144,7 +142,6 @@ a:focus-visible {
   color: var(--thistle);
 }
 
-
 /* --------------------------------
    4. Main introduction
 -------------------------------- */
@@ -168,7 +165,7 @@ a:focus-visible {
   overflow: visible;
 }
 
-h1 {
+.hero-title {
   max-width: 760px;
   margin: 0;
   color: var(--ivory);
@@ -195,7 +192,6 @@ h1 {
 .hero-copy p + p {
   margin-top: 18px;
 }
-
 
 /* --------------------------------
    5. Contact button and email
@@ -705,4 +701,38 @@ h1 {
   .contact-trigger {
     transition: none;
   }
+}
+
+/* Article figures */
+
+.article-figure {
+  margin: 48px 0 64px;
+}
+
+.article-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+
+  background:
+    radial-gradient(
+      circle at 70% 40%,
+      rgba(222, 204, 245, 0.85) 0%,
+      rgba(222, 204, 245, 0.2) 28%,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 35% 65%,
+      rgba(39, 70, 144, 0.9) 0%,
+      transparent 40%
+    ),
+    #163B32;
+}
+
+.article-figure figcaption {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: #DECCF5;
 }
