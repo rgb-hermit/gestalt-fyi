@@ -11,8 +11,9 @@
   --body-ink: #e0e5db;
   --rule: rgba(248, 245, 235, 0.25);
 
-  --display: "DM Sans", system-ui, sans-serif;
+  --display: "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, sans-serif;
+  --serif: "Noto Serif", Georgia, serif;
   --mono: "Roboto Mono", "SFMono-Regular", Consolas, monospace;
 
   --page-width: 1440px;
@@ -99,10 +100,9 @@ a:focus-visible {
 }
 
 .brand-name {
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.04em;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .brand-mark {
@@ -174,7 +174,7 @@ h1 {
   color: var(--ivory);
   font-family: var(--display);
   font-size: clamp(38px, 5.4vw, 68px);
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -0.065em;
   line-height: 1.08;
 }
