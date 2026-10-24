@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { references } from '../../data/references';
 
 export function getStaticPaths() {
   return [
@@ -17,7 +18,10 @@ const { title } = Astro.props;
   <link rel="stylesheet" href="/field-guide.css" />
     <main class="field-guide-article">
       <div class="article-content">
-        <a href="/field-guide/" class="article-back">← Field Guide</a>
+        <a href="/field-guide/" class="article-back">
+          <span class="article-back-icon" aria-hidden="true">←</span>
+          <span class="article-back-label">Field Guide</span>
+        </a>
 
         <header class="article-header">
           <p class="article-category">FIELD GUIDE · FOUNDATIONS</p>
@@ -29,9 +33,9 @@ const { title } = Astro.props;
           <div class="article-artwork" aria-hidden="true"></div>
         </header>
 <div class="article-layout">
-<nav class="article-toc" aria-label="On this page">
+<aside class="article-sidebar">
+  <nav class="article-toc" aria-label="On this page">
   <p class="toc-label">ON THIS PAGE</p>
-
   <ol>
     <li>
       <a href="#beyond-compliance">Beyond compliance</a>
@@ -41,6 +45,34 @@ const { title } = Astro.props;
     </li>
   </ol>
 </nav>
+<section class="article-references-preview" aria-labelledby="references-preview-heading">
+  <h2 id="references-preview-heading">REFERENCES</h2>
+
+  <ol>
+    {references.map((reference) => (
+  <li
+  id={reference.id}
+  class={reference.cited ? 'cited-reference' : 'uncited-reference'}
+  >
+    {reference.cited && reference.number !== null ? (
+      <>
+        <a
+          class="reference-marker"
+          href={`#${reference.id}`}
+          aria-label={`Go to reference ${reference.number}`}
+        >
+          [{reference.number}]
+        </a>
+        <span>{reference.author}, {reference.year}</span>
+      </>
+    ) : (
+      <span>{reference.author}, {reference.year}</span>
+    )}
+  </li>
+))}
+  </ol>
+</section>
+</aside>
 
           <div class="article-body">
         <p>
@@ -59,7 +91,7 @@ const { title } = Astro.props;
         <h2 id="beyond-compliance">Beyond compliance</h2>
 
         <p>
-          Standards and guidelines provide an important foundation, but
+          Standards and guidelines provide an important foundation,<sup><a id="citation-1" href="#reference-1" aria-label="Go to reference 1">[1]</a></sup> but
           accessibility is ultimately about the people using what we make.
           A technically compliant interface can still be confusing,
           exhausting or difficult to navigate.
@@ -89,7 +121,7 @@ const { title } = Astro.props;
               an interface.
             </p>
           </aside>
-        <h2="designing-for-vartiation">Designing for variation</h2>
+        <h2="designing-for-variation">Designing for variation</h2>
 
         <p>
           People experience digital products in different ways. Some use
@@ -103,8 +135,16 @@ const { title } = Astro.props;
           resilient experiences rather than assuming a single ideal user
           or way of interacting.
         </p>
+      <section class="article-related" aria-labelledby="related-heading">
+          <h2 id="related-heading">Related concepts</h2>
+          <ul>
+            <li>Inclusive design</li>
+            <li>Usability</li>
+            <li>Universal design</li>
+          </ul>
+      </section>
       </div>
-      </div>
-      </div>
-    </main>
+    </div>
+  </div>
+  </main>
 </Layout>
