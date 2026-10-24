@@ -6,6 +6,9 @@
   color-scheme: dark;
 
   --forest: #163b32;
+  --deep-evergreen: #102D26;
+  --french-blue: #274690;
+  --clay: #dda15e;
   --ivory: #f8f5eb;
   --thistle: #deccf5;
   --body-ink: #e0e5db;
@@ -113,7 +116,7 @@ a:focus-visible {
 .bracketed {
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.035em;
 }
@@ -126,7 +129,7 @@ a:focus-visible {
     gap: 8px;
     color: var(--body-ink);
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1.4;
     letter-spacing: 0.09em;
@@ -180,7 +183,7 @@ a:focus-visible {
   max-width: 620px;
   margin-top: 32px;
   color: var(--body-ink);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.85;
 }
@@ -254,7 +257,7 @@ a:focus-visible {
   margin: 0 0 8px;
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 14px;
   letter-spacing: 0.1em;
 }
 
@@ -267,26 +270,25 @@ a:focus-visible {
 }
 
 .email-address {
+  font-family: var(--mono);
   color: var(--ivory);
-  font-size: 13px;
+  font-size: 12px;
   overflow-wrap: anywhere;
 }
 
 .copy-email {
   padding: 0;
   border: 0;
-  background: transparent;
-  color: var(--thistle);
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: 10px;
+  font-family: var(--body);
+  font-size: 14px;
+  color: var(--ivory);
   text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
+  background: transparent;
 }
 
 .copy-email:hover {
-  text-decoration-color: currentColor;
+  color: var(--thistle);
 }
 
 .contact-feedback {
@@ -332,7 +334,7 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.6;
   letter-spacing: 0.035em;
 }
@@ -416,7 +418,7 @@ a:focus-visible {
   margin: 0;
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.6;
   letter-spacing: 0.09em;
@@ -432,7 +434,7 @@ a:focus-visible {
   list-style: none;
   color: var(--body-ink);
   font-family: var(--body);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
 }
 
@@ -576,7 +578,7 @@ a:focus-visible {
     gap: 8px;
     color: var(--body-ink);
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1.4;
     letter-spacing: 0.09em;
@@ -635,7 +637,7 @@ a:focus-visible {
   }
 
   .brand-name {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .bracketed {
@@ -701,38 +703,4 @@ a:focus-visible {
   .contact-trigger {
     transition: none;
   }
-}
-
-/* Article figures */
-
-.article-figure {
-  margin: 48px 0 64px;
-}
-
-.article-image-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 4px;
-
-  background:
-    radial-gradient(
-      circle at 70% 40%,
-      rgba(222, 204, 245, 0.85) 0%,
-      rgba(222, 204, 245, 0.2) 28%,
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 35% 65%,
-      rgba(39, 70, 144, 0.9) 0%,
-      transparent 40%
-    ),
-    #163B32;
-}
-
-.article-figure figcaption {
-  margin-top: 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  line-height: 1.6;
-  color: #DECCF5;
 }
