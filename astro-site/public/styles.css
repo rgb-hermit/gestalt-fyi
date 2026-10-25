@@ -5,13 +5,21 @@
 :root {
   color-scheme: dark;
 
+/* greens */
   --forest: #163b32;
   --deep-evergreen: #102D26;
+  --sage: #a9b9b1;
+  /* blue */
   --french-blue: #274690;
+  /* oranges */
   --clay: #dda15e;
+  --clay-light: #ffc685;
+  /* purple */
+  --thistle: #cdb4db;
+ /* lights */ 
   --ivory: #f8f5eb;
-  --thistle: #deccf5;
   --body-ink: #e0e5db;
+  /* utility */
   --rule: rgba(248, 245, 235, 0.25);
 
   --display: "Inter", system-ui, sans-serif;

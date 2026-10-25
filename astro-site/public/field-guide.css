@@ -77,7 +77,6 @@
   margin: 0 0 28px;
 }
 
-
 /* Article typography */
 
 .article-content .article-summary {
@@ -137,6 +136,7 @@
   margin-bottom: 12px;
   padding: 0;
   counter-increment: toc;
+  margin-left: -24px;
 }
 
 .article-toc li::before {
@@ -156,8 +156,8 @@
   text-underline-offset: 3px;
 }
 
-.article-toc a:hover {
-  color: var(--thistle);
+.article-layout a:hover {
+  color: var(--clay-light);
 }
 
 .article-toc a:focus-visible {
@@ -197,13 +197,25 @@
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 4px;
   align-items: start;
+  margin-left: -28px
 }
 
 .article-references-preview .cited-reference > span {
   font-family: var(--mono);
   font-size: 12px;
   line-height: 1.6;
-  color: var(--ivory);
+  color: var(--sage);
+}
+
+.article-references-preview .uncited-reference {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 4px;
+  margin-left: -28px;
+}
+
+.article-references-preview .uncited-reference > span {
+  grid-column: 2;
 }
 
 .article-references-preview .uncited-reference span {
@@ -211,7 +223,7 @@
   font-family: var(--mono);
   font-size: 12px;
   line-height: 1.6;
-  color: var(--ivory);
+  color: var(--sage);
   overflow-wrap: anywhere;
 }
 
@@ -221,7 +233,7 @@
 }
 
 .article-references-preview .reference-marker:hover {
-  color: var(--ivory);
+  color: var(--clay-light);
   text-decoration: underline;
 }
 
@@ -237,7 +249,7 @@
 }
 
 .article-references-preview a:hover {
-  color: var(--thistle);
+  color: var(--clay-light);
 }
 
 .article-references-preview a:focus-visible {
@@ -249,8 +261,8 @@
 
 .article-layout {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 40px;
+  grid-template-columns: 196px minmax(0, 1fr);
+  gap: 32px;
   align-items: start;
 }
 
@@ -264,7 +276,7 @@
 
 .article-layout .article-body {
   min-width: 0;
-  padding-left: 40px;
+  padding-left: 32px;
   border-left: 1px solid var(--rule);
 }
 
@@ -279,6 +291,18 @@
   .article-layout .article-body {
     padding-left: 0;
     border-left: none;
+  }
+
+  .article-references-preview .cited-reference {
+    margin-left: 0;
+  }
+
+  .article-toc li {
+    margin-left: 0;
+  }
+
+  .article-references-preview .uncited-reference {
+  margin-left: 0;
   }
 }
 
@@ -394,7 +418,7 @@
 }
 
 .article-body sup a:hover {
-  color: var(--ivory);
+  color: var(--clay-light);
 }
 
 .article-body sup a:focus-visible {
