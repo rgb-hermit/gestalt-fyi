@@ -9,7 +9,7 @@ import Layout from '../layouts/Layout.astro';
       <a class="brand" href="/" aria-label="gestalt.fyi home">
         <span class="brand-name">gestalt.fyi</span>
 
-        <!-- Decorative asterisk -->
+        <!-- decorative asterisk -->
         <svg
           class="brand-mark"
           xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ import Layout from '../layouts/Layout.astro';
     </header>
 
     <main class="hero">
-      <!-- Decorative wavy line -->
+      <!-- decorative wavy line -->
       <svg
         class="hero-wave"
         xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ import Layout from '../layouts/Layout.astro';
         >
           <span>Get in touch</span>
 
-          <!-- External-style arrow, used as a visual accent -->
+          <!-- external-style arrow, used as a visual accent -->
           <svg
             class="external-arrow"
             xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +178,7 @@ import Layout from '../layouts/Layout.astro';
     
 <footer class="site-footer">
 
-  <!-- Future site sections -->
+  <!-- future site sections -->
   <nav class="footer-navigation" aria-label="Future site sections">
     <h2 class="footer-heading">Perpetually under construction</h2>
     <ul class="footer-links">
@@ -189,7 +189,7 @@ import Layout from '../layouts/Layout.astro';
     </ul>
   </nav>
 
-  <!-- Acknowledgement of Country -->
+  <!-- acknowledgement of country: always was, always will be, aboriginal land -->
   <section
     class="footer-acknowledgement"
     aria-labelledby="footer-acknowledgement-heading"
@@ -206,10 +206,10 @@ import Layout from '../layouts/Layout.astro';
     </p>
   </section>
 
-  <!-- Identity and social links -->
+  <!-- identity + social links -->
   <div class="footer-identity">
     <div class="footer-identity-line">
-      <!-- Original happytheythem SVG -->
+      <!-- original happy face SVG -->
       <svg
         class="footer-smile"
         xmlns="http://www.w3.org/2000/svg"
@@ -232,7 +232,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
     
   <div class="footer-socials" aria-label="Social profiles">
-    <!-- LinkedIn -->
+    <!-- linkedin, ugh -->
     <a
       class="social-link"
       href="https://www.linkedin.com/in/butwhoiskat/"
@@ -251,7 +251,7 @@ import Layout from '../layouts/Layout.astro';
 </svg>
     </a>
 
-    <!-- X -->
+    <!-- it's called twitter -->
     <a
       class="social-link"
       href="https://x.com/gestalt_fyi"
@@ -273,7 +273,7 @@ import Layout from '../layouts/Layout.astro';
       </svg>
     </a>
 
-    <!-- GitHub: inactive -->
+    <!-- gitHub: inactive atm -->
       <span 
         class="social-inactive" 
         role="img"
@@ -306,8 +306,18 @@ import Layout from '../layouts/Layout.astro';
       const emailAddress = document.getElementById("email-address");
       const copyEmail = document.getElementById("copy-email");
       const contactFeedback = document.getElementById("contact-feedback");
+        // don't initialise the contact controls if any are missing.
+      if (
+        !contactTrigger ||
+        !contactDetails ||
+        !emailAddress ||
+        !copyEmail ||
+        !contactFeedback
+      ) {
+        return;
+      }
 
-      // Assemble the address at runtime rather than writing it
+      // assemble the address at runtime rather than writing it
       // as a complete address in the HTML.
       const email = ["hello", "gestalt.fyi"].join("@");
 

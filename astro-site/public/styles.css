@@ -1,5 +1,15 @@
+/*
+ * gestalt.fyi
+ *
+ * a field guide for making sense of things.
+ * the styles live here. the opinions are elsewhere, mostly.
+ *
+ * built with curiosity and likely an unreasonable
+ * appreciation for whitespace.
+ */
+
 /* --------------------------------
-   1. Design tokens
+   1. design tokens
 -------------------------------- */
 
 :root {
@@ -32,7 +42,7 @@
 }
 
 /* --------------------------------
-   2. Reset and page
+   2. reset and page
 -------------------------------- */
 
 * {
@@ -88,7 +98,7 @@ a:focus-visible {
 }
 
 /* --------------------------------
-   3. Header
+   3. header
 -------------------------------- */
 
 .site-header {
@@ -154,7 +164,7 @@ a:focus-visible {
 }
 
 /* --------------------------------
-   4. Main introduction
+   4. main intro
 -------------------------------- */
 
 .hero {
@@ -205,7 +215,7 @@ a:focus-visible {
 }
 
 /* --------------------------------
-   5. Contact button and email
+   5. contact button and email
 -------------------------------- */
 
 .contact {
@@ -308,7 +318,7 @@ a:focus-visible {
 }
 
 /* --------------------------------
-   6. Footer
+   6. footer
 -------------------------------- */
 
 .site-footer {
@@ -324,7 +334,7 @@ a:focus-visible {
   color: var(--body-ink);
 }
 
-/* Identity */
+/* identity */
 
 .footer-identity {
   display: flex;
@@ -367,7 +377,7 @@ a:focus-visible {
   min-height: 20px;
 }
 
-/* Social icons */
+/* social icons */
 
 .social-link,
 .social-inactive {
@@ -414,7 +424,7 @@ a:focus-visible {
   }
 }
 
-/* Future navigation */
+/* future stuff navigation */
 
 .footer-navigation {
   min-width: 0;
@@ -450,7 +460,7 @@ a:focus-visible {
   margin: 0;
 }
 
-/* Acknowledgement of Country */
+/* acknowledgement of country: always was, always will be, aboriginal land */
 
 .footer-acknowledgement {
   min-width: 0;
@@ -467,7 +477,7 @@ a:focus-visible {
   line-height: 1.75;
 }
 
-/* Responsive footer */
+/* responsive footer */
 
 @media (max-width: 900px) {
   .site-footer {
@@ -480,7 +490,7 @@ a:focus-visible {
     max-width: 680px;
   }
 
-  /* Tablet footer placement */
+  /* tablet footer placement */
 
   .footer-identity {
     grid-column: 1;
@@ -524,7 +534,7 @@ a:focus-visible {
     font-size: 13px;
   }
 
-  /* Mobile footer placement */
+  /* mobile footer placement */
 
   .site-footer {
     grid-template-columns: minmax(0, 1fr);
@@ -547,7 +557,7 @@ a:focus-visible {
 }
 
 /* --------------------------------
-   7. Responsive layout
+   7. responsive layout
 -------------------------------- */
 
 @media (min-width: 1100px) {
@@ -665,7 +675,7 @@ a:focus-visible {
 
 
 /* --------------------------------
-   8. Reduced motion
+   8. reduced motion
 -------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -683,7 +693,7 @@ a:focus-visible {
 }
 
 /* --------------------------------
-   Contact button refinements
+   9. contact button refinements - i should probably tidy this up and move it to the top of the file, but for now it's here i guess.
 -------------------------------- */
 
 .contact-trigger {

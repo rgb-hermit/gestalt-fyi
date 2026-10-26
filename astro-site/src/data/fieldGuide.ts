@@ -3,6 +3,11 @@ export interface FieldGuideSection {
   id: string;
   heading: string;
   content: string;
+  subsections?: {
+    id: string;
+    heading: string;
+    content: string;
+  }[];
 }
 
 export interface FieldGuideEntry {
@@ -26,20 +31,25 @@ export const fieldGuideEntries: FieldGuideEntry[] = [
     publicationStatus: "Unpublished",
 
 sections: [
-  { id: "definition", heading: "Definition", content: "" },
-  { id: "why-it-matters", heading: "Why it matters", content: "" },
+  {
+  id: "overview",
+  heading: "Overview",
+  content: "",
+  subsections: [
+    {
+      id: "the-problem-with-the-default-user",
+      heading: "The problem with the 'default' user",
+      content: "",
+    },
+    {
+      id: "access-needs-change",
+      heading: "Access needs change",
+      content: "",
+    },
+  ],
+},
   { id: "in-practice", heading: "In practice", content: "" },
-  { id: "examples", heading: "Examples", content: "" },
-  {
-    id: "considerations-limitations",
-    heading: "Considerations & limitations",
-    content: "",
-  },
-  {
-    id: "evidence-further-reading",
-    heading: "Evidence & further reading",
-    content: "",
-  },
+  { id: "considerations", heading: "Considerations", content: "" },
 ],
 
   },
