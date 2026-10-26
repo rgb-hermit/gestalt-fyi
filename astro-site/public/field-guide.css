@@ -506,3 +506,23 @@
   line-height: 1.6;
   color: var(--ivory);
 }
+
+/* nested table of contents */
+.article-toc .toc-subsections {
+  grid-column: 2;
+  margin-top: 10px;
+  padding-left: 12px;
+  border-left: 1px solid var(--rule);
+  counter-reset: none;
+}
+
+.article-toc .toc-subsections li {
+  display: block;
+  margin: 0 0 10px;
+  padding: 0;
+  counter-increment: none;
+}
+
+.article-toc .toc-subsections li::before {
+  content: none;
+}
