@@ -14,6 +14,7 @@ export function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { title, summary } = entry;
+
 const notionBlocks =
   entry.slug === "accessibility"
     ? await getNotionBlocks("3fdbf19d054181209c7ae9a8748763c9")
@@ -40,6 +41,26 @@ const notionHeadings = notionBlocks
     };
   })
   .filter((heading) => heading.heading !== "References");
+
+const tocSections: { heading: string; id: string; children: { heading: string; id: string }[] }[] = [];
+const tocItems = notionHeadings.length
+  ? notionHeadings
+  : (entry.sections ?? []).map((section) => ({
+      heading: section.heading,
+      id: section.id,
+      level: 2,
+    }));
+
+for (const heading of tocItems) {
+  if (heading.level === 3 && tocSections.length) {
+    tocSections[tocSections.length - 1].children.push({
+      heading: heading.heading,
+      id: heading.id,
+    });
+  } else {
+    tocSections.push({ heading: heading.heading, id: heading.id, children: [] });
+  }
+}
 
 const referencesHeadingIndex = notionBlocks.findIndex(
   (block) =>
@@ -86,9 +107,9 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
 }
 ---
 
-<Layout>
+<Layout title={`${title} — UX Field Guide — gestalt.fyi`} description={summary}>
   <link rel="stylesheet" href="/field-guide.css" />
-  <main class="field-guide-article">
+  <main id="main-content" class="field-guide-article">
     <div class="article-content">
       <a href="/field-guide/" class="article-back">
         <span class="article-back-icon" aria-hidden="true">
@@ -109,19 +130,18 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
           <nav class="article-toc" aria-label="On this page">
             <p class="toc-label">ON THIS PAGE</p>
             <ol>
-              {(notionHeadings.length
-  ? notionHeadings
-  : entry.sections?.map((section) => ({
-      heading: section.heading,
-      id: section.id,
-      level: 2,
-    })) ?? []
-).map((section) => (
-  <li class={section.level === 3 ? "toc-subsection" : undefined}>
-    <a href={`#${section.id}`}>{section.heading}</a>
-  </li>
-))}
-
+              {tocSections.map((section) => (
+                <li>
+                  <a href={`#${section.id}`}>{section.heading}</a>
+                  {section.children.length > 0 && (
+                    <ol class="toc-subsections">
+                      {section.children.map((child) => (
+                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                      ))}
+                    </ol>
+                  )}
+                </li>
+              ))}
             </ol>
           </nav>
 
