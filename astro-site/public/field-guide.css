@@ -197,7 +197,7 @@
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 4px;
   align-items: start;
-  margin-left: -28px
+  margin-left: -28px;
 }
 
 .article-references-preview .uncited-reference {
@@ -224,16 +224,6 @@
   line-height: 1.6;
   color: var(--sage);
   overflow-wrap: break-word;
-}
-
-.article-references-preview .reference-marker {
-  color: var(--thistle);
-  text-decoration: none;
-}
-
-.article-references-preview .reference-marker:hover {
-  color: var(--clay-light);
-  text-decoration: underline;
 }
 
 .article-references-preview a {
