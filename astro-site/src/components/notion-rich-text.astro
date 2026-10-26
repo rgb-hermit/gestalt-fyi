@@ -35,8 +35,6 @@ const { items = [] } = Astro.props;
             : annotations.underline
               ? <u>{content}</u>
               : content;
-const citation = /^\[(\d+)\]$/.exec(content.trim());
-
 const parts = content.split(/(\[\d+\])/g);
 
 if (parts.length > 1 && !item.href) {
