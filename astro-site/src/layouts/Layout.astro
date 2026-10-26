@@ -1,3 +1,14 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "gestalt.fyi",
+  description = "People before technology. Technology for people.",
+} = Astro.props;
+---
 <!doctype html>
 <html lang="en">
 	<head>
@@ -10,10 +21,11 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>gestalt.fyi</title>
-		<meta name="description" content="Kat is a UX designer and product professional interested in human behaviour, thoughtful product strategy, and better digital experiences." />	
+		<title>{title}</title>
+		<meta name="description" content={description} />	
 	</head>
 	<body>
+        <a class="skip-link" href="#main-content">Skip to main content</a>
 		<slot />
 	</body>
 </html>
