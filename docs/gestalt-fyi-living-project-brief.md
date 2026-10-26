@@ -1,6 +1,6 @@
 # gestalt.fyi — Living Project Brief
 
-**Version:** 0.5
+**Version:** 0.6
 **Updated:** 27 October 2026
 **Status:** Active development
 **Canonical path:** `docs/gestalt-fyi-living-project-brief.md` on `astro-proof-of-concept` until reviewed and merged.
@@ -38,16 +38,16 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - **Approval versus verification:** assistant review, user editorial approval (sometimes at batch level), and technical Notion verification are distinct. The Notion `Migration status = Verified` field does not certify individual user review of every row or complete mapping coverage of all 397 concepts.
 - The detailed [Relationships — editorial conventions](https://app.notion.com/p/404bf19d05418135bbbdf7c7f7267b7e) page was updated on 27 October with current governing rules, followed by historical milestones that may describe superseded workflows. Resolve contradictions in favour of the current rules; do not discard historical records silently.
 
-### Relationship review and migration status (27 October 2026)
+### Relationship migration status (27 October 2026)
 
-**Verified completed:** The first four alphabetical batches covered **200 original relationship records for review**, not 200 distinct approved links and not all 397 concepts. Consolidation moved **35 redundant reciprocal records** to recoverable Notion Trash across Batches 1–4 (2 + 5 + 15 + 13). In Batch 4, the weak Context Effect ↔ Contextual Inquiry link was also moved to Trash. Selected corrections were applied and checked in Notion, including Design Systems → Design Tokens and Design Sprint → Crazy 8’s as **Hierarchical · Component**, Contrast → Colour Contrast as **Hierarchical · Subtype**, and Deceptive Design Patterns ↔ Ethical Design as **Contrasting**. Existing Field Guide concept relations were left unchanged. Some migration-status fields still read `Migrated`; do not silently upgrade them.
+**Verified completed:** Reviewed 200 original relationship records in the structured register, consolidating 35 redundant reciprocal records and removing one weak connection. Classification corrections were applied and checked in Notion. Legacy Field Guide relation properties were not changed. This is partial register review, not full coverage of 397 concepts; some records still show `Migrated` rather than `Verified`.
 
-**Approved but not executed:** Batch 5 reviewed the next **50 relationship records**, from Decision-Making → Dual-Process Theory through Dogfooding → Usability Testing. The user approved consolidation of **10 distinct reciprocal pairs** and removal of two weak relationships: Diffusion of Responsibility ↔ Social Comparison Theory and Distinction Bias ↔ Choice-Supportive Bias. Preserve Design Systems → Design Tokens (**Hierarchical · Component**) and remove its reversed Associative duplicate. Earlier discussion incorrectly reported **11** reciprocal pairs; the subsequent explicit pair enumeration found **10**. Notion deletion attempts were blocked by tool safety checks, including a smaller retry; **no Batch 5 changes or deletions are confirmed**.
+**Approved, blocked:** The next 50 records were reviewed and their cleanup approved: consolidate 10 reciprocal pairs and reject two weak associations. Notion deletion attempts were blocked, so this cleanup remains **unexecuted and unverified**. Preserve the existing **Design Systems → Design Tokens** hierarchical record and remove only its redundant reversed associative record. The exact record decisions are in Notion/chat history.
 
-**Not yet complete:** Review remaining original relationship records; execute and verify approved Batch 5 cleanup when possible; resolve remaining duplicate and ambiguous links; assess concept-level coverage for missing valuable connections, not merely inherited assertions; reconcile all legacy links against the structured register; confirm final counts by fresh Notion query; obtain final taxonomy/migration approval.
+**Outstanding:** Complete and verify approved cleanup; review remaining register records; audit all concepts for missing meaningful relationships; reconcile legacy assertions and confirm final counts; secure final taxonomy/migration approval. Do not infer completeness from batch approval or technical status fields.
 
-- **Explicit hold:** do **not** begin relationship UI, relationship-specific Astro ingestion or navigation implementation until taxonomy and migration are complete and approved. No production-branch changes or legacy field deletion are authorised.
-- The original pilot requirement for relationship navigation is deferred, not a blocker to unrelated article-template work.
+- **Implementation hold:** no relationship-specific UI, Astro ingestion or navigation until taxonomy and migration are complete and approved. Do not delete legacy properties or modify production without approval.
+- Relationship navigation remains deferred and does not block unrelated article-template work.
 
 ## Design system and template work
 
@@ -68,9 +68,9 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 ## Collaboration and document governance
 
 - **One canonical document:** `docs/gestalt-fyi-living-project-brief.md`. Put version/date in the document, not filename. Do not create alternative briefs, new versioned filenames or parallel addenda for routine updates.
-- Make small direct edits to this file, on the development branch; review and merge via normal GitHub workflow.
-- Record changes under the change log below, with evidence and status: **verified**, **committed but unverified**, **planned**, or **blocked**.
-- For large independent audits, retain a dedicated linked working document; summarise its implications here.
+- Make proportionate, direct edits to this file on the development branch; review and merge via normal GitHub workflow. **Document decisions and outcomes, not every step.**
+- Update for significant architectural/editorial decisions, rationale for changes, consequential discoveries or blockers, milestone outcomes, verified current state, and next meaningful actions. Distinguish **verified**, **committed but unverified**, **planned**, and **blocked**. Routine batches, tool calls, corrections, and record-level checks do not each warrant an entry.
+- Keep existing detailed operational history in Notion or GitHub history rather than duplicating it or creating new routine addenda. Summarise migration progress; once complete, replace temporary progress notes with the final outcome while preserving unresolved risks and decisions needed to resume work.
 - Treat project attachments and Library files as snapshots; do not silently overwrite them or assume they automatically synchronise with GitHub.
 - Preserve decisions unless explicitly revisited; never report a tool action as complete without confirmation.
 - Keep taxonomy/relationship work separate from website template implementation until approved.
@@ -83,7 +83,8 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 | 25–26 Oct 2026 | Notion article rendering, references, citations and cleanup | Code committed; article preview user-verified |
 | 26 Oct 2026 | Accessibility source audit and first remediation batch | Committed; build/browser testing pending |
 | 27 Oct 2026 | Established one GitHub canonical brief and explicit document governance; deferred relationship implementation | Canonical baseline committed; reconciliation with all historical drafts remains open |
-| 27 Oct 2026 | Reconciled current taxonomy, quality threshold, Batches 1–4 completion, Batch 5 approval/blocker and mapping-coverage distinction; corrected Batch 5 pair count from 11 to 10 | Based on Notion checks and recorded batch actions; Batch 5 execution still blocked, final database counts unverified |
+| 27 Oct 2026 | Reconciled relationship taxonomy, editorial quality threshold, partial migration state and blocked cleanup | Source decisions reviewed; final migration reconciliation remains open |
+| 27 Oct 2026 | Adopted proportionate, decision-and-outcome-focused documentation; condensed temporary relationship progress without losing the cleanup blocker | Documentation policy agreed; brief updated on development branch |
 
 ## Historical reconciliation note
 
