@@ -65,6 +65,13 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 5. **Three-entry pilot:** validate diverse content using the shared template, excluding relationship-specific functionality.
 6. **Separately — relationship workstream:** review all 397 concepts for meaningful missing connections (including valid zero-link outcomes); reconcile legacy relationship assertions; obtain final taxonomy/migration approval. Relationship UI and Astro ingestion remain on hold.
 
+### Relationship mapping resumption checkpoint — 28 October 2026
+
+- **Verified live state:** 397 Field Guide concepts and 435 structurally valid, Approved/Verified Field Guide Relationships records. A read-only comparison of legacy Field Guide relationship properties against the structured register yields **299 unique unmatched legacy concept pairs**; these are not automatically missing relationships. The set includes at least one previously rejected weak link (Context Effect ↔ Contextual Inquiry).
+- **Recovered historical progress:** six coverage batches and 43 additions were reported complete; legacy disposition Batches 1–2 were reported approved, with decisions labelled **Reconsider** or **Leave out**. Their complete pair-level dispositions have **not** been recovered independently. Do not treat the 299 as all outstanding or start an assumed Batch 3 from alphabetical order.
+- **Next action:** recover or explicitly reconstruct the approved Batches 1–2 dispositions and their exact pair IDs; subtract completed/rejected pairs from the 299 before preparing the next 10–20-pair editorial batch. Never force links; no Notion relationship writes without user approval.
+- **Chat-limit handover rule:** record pair-level dispositions in Notion as decisions are approved, and maintain this concise checkpoint in the existing GitHub brief at meaningful stopping points. Each new conversation reads both before proposing work. A final message in an expiring chat must not be required for continuity.
+
 ## Collaboration and document governance
 
 - **One canonical document:** `docs/gestalt-fyi-living-project-brief.md`. Put version/date in the document, not filename. Do not create alternative briefs, new versioned filenames or parallel addenda for routine updates.
