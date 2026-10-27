@@ -49,6 +49,11 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - **Implementation hold:** no relationship-specific UI, Astro ingestion or navigation until taxonomy and migration are complete and approved. Do not delete legacy properties or modify production without approval.
 - Relationship navigation remains deferred and does not block unrelated article-template work.
 
+## Article component fixture
+
+- Created [Article Component Test](https://app.notion.com/p/406bf19d0541819b8293ccfbc70ce5a9) in the existing Field Guide Notion database as an **Unpublished**, **Launch priority: Exclude** development fixture (`article-component-test`). It exercises headings, rich text, lists, quotations, callouts, image/caption, code, table and references for Notion → Astro rendering and visual styling. Creation is verified; Astro rendering is not yet verified.
+- This record is **not an editorial concept**: exclude its page ID from concept counts, relationship mapping/coverage audits, public indexes and the three-real-article pilot. Do not publish it. Before deployment, verify published-only filtering; a development-only route may render the fixture explicitly.
+
 ## Design system and template work
 
 - Preserve the established deep-green/ivory/lavender editorial visual direction, typographic hierarchy and reusable article layout.
@@ -59,7 +64,7 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 ## Current workstreams and next actions
 
 1. **Verify batch 1:** pull development branch, run `npm run build` in `astro-site`, check page titles, skip links, nested TOC and citation navigation on keyboard and mobile.
-2. **Complete content rendering:** semantic Notion lists, quotations, callouts, images/captions; surface unsupported blocks instead of silently dropping content.
+2. **Use the Notion component fixture to complete content rendering:** semantic Notion lists, quotations, callouts, images/captions; surface unsupported blocks instead of silently dropping content.
 3. **Audit accessibility:** axe and manual keyboard, screen-reader, contrast, 320px reflow and 200–400% zoom.
 4. **Harden publication:** published-only filtering, secrets and reproducible Astro → GitHub Pages build/deploy, before any pilot publication.
 5. **Three-entry pilot:** validate diverse content using the shared template, excluding relationship-specific functionality.
