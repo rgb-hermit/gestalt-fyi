@@ -24,7 +24,7 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - Live website and domain/HTTPS were previously verified; the current Astro development branch is not thereby production-ready.
 - Notion read-only API access from Codespaces verified; Accessibility pilot page retrieval returned 44 blocks.
 - Development article template retrieves Accessibility blocks, renders headings/paragraphs and rich text, extracts references, and supports superscript citation links that jump to references. User visually confirmed article and citation links.
-- CSS for callouts, images and captions exists; **Notion rendering for these block types is not yet implemented**. Unsupported blocks may currently be silently omitted.
+- CSS for callouts, images and captions exists; **Notion rendering for these block types is not yet implemented**. The article template now logs unsupported blocks and displays development-only notices; this change awaits build/browser verification.
 - Development cleanup committed and user confirmed preview looked good.
 - Accessibility audit batch 1 committed on development branch: descriptive route titles, skip-navigation link and semantically nested TOC. **Build and browser verification still outstanding.** See [accessibility audit addendum](./living-project-brief-accessibility-addendum.md).
 
@@ -51,7 +51,7 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 
 ## Article component fixture
 
-- Created [Article Component Test](https://app.notion.com/p/406bf19d0541819b8293ccfbc70ce5a9) in the existing Field Guide Notion database as an **Unpublished**, **Launch priority: Exclude** development fixture (`article-component-test`). It exercises headings, rich text, lists, quotations, callouts, image/caption, code, table and references for Notion → Astro rendering and visual styling. Creation is verified; Astro rendering is not yet verified.
+- Created [Article Component Test](https://app.notion.com/p/406bf19d0541819b8293ccfbc70ce5a9) in the existing Field Guide Notion database as an **Unpublished**, **Launch priority: Exclude** development fixture (`article-component-test`). It exercises headings, rich text, lists, quotations, callouts, image/caption, code, table and references for Notion → Astro rendering and visual styling. Creation is verified. A development-only Astro route for this fixture is committed, using its Notion page ID; build/browser rendering is not yet verified.
 - This record is **not an editorial concept**: exclude its page ID from concept counts, relationship mapping/coverage audits, public indexes and the three-real-article pilot. Do not publish it. Before deployment, verify published-only filtering; a development-only route may render the fixture explicitly.
 
 ## Design system and template work
@@ -64,7 +64,7 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 ## Current workstreams and next actions
 
 1. **Verify batch 1:** pull development branch, run `npm run build` in `astro-site`, check page titles, skip links, nested TOC and citation navigation on keyboard and mobile.
-2. **Use the Notion component fixture to complete content rendering:** semantic Notion lists, quotations, callouts, images/captions; surface unsupported blocks instead of silently dropping content.
+2. **Verify the development-only fixture route, then complete content rendering:** semantic Notion lists, quotations, callouts, images/captions; surface unsupported blocks instead of silently dropping content.
 3. **Audit accessibility:** axe and manual keyboard, screen-reader, contrast, 320px reflow and 200–400% zoom.
 4. **Harden publication:** published-only filtering, secrets and reproducible Astro → GitHub Pages build/deploy, before any pilot publication.
 5. **Three-entry pilot:** validate diverse content using the shared template, excluding relationship-specific functionality.
