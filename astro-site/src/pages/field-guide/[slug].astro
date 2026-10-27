@@ -15,10 +15,9 @@ export function getStaticPaths() {
 const { entry } = Astro.props;
 const { title, summary } = entry;
 
-const notionBlocks =
-  entry.slug === "accessibility"
-    ? await getNotionBlocks("3fdbf19d054181209c7ae9a8748763c9")
-    : [];
+const notionBlocks = entry.notionPageId
+  ? await getNotionBlocks(entry.notionPageId)
+  : [];
 
 const notionHeadings = notionBlocks
   .filter(
@@ -195,7 +194,10 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
               return <p><NotionRichText items={block.paragraph.rich_text ?? []} /></p>;
             }
 
-            return null;
+            console.warn(`Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`);
+            return import.meta.env.DEV
+              ? <div class="unsupported-notion-block" role="note">Unsupported Notion block: {block.type}</div>
+              : null;
           })}
 </div>
       </div>
