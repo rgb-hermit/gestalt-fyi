@@ -1,7 +1,7 @@
 # gestalt.fyi — Living Project Brief
 
-**Version:** 0.7
-**Updated:** 27 October 2026
+**Version:** 0.8
+**Updated:** 28 October 2026
 **Status:** Active development
 **Canonical path:** `docs/gestalt-fyi-living-project-brief.md` on `astro-proof-of-concept` until reviewed and merged.
 **Authority:** This is the single maintained project brief for architecture, decisions, progress and next actions. Older uploads, Library copies and chat drafts are historical snapshots, not independently authoritative. Detailed editorial conventions remain in Notion; their current rules inform this brief. Historical materials have not all been line-by-line reconciled.
@@ -40,9 +40,9 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 
 ### Relationship migration and coverage status (27 October 2026)
 
-**Verified register reconciliation:** The original 509 relationship records were reviewed through 10 alphabetical batches. With user-approved consolidation of 105 reciprocal duplicates and removal of 12 weak records, **392 live relationship records** remain. Notion confirms the expected count, no duplicate names or reciprocal pairs, valid semantic/hierarchy combinations, linked source and target concepts, and **392/392 records marked Approved and technically Verified**. This structural reconciliation does not independently prove the historical disposition of each original row against a frozen baseline, nor does technical verification replace editorial coverage review. Legacy Field Guide relation properties remain untouched.
+**Verified register reconciliation:** The original 509 relationship records were reviewed through 10 alphabetical batches. With user-approved consolidation of 105 reciprocal duplicates and removal of 12 weak records, **392 live relationship records** remained at that reconciliation milestone (subsequently 435; see 28 October check below). Notion confirms the expected count, no duplicate names or reciprocal pairs, valid semantic/hierarchy combinations, linked source and target concepts, and **392/392 records then marked Approved and technically Verified**. This structural reconciliation does not independently prove the historical disposition of each original row against a frozen baseline, nor does technical verification replace editorial coverage review. Legacy Field Guide relation properties remain untouched.
 
-**Coverage audit underway:** All **397 concepts** were enumerated against the live relationship register: **121 have no relationship**, **78 have one**, and **198 have two or more**. These counts are diagnostic, **not coverage targets**. A concept may correctly remain unconnected; propose only obvious, coherent, reader-useful links. The first candidate batch was drafted but **not approved or written** and must be re-reviewed against this stricter threshold. Keep editorial approval separate from technical verification.
+**Register integrity rechecked (28 October 2026):** Live Notion contains **435 relationships**: 392 created on 25–26 October and 43 created on 27 October. All 435 have unique record IDs and unique unordered source–target pairs (no reverse duplicates), exactly one valid Field Guide source and target among 397 concepts, no self-links, valid semantic/hierarchy fields, and Approved / Verified statuses. Breakdown: 399 Associative, 31 Hierarchical, 5 Contrasting. The 43 later additions explain the numerical change from the previous baseline; their individual or batch-level user-approval provenance has **not** been independently established by this technical check, so approval history remains to be reconciled before treating them as editorially settled. No Notion records were changed.\n\n**Coverage audit underway:** All **397 concepts** were enumerated against the then-392-record register: **121 had no relationship**, **78 had one**, and **198 had two or more**. These coverage counts are historical and require recalculation against 435 records. These counts are diagnostic, **not coverage targets**. A concept may correctly remain unconnected; propose only obvious, coherent, reader-useful links. The first candidate batch was drafted but **not approved or written** and must be re-reviewed against this stricter threshold. Keep editorial approval separate from technical verification.
 
 **Outstanding:** Review concept coverage without forced links; reconcile legacy assertions and any migration exceptions; obtain final taxonomy/migration approval before relationship-specific website integration or legacy-property cutover.
 
@@ -85,7 +85,7 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 | 27 Oct 2026 | Established one GitHub canonical brief and explicit document governance; deferred relationship implementation | Canonical baseline committed; reconciliation with all historical drafts remains open |
 | 27 Oct 2026 | Reconciled relationship taxonomy, editorial quality threshold, partial migration state and blocked cleanup | Source decisions reviewed; final migration reconciliation remains open |
 | 27 Oct 2026 | Adopted proportionate, decision-and-outcome-focused documentation; condensed temporary relationship progress without losing the cleanup blocker | Documentation policy agreed; brief updated on development branch |
-| 27 Oct 2026 | Completed structural relationship-register reconciliation and began non-prescriptive 397-concept coverage audit | 392 live records Approved/Verified in Notion; coverage review pending |
+| 27 Oct 2026 | Completed structural relationship-register reconciliation and began non-prescriptive 397-concept coverage audit | 392 live records Approved/Verified at that milestone; coverage review pending |\n| 28 Oct 2026 | Rechecked both Notion databases and reconciled the register count to 435; 43 later-created records account for the increase | All 435 pass structural integrity checks; editorial approval provenance for the 43 remains unconfirmed |
 
 ## Historical reconciliation note
 
