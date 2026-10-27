@@ -6,7 +6,9 @@ import { getNotionBlocks } from "../../lib/notion";
 import NotionRichText from "../../components/notion-rich-text.astro";
 
 export function getStaticPaths() {
-  return fieldGuideEntries.map((entry) => ({
+  return fieldGuideEntries
+    .filter((entry) => import.meta.env.DEV || entry.publicationStatus === "Published")
+    .map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
