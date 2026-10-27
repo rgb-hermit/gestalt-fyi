@@ -1,0 +1,208 @@
+---
+
+import Layout from "../../layouts/Layout.astro";
+import { fieldGuideEntries } from "../../data/fieldGuide";
+import { getNotionBlocks } from "../../lib/notion";
+import NotionRichText from "../../components/notion-rich-text.astro";
+
+export function getStaticPaths() {
+  return fieldGuideEntries
+    .filter((entry) => import.meta.env.DEV || entry.publicationStatus === "Published")
+    .map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, summary } = entry;
+
+const notionBlocks = entry.notionPageId
+  ? await getNotionBlocks(entry.notionPageId)
+  : [];
+
+const notionHeadings = notionBlocks
+  .filter(
+    (block) =>
+      block.type === "heading_2" ||
+      block.type === "heading_3"
+  )
+  .map((block) => {
+    const heading = (block[block.type]?.rich_text ?? [])
+      .map((item: { plain_text: string }) => item.plain_text)
+      .join("");
+
+    return {
+      heading,
+      level: block.type === "heading_2" ? 2 : 3,
+      id: heading
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, ""),
+    };
+  })
+  .filter((heading) => heading.heading !== "References");
+
+const tocSections: { heading: string; id: string; children: { heading: string; id: string }[] }[] = [];
+const tocItems = notionHeadings.length
+  ? notionHeadings
+  : (entry.sections ?? []).map((section) => ({
+      heading: section.heading,
+      id: section.id,
+      level: 2,
+    }));
+
+for (const heading of tocItems) {
+  if (heading.level === 3 && tocSections.length) {
+    tocSections[tocSections.length - 1].children.push({
+      heading: heading.heading,
+      id: heading.id,
+    });
+  } else {
+    tocSections.push({ heading: heading.heading, id: heading.id, children: [] });
+  }
+}
+
+const referencesHeadingIndex = notionBlocks.findIndex(
+  (block) =>
+    block.type === "heading_2" &&
+    (block.heading_2?.rich_text ?? [])
+      .map((item: { plain_text: string }) => item.plain_text)
+      .join("") === "References"
+);
+
+const articleBlocks = referencesHeadingIndex === -1
+  ? notionBlocks
+  : notionBlocks.slice(0, referencesHeadingIndex);
+
+const referenceParagraphs =
+  referencesHeadingIndex === -1
+    ? []
+    : notionBlocks
+        .slice(referencesHeadingIndex + 1)
+        .filter((block) => block.type === "paragraph")
+        .map((block) =>
+          (block.paragraph?.rich_text ?? [])
+            .map((item: { plain_text: string }) => item.plain_text)
+            .join("")
+        );
+
+const notionReferences = [];
+
+for (let i = 0; i < referenceParagraphs.length; i += 2) {
+  const label = referenceParagraphs[i];
+  const url = referenceParagraphs[i + 1];
+
+  if (!label || !url) continue;
+
+  const citation = label.match(/^\[(\d+)\]\s*/);
+  const number = citation ? Number(citation[1]) : null;
+
+  notionReferences.push({
+    id: number !== null ? `reference-${number}` : `reference-uncited-${i / 2 + 1}`,
+    number,
+    title: label.replace(/^\[\d+\]\s*/, ""),
+    url,
+    cited: number !== null,
+  });
+}
+---
+
+<Layout title={`${title} — UX Field Guide — gestalt.fyi`} description={summary}>
+  <link rel="stylesheet" href="/field-guide.css" />
+  <main id="main-content" class="field-guide-article">
+    <div class="article-content">
+      <a href="/field-guide/" class="article-back">
+        <span class="article-back-icon" aria-hidden="true">
+          ←
+        </span>
+        <span class="article-back-label">Field Guide</span>
+      </a>
+
+      <header class="article-header">
+        <p class="article-category">FIELD GUIDE · FOUNDATIONS</p>
+        <h1>{title}</h1>
+        <p class="article-summary">{summary}</p>
+        <div class="article-artwork" aria-hidden="true"></div>
+      </header>
+      <div class="article-layout">
+        <aside class="article-sidebar">
+          
+          <nav class="article-toc" aria-label="On this page">
+            <p class="toc-label">ON THIS PAGE</p>
+            <ol>
+              {tocSections.map((section) => (
+                <li>
+                  <a href={`#${section.id}`}>{section.heading}</a>
+                  {section.children.length > 0 && (
+                    <ol class="toc-subsections">
+                      {section.children.map((child) => (
+                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                      ))}
+                    </ol>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <section
+            class="article-references-preview"
+            aria-labelledby="references-preview-heading"
+          >
+            <h2 id="references-preview-heading">REFERENCES</h2>
+
+            <ol>
+              {notionReferences.map((reference) => (
+                <li
+                  id={reference.id}
+                  class={reference.cited ? "cited-reference" : "uncited-reference"}
+                >
+                  {reference.cited && reference.number !== null && (
+                    <span class="reference-marker">[{reference.number}]</span>
+                )}
+                <span class="reference-content">
+                  <span class="reference-title">{reference.title}</span>{" "}
+                  <a
+                    href={reference.url}
+                    aria-label={`Open source: ${reference.title}`}
+                  >[link]</a>
+                </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </aside>
+
+        <div class="article-body">
+          {articleBlocks.map((block) => {
+            const richText = block[block.type]?.rich_text ?? [];
+            const content = richText
+              .map((item: { plain_text: string }) => item.plain_text)
+              .join("");
+
+            if (block.type === "heading_2" || block.type === "heading_3") {
+              const id = content
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+
+              return block.type === "heading_2"
+                ? <h2 id={id}>{content}</h2>
+                : <h3 id={id}>{content}</h3>;
+            }
+
+            if (block.type === "paragraph") {
+              return <p><NotionRichText items={block.paragraph.rich_text ?? []} /></p>;
+            }
+
+            console.warn(`Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`);
+            return import.meta.env.DEV
+              ? <div class="unsupported-notion-block" role="note">Unsupported Notion block: {block.type}</div>
+              : null;
+          })}
+</div>
+      </div>
+    </div>
+  </main>
+</Layout>
