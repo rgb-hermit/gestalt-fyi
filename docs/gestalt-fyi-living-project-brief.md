@@ -17,7 +17,9 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - Astro application: `astro-site/`. Development in GitHub Codespaces.
 - Agreed pipeline: **Notion editorial source → read-only Astro build-time retrieval → static GitHub Pages**.
 - Manual publishing is preferred initially; do not automate publishing until there is a demonstrated need.
-- **Required before deployment:** enforce `Publication status = Published` at build time, configure build secrets safely and verify unpublished drafts cannot leak into generated pages. These safeguards are not yet confirmed complete.
+- Production article routes now filter for `Publication status = Published` in the current static entry list; the internal fixture is development-only and the old Notion diagnostic page was removed. This is a **partial safeguard** pending build verification and a future Notion-driven publication filter.
+- Astro build and GitHub Pages deployment workflow committed (`.github/workflows/deploy-astro.yml`); generated output retains `gestalt.fyi` via `astro-site/public/CNAME`. GitHub Pages source must use **GitHub Actions** for this workflow to deploy. Notion token is supplied from an optional GitHub Actions secret when needed for published articles; never commit credentials.
+- **Deployment preparation:** [PR #5](https://github.com/rgb-hermit/gestalt-fyi/pull/5) proposes merging Astro into `main`. Build checks, merge, Pages configuration and live-site verification are not yet confirmed. Existing live static site remains authoritative until verified replacement.
 
 ## Current implementation — verified or committed
 
