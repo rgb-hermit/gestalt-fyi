@@ -5,6 +5,7 @@ export interface NotionBlock {
   id: string;
   type: string;
   has_children: boolean;
+  children?: NotionBlock[];
   [key: string]: any;
 }
 
@@ -50,5 +51,22 @@ export async function getNotionBlocks(
     cursor = data.next_cursor ?? undefined;
   } while (cursor);
 
+  return blocks;
+}
+
+
+// Load descendants of list items so nested lists are not flattened or lost.
+export async function getArticleBlocks(pageId: string): Promise<NotionBlock[]> {
+  const blocks = await getNotionBlocks(pageId);
+  const listTypes = new Set(["bulleted_list_item", "numbered_list_item", "to_do"]);
+  async function loadChildren(items: NotionBlock[]): Promise<void> {
+    for (const item of items) {
+      if (listTypes.has(item.type) && item.has_children) {
+        item.children = await getNotionBlocks(item.id);
+        await loadChildren(item.children);
+      }
+    }
+  }
+  await loadChildren(blocks);
   return blocks;
 }
