@@ -2,10 +2,8 @@
  * gestalt.fyi
  *
  * a field guide for making sense of things.
- * the styles live here. the opinions are elsewhere, mostly.
+ * the styles live here. the opinions are mostly in other places.
  *
- * built with curiosity and likely an unreasonable
- * appreciation for whitespace.
  */
 
 /* --------------------------------
@@ -31,6 +29,7 @@
   --body-ink: #e0e5db;
   /* utility */
   --rule: rgba(248, 245, 235, 0.25);
+  --surface-raised: rgba(255, 255, 255, 0.04);
 
   --display: "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, sans-serif;

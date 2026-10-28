@@ -5,6 +5,7 @@ import { fieldGuideEntries } from "../../data/fieldGuide";
 import { getArticleBlocks } from "../../lib/notion";
 import NotionLists from "../../components/NotionLists.astro";
 import NotionRichText from "../../components/notion-rich-text.astro";
+import { Code } from "astro:components";
 
 export function getStaticPaths() {
   return fieldGuideEntries
@@ -211,6 +212,124 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
               return <p><NotionRichText items={block.paragraph.rich_text ?? []} /></p>;
             }
 
+            if (block.type === "quote") {
+              return (
+                <blockquote class="article-blockquote">
+                  <NotionRichText items={block.quote.rich_text ?? []} />
+                </blockquote>
+              );
+            }
+
+            if (block.type === "callout") {
+              return (
+                <aside class="article-callout">
+                  <p>
+                    <NotionRichText items={block.callout.rich_text ?? []} />
+                  </p>
+                </aside>
+              );
+            }
+
+            if (block.type === "image") {
+              const image = block.image;
+              const src = image.type === "external"
+                ? image.external?.url
+                : image.file?.url;
+
+              if (!src) return null;
+
+              const caption = image.caption ?? [];
+              const alt = caption.map((item: { plain_text?: string }) => item.plain_text ?? "").join("");
+
+              return (
+                <figure class="article-figure">
+                  <img src={src} alt={alt} loading="lazy" />
+                  {caption.length > 0 && (
+                    <figcaption>
+                      <NotionRichText items={caption} />
+                    </figcaption>
+                  )}
+                </figure>
+              );
+            }
+
+            if (block.type === "divider") {
+              return <hr class="article-divider" />;
+            }
+
+            if (block.type === "code") {
+              const language = block.code.language ?? "plain text";
+              const code = (block.code.rich_text ?? [])
+                .map((item: { plain_text?: string }) => item.plain_text ?? "")
+                .join("");
+
+              return (
+              <div class="article-code-block">
+                <div class="article-code-header">
+                  <span class="article-code-language">{language}</span>
+                  <button
+                    type="button"
+                    class="article-code-copy"
+                    aria-label="Copy code to clipboard"
+                    title="Copy code"
+                  >
+                    <svg
+                      class="article-code-copy-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="8" y="8" width="13" height="13" rx="2" />
+                      <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+                                        </svg>
+                  </button>
+                  <span class="article-code-copy-status" role="status" aria-atomic="true"></span>
+                </div>
+                <div class="article-code">
+                  <Code code={code} lang={language} theme="github-dark" />
+                </div>
+              </div>
+            );
+            }
+
+            if (block.type === "table") {
+  const rows = block.children ?? [];
+  const hasColumnHeader = block.table?.has_column_header ?? false;
+  const hasRowHeader = block.table?.has_row_header ?? false;
+
+  return (
+  <div class="article-table-scroll" role="region" aria-label="Article data table" tabindex="0">
+    <table class="article-table">
+      {rows.map((row, rowIndex) => (
+        <tr>
+          {(row.table_row?.cells ?? []).map((cell: any[], cellIndex: number) => {
+  const isColumnHeader = hasColumnHeader && rowIndex === 0;
+  const isRowHeader = hasRowHeader && cellIndex === 0;
+
+  if (isColumnHeader) {
+    return <th scope="col"><NotionRichText items={cell} /></th>;
+  }
+
+  if (isRowHeader) {
+    return <th scope="row"><NotionRichText items={cell} /></th>;
+  }
+
+  return <td><NotionRichText items={cell} /></td>;
+})}
+        </tr>
+      ))}
+        </table>
+  </div>
+);
+}
+
             console.warn(`Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`);
             return import.meta.env.DEV
               ? <div class="unsupported-notion-block" role="note">Unsupported Notion block: {block.type}</div>
@@ -220,4 +339,48 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
       </div>
     </div>
   </main>
+  <script>
+  document.querySelectorAll<HTMLButtonElement>(".article-code-copy").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const codeBlock = button.closest(".article-code-block");
+      const code = codeBlock?.querySelector("pre code")?.textContent;
+
+      if (code == null) return;
+
+      try {
+        await navigator.clipboard.writeText(code);
+        const status = codeBlock?.querySelector<HTMLElement>(
+          ".article-code-copy-status"
+        );
+
+        if (status) {
+          status.textContent = "Code copied to clipboard";
+}
+        const icon = button.querySelector<SVGSVGElement>(".article-code-copy-icon");
+
+        if (icon) {
+          icon.innerHTML = '<path d="M20 6 9 17l-5-5" />';
+          icon.style.color = "var(--thistle)";
+}
+
+        button.setAttribute("aria-label", "Code copied to clipboard");
+        button.setAttribute("title", "Copied");
+
+        window.setTimeout(() => {
+          if (icon) {
+            icon.innerHTML = `
+              <rect x="8" y="8" width="13" height="13" rx="2" />
+              <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+            `;
+            icon.style.color = "";
+          }
+          button.setAttribute("aria-label", "Copy code to clipboard");
+          button.setAttribute("title", "Copy code");
+        }, 2000);
+      } catch (error) {
+        console.error("Unable to copy code:", error);
+      }
+    });
+  });
+</script>
 </Layout>

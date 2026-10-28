@@ -55,13 +55,18 @@ export async function getNotionBlocks(
 }
 
 
-// Load descendants of list items so nested lists are not flattened or lost.
+// load descendants of list items so nested lists are not flattened or lost.
 export async function getArticleBlocks(pageId: string): Promise<NotionBlock[]> {
   const blocks = await getNotionBlocks(pageId);
-  const listTypes = new Set(["bulleted_list_item", "numbered_list_item", "to_do"]);
+  const childBlockTypes = new Set([
+  "bulleted_list_item",
+  "numbered_list_item",
+  "to_do",
+  "table",
+]);
   async function loadChildren(items: NotionBlock[]): Promise<void> {
     for (const item of items) {
-      if (listTypes.has(item.type) && item.has_children) {
+      if (childBlockTypes.has(item.type) && item.has_children) {
         item.children = await getNotionBlocks(item.id);
         await loadChildren(item.children);
       }
