@@ -526,3 +526,21 @@
 .article-toc .toc-subsections li::before {
   content: none;
 }
+
+
+/* Notion article lists — initial semantic baseline; visual refinement follows review. */
+.article-body .notion-list {
+  margin: 0 0 24px;
+  padding-left: 1.5em;
+  color: var(--body-ink);
+  font-family: var(--body);
+  font-size: clamp(14px, 1.5vw, 19px);
+  line-height: 1.8;
+}
+.article-body .notion-list li { margin: 0 0 8px; padding-left: 0.2em; }
+.article-body .notion-list .notion-list { margin: 8px 0 12px; }
+.article-body .notion-task-list { list-style: none; padding-left: 0; }
+.article-body .notion-task-list > li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.65em; }
+.article-body .notion-task-list input { accent-color: var(--thistle); width: 1em; height: 1em; margin: 0; flex: 0 0 auto; }
+.article-body .notion-task-list input:disabled { opacity: 1; }
+.article-body .notion-task-list > li > .notion-list { flex-basis: 100%; }
