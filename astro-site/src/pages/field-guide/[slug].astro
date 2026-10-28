@@ -77,7 +77,7 @@ const articleBlocks = referencesHeadingIndex === -1
   : notionBlocks.slice(0, referencesHeadingIndex);
 
 const listTypes = new Set(["bulleted_list_item", "numbered_list_item", "to_do"]);
-const renderBlocks: { type: "list"; blocks: typeof articleBlocks } | { type: "block"; block: (typeof articleBlocks)[number] }[] = [];
+const renderBlocks: ({ type: "list"; blocks: typeof articleBlocks } | { type: "block"; block: (typeof articleBlocks)[number] })[] = [];
 for (const block of articleBlocks) {
   const last = renderBlocks[renderBlocks.length - 1];
   if (listTypes.has(block.type)) {
