@@ -26,7 +26,7 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - Live website and domain/HTTPS were previously verified; the current Astro development branch is not thereby production-ready.
 - Notion read-only API access from Codespaces verified; Accessibility pilot page retrieval returned 44 blocks.
 - Development article template retrieves Accessibility blocks, renders headings/paragraphs and rich text, extracts references, and supports superscript citation links that jump to references. User visually confirmed article and citation links.
-- CSS for callouts, images and captions exists; **Notion rendering for these block types is not yet implemented**. The article template now logs unsupported blocks and displays development-only notices; this change awaits build/browser verification.
+- **Article component progress (user-verified in Codespaces preview; commit/build status unverified):** quotations, callouts, images/captions, dividers, code and tables render in the development fixture. Code blocks have Shiki highlighting, a language header and working copy interaction with a temporary Thistle checkmark; the screen-reader live-region announcement is implemented but not tested. Tables support header semantics and keyboard-focusable horizontal scrolling. Task checkboxes use Thistle outline/fill and a Forest CSS checkmark. Removed the disabled-checkbox brightness filter; added reusable `--surface-raised` token.
 - Development cleanup committed and user confirmed preview looked good.
 - Accessibility audit batch 1 committed on development branch: descriptive route titles, skip-navigation link and semantically nested TOC. **Build and browser verification still outstanding.** See [accessibility audit addendum](./living-project-brief-accessibility-addendum.md).
 
@@ -62,6 +62,12 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - Accessibility is a **template fixture**, not a request for entry-by-entry editorial polishing.
 - Prioritise semantic content components, headings and navigation, responsive layout, keyboard/focus usability, text contrast and readable references.
 - Keep source of truth in Notion; avoid duplicating editorial content in Astro.
+
+### Article-template resumption checkpoint — 29 October 2026
+
+- **Next:** add completed-task strike-through and muted Sage text; consolidate overlapping task-list CSS and verify checkbox states and alignment.
+- **Then:** add a conditional code horizontal-scroll hint; improve mobile article navigation (collapsible TOC; References below body); review image alt text and table labelling/header behaviour.
+- **Before commit/deploy:** test copy feedback with a screen reader, keyboard/focus, contrast, mobile/reflow/zoom and a clean Astro build. Codespaces visual checks do not establish production readiness.
 
 ## Current workstreams and next actions
 
