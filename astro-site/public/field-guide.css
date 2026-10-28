@@ -487,6 +487,8 @@
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .article-code pre.astro-code code {
