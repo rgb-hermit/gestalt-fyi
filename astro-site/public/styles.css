@@ -1,8 +1,7 @@
 /*
  * gestalt.fyi
  *
- * a field guide for making sense of things.
- * the styles live here. the opinions are mostly in other places.
+ * hi there.
  *
  */
 
@@ -133,7 +132,7 @@ a:focus-visible {
 .bracketed {
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.035em;
 }
@@ -435,7 +434,7 @@ a:focus-visible {
   margin: 0;
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.6;
   letter-spacing: 0.09em;
@@ -457,6 +456,35 @@ a:focus-visible {
 
 .footer-links li {
   margin: 0;
+}
+
+/* footer navigation links */
+.footer-links li,
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-link-arrow {
+  display: inline-block;
+  flex: 0 0 auto;
+  color: var(--thistle);
+  text-decoration: none;
+}
+
+.footer-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-link-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-links a:hover {
+  color: var(--thistle);
 }
 
 /* acknowledgement of country: always was, always will be, aboriginal land */
@@ -583,25 +611,9 @@ a:focus-visible {
     font-size: 14px;
   }
 
-  .bracketed {
-    font-size: 11px;
-  }
-
-  .site-status {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    color: var(--body-ink);
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.4;
-    letter-spacing: 0.09em;
-    text-align: right;
-    white-space: nowrap;
-  }
+.site-status {
+  display: none;
+}
 
   .hero {
     padding-block: 90px 100px;
@@ -630,7 +642,7 @@ a:focus-visible {
   .site-footer {
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 14px 20px;
+    gap: 40px;
     padding-block: 18px 22px;
   }
 
@@ -655,10 +667,6 @@ a:focus-visible {
 
   .brand-name {
     font-size: 14px;
-  }
-
-  .bracketed {
-    font-size: 11px;
   }
 
   .site-status {
@@ -740,4 +748,31 @@ a:focus-visible {
   transform: translateY(0);
   outline: 3px solid var(--thistle);
   outline-offset: 3px;
+}
+
+/* field guide landing page */
+.field-guide-landing {
+  flex: 1;
+  width: 100%;
+  max-width: 720px;
+  padding-block: 100px 112px;
+}
+
+/* construction status */
+.construction-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  color: var(--thistle);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.construction-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--clay-light);
 }
