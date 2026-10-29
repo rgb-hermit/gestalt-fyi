@@ -140,7 +140,6 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
         <div class="article-artwork" aria-hidden="true"></div>
       </header>
       <div class="article-layout">
-        <aside class="article-sidebar">
           
           <nav class="article-toc" aria-label="On this page">
             <p class="toc-label">ON THIS PAGE</p>
@@ -159,34 +158,6 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
               ))}
             </ol>
           </nav>
-
-          <section
-            class="article-references-preview"
-            aria-labelledby="references-preview-heading"
-          >
-            <h2 id="references-preview-heading">REFERENCES</h2>
-
-            <ol>
-              {notionReferences.map((reference) => (
-                <li
-                  id={reference.id}
-                  class={reference.cited ? "cited-reference" : "uncited-reference"}
-                >
-                  {reference.cited && reference.number !== null && (
-                    <span class="reference-marker">[{reference.number}]</span>
-                )}
-                <span class="reference-content">
-                  <span class="reference-title">{reference.title}</span>{" "}
-                  <a
-                    href={reference.url}
-                    aria-label={`Open source: ${reference.title}`}
-                  >[link]</a>
-                </span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </aside>
 
         <div class="article-body">
           {renderBlocks.map((item) => {
@@ -341,6 +312,32 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
               : null;
           })}
 </div>
+<section
+            class="article-references-preview"
+            aria-labelledby="references-preview-heading"
+          >
+            <h2 id="references-preview-heading">REFERENCES</h2>
+
+            <ol>
+              {notionReferences.map((reference) => (
+                <li
+                  id={reference.id}
+                  class={reference.cited ? "cited-reference" : "uncited-reference"}
+                >
+                  {reference.cited && reference.number !== null && (
+                    <span class="reference-marker">[{reference.number}]</span>
+                )}
+                <span class="reference-content">
+                  <span class="reference-title">{reference.title}</span>{" "}
+                  <a
+                    href={reference.url}
+                    aria-label={`Open source: ${reference.title}`}
+                  >[link]</a>
+                </span>
+                </li>
+              ))}
+            </ol>
+          </section>
       </div>
     </div>
   </main>

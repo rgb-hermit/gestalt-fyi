@@ -143,7 +143,7 @@
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   padding: 0;
   counter-increment: toc;
   margin-left: -24px;
@@ -154,7 +154,7 @@
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0em;
   color: var(--thistle);
 }
 
@@ -162,8 +162,7 @@
   font-family: var(--body);
   font-size: 14px;
   color: var(--ivory);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .article-layout a:hover {
@@ -180,7 +179,6 @@
 .article-references-preview {
   margin-top: 48px;
   padding-top: 24px;
-  border-top: 1px solid var(--rule);
 }
 
 .article-references-preview h2 {
@@ -265,18 +263,28 @@
   align-items: start;
 }
 
-.article-layout .article-sidebar {
-  min-width: 0;
-}
-
-.article-layout .article-sidebar .article-toc {
-  margin: 0;
-}
-
 .article-layout .article-body {
   min-width: 0;
   padding-left: 32px;
   border-left: 1px solid var(--rule);
+}
+
+/* desktop article layout */
+.article-layout .article-toc {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.article-layout .article-body {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.article-layout .article-references-preview {
+  grid-column: 1;
+  grid-row: 2;
 }
 
 /* stack the columns on smaller screens */
@@ -704,26 +712,31 @@
   color: var(--ivory);
 }
 
+
 /* nested table of contents */
 .article-toc .toc-subsections {
   grid-column: 2;
   margin-top: 10px;
-  padding-left: 12px;
-  border-left: 1px solid var(--rule);
+  padding-left: 0px;
   counter-reset: none;
 }
 
 .article-toc .toc-subsections li {
-  display: block;
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr);
+  gap: 8px;
   margin: 0 0 10px;
   padding: 0;
   counter-increment: none;
 }
 
 .article-toc .toc-subsections li::before {
-  content: none;
+  content: "•";
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--thistle);
 }
-
 
 /* notion article lists — initial semantic baseline; visual refinement follows review. */
 .article-body .notion-list {
