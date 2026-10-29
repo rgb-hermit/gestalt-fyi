@@ -69,6 +69,18 @@ gestalt.fyi is a personal website and evolving, evidence-informed UX Field Guide
 - **Then:** add a conditional code horizontal-scroll hint; improve mobile article navigation (collapsible TOC; References below body); review image alt text and table labelling/header behaviour.
 - **Before commit/deploy:** test copy feedback with a screen reader, keyboard/focus, contrast, mobile/reflow/zoom and a clean Astro build. Codespaces visual checks do not establish production readiness.
 
+## Website design checkpoint and design debt — 29 October 2026
+
+**Implemented and visually checked in Codespaces (latest local changes not yet confirmed committed):** Reusable `SiteHeader.astro` and `SiteFooter.astro` on the homepage and Field Guide placeholder; mobile layout and bottom-of-viewport footer behaviour. The shared-component/placeholder milestone was pushed as commit `3fa3d08`. Article H2/H3 hierarchy uses Inter (weights 600/500), checked at desktop and 375px. Notion callouts now use a restrained raised container with optional emoji rendering, checked with and without emoji at desktop and 375px. Article tables now have tighter inter-row spacing with generous outer/header spacing, horizontal rules for column headers, and continuous vertical rules for row headers; combinations visually checked. The latest article CSS/template changes remain subject to local commit, push and build verification.
+
+**Design debt — refinements to consider, not confirmed defects:**
+- **Article TOC:** review hierarchy, density, link treatment, active-section indication and mobile presentation; preserve nested semantics, references and accessible keyboard navigation.
+- **Tables:** row-header columns feel unnecessarily wide relative to their labels, leaving excessive space before the vertical divider. Revisit flexible sizing without hard-coding proportions or sacrificing generous cell padding. Notion's manually dragged column widths are not supplied through the current API.
+- **Article components:** evaluate divider prominence, image-caption readability/contrast and remaining responsive edge cases. Optional Notion external/uploaded callout icons are not yet supported.
+- **Verification:** run clean Astro build and formal accessibility checks (keyboard/focus, screen reader, contrast, 320px reflow and zoom) before publication. Visual preview alone is not an audit.
+
+**Next website session:** start with the article TOC; inspect existing CSS and markup before edits, then review desktop and mobile. Keep the table-width concern recorded but deferred. Verify and commit the latest local article changes before closing the Codespace.
+
 ## Current workstreams and next actions
 
 1. **Verify batch 1:** pull development branch, run `npm run build` in `astro-site`, check page titles, skip links, nested TOC and citation navigation on keyboard and mobile.
