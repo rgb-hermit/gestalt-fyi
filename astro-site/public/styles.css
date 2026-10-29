@@ -143,9 +143,9 @@ a:focus-visible {
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
-    color: var(--body-ink);
+    color: var(--thistle);
     font-family: var(--mono);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     line-height: 1.4;
     letter-spacing: 0.09em;

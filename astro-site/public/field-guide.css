@@ -99,11 +99,21 @@
 
 .article-body h2 {
   margin: 64px 0 24px;
-  font-family: var(--serif);
-  font-size: clamp(20px, 3.5vw, 24px);
+  font-family: var(--display);
+  font-size: clamp(24px, 3.5vw, 28px);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.025em;
+  color: var(--ivory);
+}
+
+.article-body h3 {
+  margin: 40px 0 16px;
+  font-family: var(--display);
+  font-size: clamp(18px, 2.5vw, 20px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
   color: var(--ivory);
 }
 
@@ -390,8 +400,20 @@
 
 .article-callout {
   margin: 48px 0;
-  padding: 4px 0 4px 24px;
+  padding: 20px 24px;
+  background: var(--surface-raised);
   border-left: 2px solid var(--thistle);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* optional callout emoji */
+.article-callout-icon {
+  flex: 0 0 auto;
+  font-size: 24px;
+  line-height: 1.4;
 }
 
 .article-callout .article-callout-label {
@@ -524,24 +546,46 @@
 
 .article-table th,
 .article-table td {
-  padding: 10px 24px;
+  padding: 6px 24px;
   text-align: left;
   vertical-align: top;
+}
+
+/* table outer spacing */
+.article-table tr:first-child > * {
+  padding-top: 14px;
+}
+
+.article-table tr:last-child > * {
+  padding-bottom: 14px;
+}
+
+.article-table tr:has(> th[scope="col"]) > * {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.article-table tr:has(> th[scope="col"]) + tr > * {
+  padding-top: 14px;
 }
 
 .article-table th {
   color: var(--thistle);
   font-weight: 700;
+  vertical-align: middle;
 }
 
-.article-table tr:first-child > th {
+.article-table th[scope="row"] {
+  vertical-align: top;
+}
+
+.article-table th[scope="col"] {
   border-bottom: 1px solid rgba(205, 180, 219, 0.4);
 }
 
-.article-table th + th,
-.article-table td + td,
-.article-table th + td {
-  padding-left: 32px;
+/* row header divider */
+.article-table:has(th[scope="row"]) tr > :first-child {
+  border-right: 1px solid rgba(205, 180, 219, 0.4);
 }
 
 /* inline reference citations */

@@ -222,11 +222,16 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
 
             if (block.type === "callout") {
               return (
-                <aside class="article-callout">
-                  <p>
-                    <NotionRichText items={block.callout.rich_text ?? []} />
-                  </p>
-                </aside>
+              <aside class="article-callout">
+                {block.callout.icon?.type === 'emoji' && (
+                  <span class="article-callout-icon" aria-hidden="true">
+                    {block.callout.icon.emoji}
+                  </span>
+                )}
+                <p>
+                  <NotionRichText items={block.callout.rich_text ?? []} />
+                </p>
+              </aside>
               );
             }
 
