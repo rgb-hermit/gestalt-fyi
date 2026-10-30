@@ -137,27 +137,61 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
         <p class="article-category">FIELD GUIDE · FOUNDATIONS</p>
         <h1>{title}</h1>
         <p class="article-summary">{summary}</p>
-        <div class="article-artwork" aria-hidden="true"></div>
+        {/* header artwork deferred pending visual exploration */}
       </header>
       <div class="article-layout">
           
           <nav class="article-toc" aria-label="On this page">
-            <p class="toc-label">ON THIS PAGE</p>
-            <ol>
-              {tocSections.map((section) => (
-                <li>
-                  <a href={`#${section.id}`}>{section.heading}</a>
-                  {section.children.length > 0 && (
-                    <ol class="toc-subsections">
-                      {section.children.map((child) => (
-                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
-                      ))}
-                    </ol>
-                  )}
-                </li>
+  <div class="article-toc-desktop">
+    <p class="toc-label">ON THIS PAGE</p>
+    <ol>
+      {tocSections.map((section) => (
+        <li>
+          <a href={`#${section.id}`}>{section.heading}</a>
+          {section.children.length > 0 && (
+            <ol class="toc-subsections">
+              {section.children.map((child) => (
+                <li><a href={`#${child.id}`}>{child.heading}</a></li>
               ))}
             </ol>
-          </nav>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <details class="article-toc-disclosure">
+    <summary class="article-toc-trigger">
+      <span class="toc-label">ON THIS PAGE</span>
+      <span class="toc-chevron" aria-hidden="true"></span>
+    </summary>
+
+    <ol>
+      {tocSections.map((section) => (
+        <li>
+          <a href={`#${section.id}`}>{section.heading}</a>
+          {section.children.length > 0 && (
+            <ol class="toc-subsections">
+              {section.children.map((child) => (
+                <li><a href={`#${child.id}`}>{child.heading}</a></li>
+              ))}
+            </ol>
+          )}
+        </li>
+      ))}
+    </ol>
+  </details>
+</nav>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure").forEach((details) => {
+    details.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", () => {
+        details.open = false;
+      });
+    });
+  });
+</script>
 
         <div class="article-body">
           {renderBlocks.map((item) => {

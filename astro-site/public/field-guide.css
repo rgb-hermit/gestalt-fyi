@@ -58,7 +58,7 @@
 /* article header */
 
 .article-header {
-  margin-bottom: 64px;
+  margin-bottom: 80px;
   position: relative;
   isolation: isolate;
 }
@@ -119,6 +119,15 @@
 
 /* article table of contents */
 
+/* desktop: static toc */
+.article-toc-desktop {
+  display: block;
+}
+
+.article-toc-disclosure {
+  display: none;
+}
+
 .article-toc {
   margin: 0 0 48px;
 }
@@ -177,8 +186,8 @@
 /* sidebar reference previews */
 
 .article-references-preview {
-  margin-top: 48px;
-  padding-top: 24px;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .article-references-preview h2 {
@@ -200,15 +209,8 @@
   margin-bottom: 16px;
 }
 
+.article-references-preview .uncited-reference,
 .article-references-preview .cited-reference {
-  display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  gap: 4px;
-  align-items: start;
-  margin-left: -28px;
-}
-
-.article-references-preview .uncited-reference {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 4px;
@@ -216,6 +218,7 @@
 }
 
 /* reference numbers stay separate from the source details */
+
 .article-references-preview .reference-marker {
   font-family: var(--mono);
   font-size: 12px;
@@ -224,6 +227,7 @@
 }
 
 /* keep reference titles and their links together */
+
 .article-references-preview .reference-content {
   grid-column: 2;
   min-width: 0;
@@ -259,7 +263,7 @@
 .article-layout {
   display: grid;
   grid-template-columns: 196px minmax(0, 1fr);
-  grid-template-rows: min-content 1fr;
+  grid-template-rows: auto 1fr;
   gap: 32px;
   align-items: start;
 }
@@ -271,6 +275,7 @@
 }
 
 /* desktop article layout */
+
 .article-layout .article-toc {
   grid-column: 1;
   grid-row: 1;
@@ -291,13 +296,76 @@
 /* stack the columns on smaller screens */
 
 @media (max-width: 760px) {
+
+/* mobile: show disclosure instead of static toc */
+
+  .article-toc-desktop {
+    display: none;
+  }
+
+/* mobile: collapsible table of contents */
+
+  .article-toc-disclosure {
+    display: block;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+
+  .article-toc-disclosure > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+  }
+
+  .article-toc-disclosure .toc-label {
+    margin: 0;
+  }
+
+  .article-toc-disclosure .toc-chevron {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .article-toc-disclosure[open] .toc-chevron {
+    transform: rotate(225deg);
+  }
+
+  .article-toc-disclosure > ol {
+    display: none;
+    padding: 0 16px 16px;
+  }
+
+  .article-toc-disclosure[open] > ol {
+    display: block;
+  }
   .article-layout {
     grid-template-columns: 1fr;
     grid-template-rows: none;
     gap: 32px;
   }
 
-  /* restore natural document order on smaller screens */
+/* mobile: reduce space below article header */
+
+  .article-header {
+    margin-bottom: 56px;
+  }
+
+/* mobile: separate references from article content */
+
+  .article-layout .article-references-preview {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+  }
+
+/* restore natural document order on smaller screens */
+
   .article-layout .article-toc,
   .article-layout .article-body,
   .article-layout .article-references-preview {
@@ -310,53 +378,13 @@
     border-left: none;
   }
 
-  .article-references-preview .cited-reference {
+  .article-references-preview .cited-reference,
+  .article-references-preview .uncited-reference {
     margin-left: 0;
   }
 
   .article-toc li {
     margin-left: 0;
-  }
-
-  .article-references-preview .uncited-reference {
-  margin-left: 0;
-  }
-}
-
-/* temporary abstract hero artwork */
-
-.article-artwork {
-  position: absolute;
-  top: -20px;
-  right: 0;
-  width: clamp(180px, 22vw, 280px);
-  height: auto;
-  aspect-ratio: 1;
-  pointer-events: none;
-  z-index: -1;
-
-  background:
-    radial-gradient(
-      circle at 65% 65%,
-      rgba(222, 204, 245, 0.7) 0%,
-      rgba(222, 204, 245, 0.25) 40%,
-      transparent 70%
-    ),
-    radial-gradient(
-      circle at 35% 35%,
-      var(--forest) 0%,
-      var(--forest) 45%,
-      transparent 70%
-    );
-
-  border-radius: 50%;
-}
-
-/* hide only when the layout becomes single-column */
-
-@media (max-width: 760px) {
-  .article-artwork {
-    display: none;
   }
 }
 
@@ -428,6 +456,7 @@
 }
 
 /* optional callout emoji */
+
 .article-callout-icon {
   flex: 0 0 auto;
   font-size: 24px;
@@ -497,6 +526,7 @@
 }
 
 /* screen-reader announcement for code copying */
+
 .article-code-copy-status {
   position: absolute;
   width: 1px;
@@ -520,6 +550,7 @@
 }
 
 /* syntax highlighting */
+
 .article-code pre.astro-code {
   margin: 0;
   padding: 0;
@@ -570,6 +601,7 @@
 }
 
 /* table outer spacing */
+
 .article-table tr:first-child > * {
   padding-top: 14px;
 }
@@ -602,6 +634,7 @@
 }
 
 /* row header divider */
+
 .article-table:has(th[scope="row"]) tr > :first-child {
   border-right: 1px solid rgba(205, 180, 219, 0.4);
 }
@@ -722,8 +755,8 @@
   color: var(--ivory);
 }
 
-
 /* nested table of contents */
+
 .article-toc .toc-subsections {
   grid-column: 2;
   margin-top: 10px;
@@ -749,6 +782,7 @@
 }
 
 /* notion article lists — initial semantic baseline; visual refinement follows review. */
+
 .article-body .notion-list {
   margin: 0 0 24px;
   padding-left: 1.5em;
@@ -780,6 +814,7 @@
 }
 
 /* article task lists */
+
 .notion-task-list input[type="checkbox"] {
   appearance: none;
   width: 16px;
@@ -810,6 +845,7 @@
 }
 
 /* completed task text */
+
 .article-body .notion-task-list input:checked + span {
   color: var(--sage);
   text-decoration: line-through;
