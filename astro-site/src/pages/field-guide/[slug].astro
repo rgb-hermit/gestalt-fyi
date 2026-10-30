@@ -141,57 +141,58 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
       </header>
       <div class="article-layout">
           
-          <nav class="article-toc" aria-label="On this page">
-  <div class="article-toc-desktop">
-    <p class="toc-label">ON THIS PAGE</p>
-    <ol>
-      {tocSections.map((section) => (
-        <li>
-          <a href={`#${section.id}`}>{section.heading}</a>
-          {section.children.length > 0 && (
-            <ol class="toc-subsections">
-              {section.children.map((child) => (
-                <li><a href={`#${child.id}`}>{child.heading}</a></li>
+        <nav class="article-toc" aria-label="On this page">
+          <div class="article-toc-desktop">
+            <p class="toc-label">ON THIS PAGE</p>
+            <ol>
+              {tocSections.map((section) => (
+              <li>
+                <a href={`#${section.id}`}>{section.heading}</a>
+                {section.children.length > 0 && (
+                <ol class="toc-subsections">
+                  {section.children.map((child) => (
+                  <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                  ))}
+                </ol>
+                )}
+              </li>
               ))}
             </ol>
-          )}
-        </li>
-      ))}
-    </ol>
-  </div>
+          </div>
 
-  <details class="article-toc-disclosure">
-    <summary class="article-toc-trigger">
-      <span class="toc-label">ON THIS PAGE</span>
-      <span class="toc-chevron" aria-hidden="true"></span>
-    </summary>
+          <details class="article-toc-disclosure">
+            <summary class="article-toc-trigger">
+              <span class="toc-label">ON THIS PAGE</span>
+              <span class="toc-chevron" aria-hidden="true"></span>
+            </summary>
 
-    <ol>
-      {tocSections.map((section) => (
-        <li>
-          <a href={`#${section.id}`}>{section.heading}</a>
-          {section.children.length > 0 && (
-            <ol class="toc-subsections">
-              {section.children.map((child) => (
-                <li><a href={`#${child.id}`}>{child.heading}</a></li>
+            <ol>
+              {tocSections.map((section) => (
+              <li>
+                <a href={`#${section.id}`}>{section.heading}</a>
+                {section.children.length > 0 && (
+                <ol class="toc-subsections">
+                  {section.children.map((child) => (
+                  <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                  ))}
+                </ol>
+                )}
+              </li>
               ))}
             </ol>
-          )}
-        </li>
-      ))}
-    </ol>
-  </details>
-</nav>
+          </details>
+        </nav>
 
-<script>
-  document.querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure").forEach((details) => {
-    details.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
-      link.addEventListener("click", () => {
-        details.open = false;
-      });
-    });
-  });
-</script>
+
+        <script>
+          document.querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure").forEach((details) => {
+            details.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+              link.addEventListener("click", () => {
+                details.open = false;
+              });
+            });
+          });
+        </script>
 
         <div class="article-body">
           {renderBlocks.map((item) => {
