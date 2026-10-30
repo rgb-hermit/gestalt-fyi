@@ -259,6 +259,7 @@
 .article-layout {
   display: grid;
   grid-template-columns: 196px minmax(0, 1fr);
+  grid-template-rows: min-content 1fr;
   gap: 32px;
   align-items: start;
 }
@@ -292,7 +293,16 @@
 @media (max-width: 760px) {
   .article-layout {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
     gap: 32px;
+  }
+
+  /* restore natural document order on smaller screens */
+  .article-layout .article-toc,
+  .article-layout .article-body,
+  .article-layout .article-references-preview {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .article-layout .article-body {
