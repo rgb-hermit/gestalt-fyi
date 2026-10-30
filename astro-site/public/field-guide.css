@@ -296,15 +296,12 @@
 /* stack the columns on smaller screens */
 
 @media (max-width: 760px) {
-
-/* mobile: show disclosure instead of static toc */
-
+  /* mobile: show disclosure instead of static toc */
   .article-toc-desktop {
     display: none;
   }
 
-/* mobile: collapsible table of contents */
-
+  /* mobile: collapsible table of contents */
   .article-toc-disclosure {
     display: block;
     border: 1px solid var(--rule);
@@ -345,27 +342,25 @@
   .article-toc-disclosure[open] > ol {
     display: block;
   }
+
   .article-layout {
     grid-template-columns: 1fr;
     grid-template-rows: none;
     gap: 32px;
   }
 
-/* mobile: reduce space below article header */
-
+  /* mobile: reduce space below article header */
   .article-header {
     margin-bottom: 56px;
   }
 
-/* mobile: separate references from article content */
-
+  /* mobile: separate references from article content */
   .article-layout .article-references-preview {
     border-top: 1px solid var(--rule);
     padding-top: 32px;
   }
 
-/* restore natural document order on smaller screens */
-
+  /* restore natural document order on smaller screens */
   .article-layout .article-toc,
   .article-layout .article-body,
   .article-layout .article-references-preview {
