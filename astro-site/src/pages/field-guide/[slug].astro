@@ -146,16 +146,16 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
             <p class="toc-label">ON THIS PAGE</p>
             <ol>
               {tocSections.map((section) => (
-              <li>
-                <a href={`#${section.id}`}>{section.heading}</a>
-                {section.children.length > 0 && (
-                <ol class="toc-subsections">
-                  {section.children.map((child) => (
-                  <li><a href={`#${child.id}`}>{child.heading}</a></li>
-                  ))}
-                </ol>
-                )}
-              </li>
+                <li>
+                  <a href={`#${section.id}`}>{section.heading}</a>
+                  {section.children.length > 0 && (
+                    <ol class="toc-subsections">
+                      {section.children.map((child) => (
+                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                      ))}
+                    </ol>
+                  )}
+                </li>
               ))}
             </ol>
           </div>
@@ -165,24 +165,22 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
               <span class="toc-label">ON THIS PAGE</span>
               <span class="toc-chevron" aria-hidden="true"></span>
             </summary>
-
             <ol>
               {tocSections.map((section) => (
-              <li>
-                <a href={`#${section.id}`}>{section.heading}</a>
-                {section.children.length > 0 && (
-                <ol class="toc-subsections">
-                  {section.children.map((child) => (
-                  <li><a href={`#${child.id}`}>{child.heading}</a></li>
-                  ))}
-                </ol>
-                )}
-              </li>
+                <li>
+                  <a href={`#${section.id}`}>{section.heading}</a>
+                  {section.children.length > 0 && (
+                    <ol class="toc-subsections">
+                      {section.children.map((child) => (
+                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                      ))}
+                    </ol>
+                  )}
+                </li>
               ))}
             </ol>
           </details>
         </nav>
-
 
         <script>
           document.querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure").forEach((details) => {
