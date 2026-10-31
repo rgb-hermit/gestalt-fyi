@@ -58,7 +58,7 @@
 /* article header */
 
 .article-header {
-  margin-bottom: 64px;
+  margin-bottom: 80px;
   position: relative;
   isolation: isolate;
 }
@@ -91,7 +91,7 @@
 .article-body p {
   margin: 0 0 24px;
   font-family: var(--body);
-  font-size: clamp(14px, 1.5vw, 19px);
+  font-size: clamp(16px, 1.5vw, 19px);
   font-weight: 400;
   line-height: 1.8;
   color: var(--body-ink);
@@ -99,15 +99,34 @@
 
 .article-body h2 {
   margin: 64px 0 24px;
-  font-family: var(--serif);
-  font-size: clamp(20px, 3.5vw, 24px);
+  font-family: var(--display);
+  font-size: clamp(24px, 3.5vw, 28px);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.025em;
   color: var(--ivory);
 }
 
+.article-body h3 {
+  margin: 40px 0 16px;
+  font-family: var(--display);
+  font-size: clamp(18px, 2.5vw, 20px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--ivory);
+}
+
 /* article table of contents */
+
+/* desktop: static toc */
+.article-toc-desktop {
+  display: block;
+}
+
+.article-toc-disclosure {
+  display: none;
+}
 
 .article-toc {
   margin: 0 0 48px;
@@ -133,7 +152,7 @@
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   padding: 0;
   counter-increment: toc;
   margin-left: -24px;
@@ -144,7 +163,7 @@
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0em;
   color: var(--thistle);
 }
 
@@ -152,8 +171,7 @@
   font-family: var(--body);
   font-size: 14px;
   color: var(--ivory);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .article-layout a:hover {
@@ -168,9 +186,8 @@
 /* sidebar reference previews */
 
 .article-references-preview {
-  margin-top: 48px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule);
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .article-references-preview h2 {
@@ -192,15 +209,8 @@
   margin-bottom: 16px;
 }
 
+.article-references-preview .uncited-reference,
 .article-references-preview .cited-reference {
-  display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  gap: 4px;
-  align-items: start;
-  margin-left: -28px;
-}
-
-.article-references-preview .uncited-reference {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 4px;
@@ -208,6 +218,7 @@
 }
 
 /* reference numbers stay separate from the source details */
+
 .article-references-preview .reference-marker {
   font-family: var(--mono);
   font-size: 12px;
@@ -216,6 +227,7 @@
 }
 
 /* keep reference titles and their links together */
+
 .article-references-preview .reference-content {
   grid-column: 2;
   min-width: 0;
@@ -251,16 +263,9 @@
 .article-layout {
   display: grid;
   grid-template-columns: 196px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
   gap: 32px;
   align-items: start;
-}
-
-.article-layout .article-sidebar {
-  min-width: 0;
-}
-
-.article-layout .article-sidebar .article-toc {
-  margin: 0;
 }
 
 .article-layout .article-body {
@@ -269,12 +274,98 @@
   border-left: 1px solid var(--rule);
 }
 
+/* desktop article layout */
+
+.article-layout .article-toc {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.article-layout .article-body {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.article-layout .article-references-preview {
+  grid-column: 1;
+  grid-row: 2;
+}
+
 /* stack the columns on smaller screens */
 
 @media (max-width: 760px) {
+  /* mobile: show disclosure instead of static toc */
+  .article-toc-desktop {
+    display: none;
+  }
+
+  /* mobile: collapsible table of contents */
+  .article-toc-disclosure {
+    display: block;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+
+  .article-toc-disclosure > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+  }
+
+  .article-toc-disclosure .toc-label {
+    margin: 0;
+  }
+
+  .article-toc-disclosure .toc-chevron {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .article-toc-disclosure[open] .toc-chevron {
+    transform: rotate(225deg);
+  }
+
+  .article-toc-disclosure > ol {
+    display: none;
+    padding: 0 16px 16px;
+  }
+
+  .article-toc-disclosure[open] > ol {
+    display: block;
+  }
+
   .article-layout {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
     gap: 32px;
+  }
+
+  /* mobile: reduce space below article header */
+  .article-header {
+    margin-bottom: 56px;
+  }
+
+  /* mobile: separate references from article content */
+  .article-layout .article-references-preview {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+  }
+
+  /* restore natural document order on smaller screens */
+  .article-layout .article-toc,
+  .article-layout .article-body,
+  .article-layout .article-references-preview {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .article-layout .article-body {
@@ -282,53 +373,13 @@
     border-left: none;
   }
 
-  .article-references-preview .cited-reference {
+  .article-references-preview .cited-reference,
+  .article-references-preview .uncited-reference {
     margin-left: 0;
   }
 
   .article-toc li {
     margin-left: 0;
-  }
-
-  .article-references-preview .uncited-reference {
-  margin-left: 0;
-  }
-}
-
-/* temporary abstract hero artwork */
-
-.article-artwork {
-  position: absolute;
-  top: -20px;
-  right: 0;
-  width: clamp(180px, 22vw, 280px);
-  height: auto;
-  aspect-ratio: 1;
-  pointer-events: none;
-  z-index: -1;
-
-  background:
-    radial-gradient(
-      circle at 65% 65%,
-      rgba(222, 204, 245, 0.7) 0%,
-      rgba(222, 204, 245, 0.25) 40%,
-      transparent 70%
-    ),
-    radial-gradient(
-      circle at 35% 35%,
-      var(--forest) 0%,
-      var(--forest) 45%,
-      transparent 70%
-    );
-
-  border-radius: 50%;
-}
-
-/* hide only when the layout becomes single-column */
-
-@media (max-width: 760px) {
-  .article-artwork {
-    display: none;
   }
 }
 
@@ -336,6 +387,12 @@
 
 .article-figure {
   margin: 48px 0 64px;
+}
+
+.article-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .article-image-placeholder {
@@ -366,12 +423,39 @@
   color: var(--thistle);
 }
 
+/* article blockquotes */
+
+.article-blockquote {
+  margin: 40px 0;
+  padding: 4px 0 4px 24px;
+  border-left: 2px solid var(--rule);
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ivory);
+}
+
 /* article callouts */
 
 .article-callout {
   margin: 48px 0;
-  padding: 4px 0 4px 24px;
+  padding: 20px 24px;
+  background: var(--surface-raised);
   border-left: 2px solid var(--thistle);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* optional callout emoji */
+
+.article-callout-icon {
+  flex: 0 0 auto;
+  font-size: 24px;
+  line-height: 1.4;
 }
 
 .article-callout .article-callout-label {
@@ -389,6 +473,165 @@
   font-size: 16px;
   line-height: 1.7;
   color: var(--ivory);
+}
+
+/* article code blocks */
+
+.article-code-block {
+  margin: 32px 0;
+  background: var(--forest);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.article-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--surface-raised);
+}
+
+.article-code-language {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--thistle);
+}
+
+.article-code-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--sage);
+  cursor: pointer;
+}
+
+.article-code-copy:hover {
+  background: var(--surface-raised);
+  color: var(--ivory);
+}
+
+.article-code-copy:focus-visible {
+  outline: 2px solid var(--thistle);
+  outline-offset: 2px;
+}
+
+/* screen-reader announcement for code copying */
+
+.article-code-copy-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.article-code {
+  margin: 0;
+  padding: 20px 24px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ivory);
+}
+
+/* syntax highlighting */
+
+.article-code pre.astro-code {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.article-code pre.astro-code code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* article tables */
+
+.article-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 4px;
+}
+
+.article-table-scroll:focus-visible {
+  outline: 2px solid var(--thistle);
+  outline-offset: 4px;
+}
+
+.article-table {
+  width: 100%;
+  min-width: 480px;
+  margin: 32px 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--forest);
+  border-radius: 4px;
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.article-table th,
+.article-table td {
+  padding: 6px 24px;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* table outer spacing */
+
+.article-table tr:first-child > * {
+  padding-top: 14px;
+}
+
+.article-table tr:last-child > * {
+  padding-bottom: 14px;
+}
+
+.article-table tr:has(> th[scope="col"]) > * {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.article-table tr:has(> th[scope="col"]) + tr > * {
+  padding-top: 14px;
+}
+
+.article-table th {
+  color: var(--thistle);
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.article-table th[scope="row"] {
+  vertical-align: top;
+}
+
+.article-table th[scope="col"] {
+  border-bottom: 1px solid rgba(205, 180, 219, 0.4);
+}
+
+/* row header divider */
+
+.article-table:has(th[scope="row"]) tr > :first-child {
+  border-right: 1px solid rgba(205, 180, 219, 0.4);
 }
 
 /* inline reference citations */
@@ -508,21 +751,97 @@
 }
 
 /* nested table of contents */
+
 .article-toc .toc-subsections {
   grid-column: 2;
   margin-top: 10px;
-  padding-left: 12px;
-  border-left: 1px solid var(--rule);
+  padding-left: 0px;
   counter-reset: none;
 }
 
 .article-toc .toc-subsections li {
-  display: block;
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr);
+  gap: 8px;
   margin: 0 0 10px;
   padding: 0;
   counter-increment: none;
 }
 
 .article-toc .toc-subsections li::before {
-  content: none;
+  content: "•";
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--thistle);
+}
+
+/* notion article lists — initial semantic baseline; visual refinement follows review. */
+
+.article-body .notion-list {
+  margin: 0 0 24px;
+  padding-left: 1.5em;
+  color: var(--body-ink);
+  font-family: var(--body);
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.8;
+}
+.article-body .notion-list li {
+  margin: 0 0 4px;
+  padding-left: 0.2em; 
+}
+.article-body .notion-list .notion-list {
+  margin: 4px 0;
+}
+.article-body .notion-task-list {
+  list-style: none;
+  padding-left: 0;
+}
+.article-body .notion-task-list > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.65em;
+}
+
+.article-body .notion-task-list > li > .notion-list {
+  flex-basis: 100%;
+}
+
+/* article task lists */
+
+.notion-task-list input[type="checkbox"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  border: 1px solid var(--thistle);
+  border-radius: 2px;
+  background: var(--surface-raised);
+  opacity: 1;
+  cursor: default;
+}
+
+.notion-task-list input[type="checkbox"]:checked {
+  background-color: var(--thistle);
+  border-color: var(--thistle);
+  background-image: none;
+}
+
+.notion-task-list input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 8px;
+  border: solid var(--forest);
+  border-width: 0 2px 2px 0;
+  transform: translate(4px, 1px) rotate(45deg);
+}
+
+/* completed task text */
+
+.article-body .notion-task-list input:checked + span {
+  color: var(--sage);
+  text-decoration: line-through;
 }

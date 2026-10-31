@@ -2,8 +2,10 @@
 
 import Layout from "../../layouts/Layout.astro";
 import { fieldGuideEntries } from "../../data/fieldGuide";
-import { getNotionBlocks } from "../../lib/notion";
+import { getArticleBlocks } from "../../lib/notion";
+import NotionLists from "../../components/NotionLists.astro";
 import NotionRichText from "../../components/notion-rich-text.astro";
+import { Code } from "astro:components";
 
 export function getStaticPaths() {
   return fieldGuideEntries
@@ -18,7 +20,7 @@ const { entry } = Astro.props;
 const { title, summary } = entry;
 
 const notionBlocks = entry.notionPageId
-  ? await getNotionBlocks(entry.notionPageId)
+  ? await getArticleBlocks(entry.notionPageId)
   : [];
 
 const notionHeadings = notionBlocks
@@ -75,6 +77,18 @@ const articleBlocks = referencesHeadingIndex === -1
   ? notionBlocks
   : notionBlocks.slice(0, referencesHeadingIndex);
 
+const listTypes = new Set(["bulleted_list_item", "numbered_list_item", "to_do"]);
+const renderBlocks: ({ type: "list"; blocks: typeof articleBlocks } | { type: "block"; block: (typeof articleBlocks)[number] })[] = [];
+for (const block of articleBlocks) {
+  const last = renderBlocks[renderBlocks.length - 1];
+  if (listTypes.has(block.type)) {
+    if (last?.type === "list") last.blocks.push(block);
+    else renderBlocks.push({ type: "list", blocks: [block] });
+  } else {
+    renderBlocks.push({ type: "block", block });
+  }
+}
+
 const referenceParagraphs =
   referencesHeadingIndex === -1
     ? []
@@ -123,12 +137,12 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
         <p class="article-category">FIELD GUIDE · FOUNDATIONS</p>
         <h1>{title}</h1>
         <p class="article-summary">{summary}</p>
-        <div class="article-artwork" aria-hidden="true"></div>
+        {/* header artwork deferred pending visual exploration */}
       </header>
       <div class="article-layout">
-        <aside class="article-sidebar">
           
-          <nav class="article-toc" aria-label="On this page">
+        <nav class="article-toc" aria-label="On this page">
+          <div class="article-toc-desktop">
             <p class="toc-label">ON THIS PAGE</p>
             <ol>
               {tocSections.map((section) => (
@@ -144,9 +158,194 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
                 </li>
               ))}
             </ol>
-          </nav>
+          </div>
 
-          <section
+          <details class="article-toc-disclosure">
+            <summary class="article-toc-trigger">
+              <span class="toc-label">ON THIS PAGE</span>
+              <span class="toc-chevron" aria-hidden="true"></span>
+            </summary>
+            <ol>
+              {tocSections.map((section) => (
+                <li>
+                  <a href={`#${section.id}`}>{section.heading}</a>
+                  {section.children.length > 0 && (
+                    <ol class="toc-subsections">
+                      {section.children.map((child) => (
+                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                      ))}
+                    </ol>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </details>
+        </nav>
+
+        <script>
+          document.querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure").forEach((details) => {
+            details.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+              link.addEventListener("click", () => {
+                details.open = false;
+              });
+            });
+          });
+        </script>
+
+        <div class="article-body">
+          {renderBlocks.map((item) => {
+            if (item.type === "list") return <NotionLists blocks={item.blocks} />;
+            const block = item.block;
+            const richText = block[block.type]?.rich_text ?? [];
+            const content = richText
+              .map((item: { plain_text: string }) => item.plain_text)
+              .join("");
+
+            if (block.type === "heading_2" || block.type === "heading_3") {
+              const id = content
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+
+              return block.type === "heading_2"
+                ? <h2 id={id}>{content}</h2>
+                : <h3 id={id}>{content}</h3>;
+            }
+
+            if (block.type === "paragraph") {
+              return <p><NotionRichText items={block.paragraph.rich_text ?? []} /></p>;
+            }
+
+            if (block.type === "quote") {
+              return (
+                <blockquote class="article-blockquote">
+                  <NotionRichText items={block.quote.rich_text ?? []} />
+                </blockquote>
+              );
+            }
+
+            if (block.type === "callout") {
+              return (
+              <aside class="article-callout">
+                {block.callout.icon?.type === 'emoji' && (
+                  <span class="article-callout-icon" aria-hidden="true">
+                    {block.callout.icon.emoji}
+                  </span>
+                )}
+                <p>
+                  <NotionRichText items={block.callout.rich_text ?? []} />
+                </p>
+              </aside>
+              );
+            }
+
+            if (block.type === "image") {
+              const image = block.image;
+              const src = image.type === "external"
+                ? image.external?.url
+                : image.file?.url;
+
+              if (!src) return null;
+
+              const caption = image.caption ?? [];
+              const alt = caption.map((item: { plain_text?: string }) => item.plain_text ?? "").join("");
+
+              return (
+                <figure class="article-figure">
+                  <img src={src} alt={alt} loading="lazy" />
+                  {caption.length > 0 && (
+                    <figcaption>
+                      <NotionRichText items={caption} />
+                    </figcaption>
+                  )}
+                </figure>
+              );
+            }
+
+            if (block.type === "divider") {
+              return <hr class="article-divider" />;
+            }
+
+            if (block.type === "code") {
+              const language = block.code.language ?? "plain text";
+              const code = (block.code.rich_text ?? [])
+                .map((item: { plain_text?: string }) => item.plain_text ?? "")
+                .join("");
+
+              return (
+              <div class="article-code-block">
+                <div class="article-code-header">
+                  <span class="article-code-language">{language}</span>
+                  <button
+                    type="button"
+                    class="article-code-copy"
+                    aria-label="Copy code to clipboard"
+                    title="Copy code"
+                  >
+                    <svg
+                      class="article-code-copy-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="8" y="8" width="13" height="13" rx="2" />
+                      <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+                                        </svg>
+                  </button>
+                  <span class="article-code-copy-status" role="status" aria-atomic="true"></span>
+                </div>
+                <div class="article-code">
+                  <Code code={code} lang={language} theme="github-dark" />
+                </div>
+              </div>
+            );
+            }
+
+            if (block.type === "table") {
+  const rows = block.children ?? [];
+  const hasColumnHeader = block.table?.has_column_header ?? false;
+  const hasRowHeader = block.table?.has_row_header ?? false;
+
+  return (
+  <div class="article-table-scroll" role="region" aria-label="Article data table" tabindex="0">
+    <table class="article-table">
+      {rows.map((row, rowIndex) => (
+        <tr>
+          {(row.table_row?.cells ?? []).map((cell: any[], cellIndex: number) => {
+  const isColumnHeader = hasColumnHeader && rowIndex === 0;
+  const isRowHeader = hasRowHeader && cellIndex === 0;
+
+  if (isColumnHeader) {
+    return <th scope="col"><NotionRichText items={cell} /></th>;
+  }
+
+  if (isRowHeader) {
+    return <th scope="row"><NotionRichText items={cell} /></th>;
+  }
+
+  return <td><NotionRichText items={cell} /></td>;
+})}
+        </tr>
+      ))}
+        </table>
+  </div>
+);
+}
+
+            console.warn(`Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`);
+            return import.meta.env.DEV
+              ? <div class="unsupported-notion-block" role="note">Unsupported Notion block: {block.type}</div>
+              : null;
+          })}
+</div>
+<section
             class="article-references-preview"
             aria-labelledby="references-preview-heading"
           >
@@ -172,37 +371,51 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
               ))}
             </ol>
           </section>
-        </aside>
-
-        <div class="article-body">
-          {articleBlocks.map((block) => {
-            const richText = block[block.type]?.rich_text ?? [];
-            const content = richText
-              .map((item: { plain_text: string }) => item.plain_text)
-              .join("");
-
-            if (block.type === "heading_2" || block.type === "heading_3") {
-              const id = content
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, "-")
-                .replace(/^-|-$/g, "");
-
-              return block.type === "heading_2"
-                ? <h2 id={id}>{content}</h2>
-                : <h3 id={id}>{content}</h3>;
-            }
-
-            if (block.type === "paragraph") {
-              return <p><NotionRichText items={block.paragraph.rich_text ?? []} /></p>;
-            }
-
-            console.warn(`Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`);
-            return import.meta.env.DEV
-              ? <div class="unsupported-notion-block" role="note">Unsupported Notion block: {block.type}</div>
-              : null;
-          })}
-</div>
       </div>
     </div>
   </main>
+  <script>
+  document.querySelectorAll<HTMLButtonElement>(".article-code-copy").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const codeBlock = button.closest(".article-code-block");
+      const code = codeBlock?.querySelector("pre code")?.textContent;
+
+      if (code == null) return;
+
+      try {
+        await navigator.clipboard.writeText(code);
+        const status = codeBlock?.querySelector<HTMLElement>(
+          ".article-code-copy-status"
+        );
+
+        if (status) {
+          status.textContent = "Code copied to clipboard";
+}
+        const icon = button.querySelector<SVGSVGElement>(".article-code-copy-icon");
+
+        if (icon) {
+          icon.innerHTML = '<path d="M20 6 9 17l-5-5" />';
+          icon.style.color = "var(--thistle)";
+}
+
+        button.setAttribute("aria-label", "Code copied to clipboard");
+        button.setAttribute("title", "Copied");
+
+        window.setTimeout(() => {
+          if (icon) {
+            icon.innerHTML = `
+              <rect x="8" y="8" width="13" height="13" rx="2" />
+              <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+            `;
+            icon.style.color = "";
+          }
+          button.setAttribute("aria-label", "Copy code to clipboard");
+          button.setAttribute("title", "Copy code");
+        }, 2000);
+      } catch (error) {
+        console.error("Unable to copy code:", error);
+      }
+    });
+  });
+</script>
 </Layout>

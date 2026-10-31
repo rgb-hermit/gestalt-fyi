@@ -1,10 +1,42 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
 ---
 
-<Layout title="UX Field Guide — gestalt.fyi" description="A growing collection of ideas about people, design and technology.">
-  <main id="main-content">
-    <h1>UX Field Guide</h1>
-    <p>A growing collection of ideas about people, design and technology.</p>
-  </main>
+<Layout
+  title="Field Guide — gestalt.fyi"
+  description="An evolving field guide to people, design and technology."
+>
+  <div class="page-shell">
+    <SiteHeader />
+
+    <main id="main-content" class="field-guide-landing">
+    <div class="construction-label">
+  <svg
+    class="construction-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3 5 20h14L12 3Z" />
+    <path d="M9 10h6M7 15h10M3 20h18" />
+  </svg>
+  <span>WORK IN PROGRESS</span>
+</div>
+      <h1>Field Guide</h1>
+      <p>
+        A work in progress. I'm building a field guide to the ideas,
+        behaviours and systems that shape how we design for people.
+      </p>
+      <p>More soon.</p>
+    </main>
+
+    <SiteFooter />
+  </div>
 </Layout>
