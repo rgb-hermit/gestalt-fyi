@@ -196,3 +196,59 @@ export function getPublishableEntries(
     );
   });
 }
+
+
+export function validateFieldGuidePublication(
+  entries: NotionFieldGuideEntry[]
+): string[] {
+  const errors: string[] = [];
+
+  // check editorial readiness for new publication requests.
+  for (const entry of entries) {
+    if (
+      entry.publicationStatus === "Queued Publish" &&
+      entry.editorialStatus !== "Ready"
+    ) {
+      errors.push(
+        `"${entry.title || entry.notionPageId}" is queued for publication but editorial status is not Ready.`
+      );
+    }
+  }
+
+  // validate metadata for articles included in the release.
+  const publishableEntries = getPublishableEntries(entries);
+  const slugs = new Map<string, string>();
+
+  for (const entry of publishableEntries) {
+    const identifier = entry.title || entry.notionPageId;
+
+    if (!entry.title.trim()) {
+      errors.push(`"${identifier}" is missing a title.`);
+    }
+
+    if (!entry.summary.trim()) {
+      errors.push(`"${identifier}" is missing a summary.`);
+    }
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.slug)) {
+      errors.push(
+        `"${identifier}" has an invalid slug: "${entry.slug}".`
+      );
+    }
+
+    if (entry.slug) {
+      const existing = slugs.get(entry.slug);
+
+      if (existing) {
+        errors.push(
+          `Duplicate slug "${entry.slug}" used by "${existing}" and "${identifier}".`
+        );
+      } else {
+        slugs.set(entry.slug, identifier);
+      }
+    }
+  }
+
+  return errors;
+}
+

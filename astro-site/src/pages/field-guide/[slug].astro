@@ -2,17 +2,29 @@
 
 import Layout from "../../layouts/Layout.astro";
 import {
-  getArticleBlocks,
   getFieldGuideEntries,
   getPublishableEntries,
+  getArticleBlocks,
+  validateFieldGuidePublication,
 } from "../../lib/notion";
 import NotionLists from "../../components/NotionLists.astro";
 import NotionRichText from "../../components/notion-rich-text.astro";
 import { Code } from "astro:components";
 
 
+
 export async function getStaticPaths() {
   const entries = await getFieldGuideEntries();
+  const errors = validateFieldGuidePublication(entries);
+
+  if (errors.length > 0) {
+    throw new Error(
+      `Field Guide publication validation failed:\n${errors
+        .map((error) => `- ${error}`)
+        .join("\n")}`
+    );
+  }
+
   const publishableEntries = getPublishableEntries(entries);
 
   return publishableEntries.map((entry) => ({
