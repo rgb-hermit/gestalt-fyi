@@ -162,9 +162,13 @@ export async function getFieldGuideEntries(): Promise<NotionFieldGuideEntry[]> {
       domains: (properties["Domains"]?.multi_select ?? []).map(
         (option) => option.name
       ),
-      types: (properties["Type Revision"]?.multi_select ?? []).map(
-        (option) => option.name
-      ),
+      // During migration, prefer the final multi-select property when present.
+      // Never read the legacy single-select "Type" as a classification array.
+      types: (
+        properties["Type"]?.type === "multi_select"
+          ? properties["Type"].multi_select
+          : properties["Type Revision"]?.multi_select
+      )?.map((option) => option.name) ?? [],
       editorialStatus:
         properties["Editorial status"]?.select?.name ?? null,
       publicationStatus:
