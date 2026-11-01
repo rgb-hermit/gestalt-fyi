@@ -179,3 +179,20 @@ export async function getFieldGuideEntries(): Promise<NotionFieldGuideEntry[]> {
   });
 }
 
+
+export function getPublishableEntries(
+  entries: NotionFieldGuideEntry[]
+): NotionFieldGuideEntry[] {
+  return entries.filter((entry) => {
+    // preserve articles that are already published.
+    if (entry.publicationStatus === "Published") {
+      return true;
+    }
+
+    // only publish queued articles once editorially ready.
+    return (
+      entry.publicationStatus === "Queued Publish" &&
+      entry.editorialStatus === "Ready"
+    );
+  });
+}
