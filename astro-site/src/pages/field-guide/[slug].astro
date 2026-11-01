@@ -1,16 +1,33 @@
 ---
 
 import Layout from "../../layouts/Layout.astro";
-import { fieldGuideEntries } from "../../data/fieldGuide";
-import { getArticleBlocks } from "../../lib/notion";
+import {
+  getFieldGuideEntries,
+  getPublishableEntries,
+  getArticleBlocks,
+  validateFieldGuidePublication,
+} from "../../lib/notion";
 import NotionLists from "../../components/NotionLists.astro";
 import NotionRichText from "../../components/notion-rich-text.astro";
 import { Code } from "astro:components";
 
-export function getStaticPaths() {
-  return fieldGuideEntries
-    .filter((entry) => import.meta.env.DEV || entry.publicationStatus === "Published")
-    .map((entry) => ({
+
+
+export async function getStaticPaths() {
+  const entries = await getFieldGuideEntries();
+  const errors = validateFieldGuidePublication(entries);
+
+  if (errors.length > 0) {
+    throw new Error(
+      `Field Guide publication validation failed:\n${errors
+        .map((error) => `- ${error}`)
+        .join("\n")}`
+    );
+  }
+
+  const publishableEntries = getPublishableEntries(entries);
+
+  return publishableEntries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
@@ -46,13 +63,7 @@ const notionHeadings = notionBlocks
   .filter((heading) => heading.heading !== "References");
 
 const tocSections: { heading: string; id: string; children: { heading: string; id: string }[] }[] = [];
-const tocItems = notionHeadings.length
-  ? notionHeadings
-  : (entry.sections ?? []).map((section) => ({
-      heading: section.heading,
-      id: section.id,
-      level: 2,
-    }));
+const tocItems = notionHeadings;
 
 for (const heading of tocItems) {
   if (heading.level === 3 && tocSections.length) {
