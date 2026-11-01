@@ -75,3 +75,103 @@ export async function getArticleBlocks(pageId: string): Promise<NotionBlock[]> {
   await loadChildren(blocks);
   return blocks;
 }
+
+
+const FIELD_GUIDE_DATABASE_ID = "052459fcf9df4a0985d0a0e68375c93b";
+
+interface NotionRichText {
+  plain_text: string;
+}
+
+interface NotionProperty {
+  type: string;
+  title?: NotionRichText[];
+  rich_text?: NotionRichText[];
+  select?: { name: string } | null;
+  multi_select?: { name: string }[];
+}
+
+interface NotionDatabasePage {
+  id: string;
+  properties: Record<string, NotionProperty>;
+}
+
+export interface NotionFieldGuideEntry {
+  notionPageId: string;
+  title: string;
+  slug: string;
+  summary: string;
+  domains: string[];
+  types: string[];
+  editorialStatus: string | null;
+  publicationStatus: string | null;
+  launchPriority: string | null;
+}
+
+function plainText(items: NotionRichText[] = []): string {
+  return items.map((item) => item.plain_text).join("");
+}
+
+export async function getFieldGuideEntries(): Promise<NotionFieldGuideEntry[]> {
+  const token = import.meta.env.NOTION_API_TOKEN;
+
+  if (!token) {
+    throw new Error("NOTION_API_TOKEN is not configured");
+  }
+
+  const pages: NotionDatabasePage[] = [];
+  let cursor: string | undefined;
+
+  do {
+    const response = await fetch(
+      `${NOTION_API_URL}/databases/${FIELD_GUIDE_DATABASE_ID}/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Notion-Version": NOTION_VERSION,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          page_size: 100,
+          ...(cursor ? { start_cursor: cursor } : {}),
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Notion database query failed: ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    pages.push(...data.results);
+    cursor = data.next_cursor ?? undefined;
+  } while (cursor);
+
+  return pages.map((page) => {
+    const properties = page.properties;
+
+    return {
+      notionPageId: page.id,
+      title: plainText(properties["Name"]?.title),
+      slug: plainText(properties["Slug"]?.rich_text),
+      summary: plainText(properties["Summary"]?.rich_text),
+      domains: (properties["Domains"]?.multi_select ?? []).map(
+        (option) => option.name
+      ),
+      types: (properties["Type Revision"]?.multi_select ?? []).map(
+        (option) => option.name
+      ),
+      editorialStatus:
+        properties["Editorial status"]?.select?.name ?? null,
+      publicationStatus:
+        properties["Publication status"]?.select?.name ?? null,
+      launchPriority:
+        properties["Launch priority"]?.select?.name ?? null,
+    };
+  });
+}
+
