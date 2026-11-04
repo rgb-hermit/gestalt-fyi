@@ -15,7 +15,7 @@ This directory contains the Astro application for [gestalt.fyi](https://gestalt.
 - `public/field-guide.css` — Field Guide article styles
 - `test-notion-discovery.mjs` — Notion discovery and publication validation checks
 
-The `src/data/` directory contains older local data. It is retained pending a separate dependency review; Notion is the authoritative source for published Field Guide content.
+Published Field Guide content comes from Notion. Unused local content fixtures and Astro starter assets were removed during repository cleanup.
 
 ## Development
 
