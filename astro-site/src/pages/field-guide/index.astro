@@ -159,11 +159,9 @@ const domainDescriptions = Object.fromEntries(
                   </h3>
 
                   {entry.types.length > 0 && (
-                    <ul class="concept-types" aria-label="Concept types">
-                      {entry.types.map((type) => (
-                        <li>{type}</li>
-                      ))}
-                    </ul>
+                    <p class="concept-types">
+                      {entry.types.join(" · ").toUpperCase()}
+                    </p>
                   )}
                 </div>
 

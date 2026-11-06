@@ -19,6 +19,7 @@
 
   /* blue */
   --french-blue: #274690;
+  --wisteria: #8fa7e0;
 
   /* oranges */
   --clay: #dda15e;
@@ -215,7 +216,7 @@ a:focus-visible {
 .domain-description p {
   margin: 0;
   font-family: var(--body);
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.6;
 }
 
@@ -274,7 +275,8 @@ a:focus-visible {
   min-height: 38px;
   padding: 8px 13px 8px 16px;
   border: 1px solid var(--thistle);
-  border-radius: 999px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 16%);
   background-color: var(--thistle);
   color: var(--forest);
   cursor: pointer;
@@ -497,6 +499,8 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
+/* footer navigation links */
+
 .footer-links {
   display: flex;
   flex-direction: column;
@@ -510,13 +514,9 @@ a:focus-visible {
   line-height: 1.6;
 }
 
-.footer-links li {
-  margin: 0;
-}
-
-/* footer navigation links */
 .footer-links li,
 .footer-links a {
+  margin: 0;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -535,12 +535,16 @@ a:focus-visible {
 }
 
 .footer-link-label {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .footer-links a:hover {
   color: var(--thistle);
+}
+
+.footer-link-inactive,
+.footer-link-inactive .footer-link-arrow {
+  color: var(--sage);
 }
 
 /* acknowledgement of country: always was, always will be, aboriginal land */
@@ -954,19 +958,8 @@ a:focus-visible {
 }
 
 .concept-types {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.concept-types li {
-  padding: 3px 8px;
-  border: 1px solid var(--ivory);
-  border-radius: 999px;
-  color: var(--ivory);
+  color: var(--thistle);
   font-family: var(--mono);
   font-size: 10px;
   line-height: 1.4;

@@ -42,8 +42,7 @@
 }
 
 .article-back-label {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .article-back:hover {
@@ -82,7 +81,7 @@
 .article-content .article-summary {
   font-family: var(--serif);
   color: var(--thistle);
-  font-weight: 600;
+  font-weight: 400;
   font-size: clamp(20px, 2vw, 24px);
   line-height: 1.6;
   max-width: 560px;
@@ -189,6 +188,10 @@
   color: var(--thistle);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.article-toc a:hover {
+  color: var(--thistle);
 }
 
 .article-toc a:focus-visible {
