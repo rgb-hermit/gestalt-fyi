@@ -1,5 +1,4 @@
 ---
-
 import Layout from "../../layouts/Layout.astro";
 import {
   getFieldGuideEntries,
@@ -11,8 +10,6 @@ import NotionLists from "../../components/field-guide/NotionLists.astro";
 import NotionRichText from "../../components/field-guide/notion-rich-text.astro";
 import { Code } from "astro:components";
 
-
-
 export async function getStaticPaths() {
   const entries = await getFieldGuideEntries();
   const errors = validateFieldGuidePublication(entries);
@@ -21,7 +18,7 @@ export async function getStaticPaths() {
     throw new Error(
       `Field Guide publication validation failed:\n${errors
         .map((error) => `- ${error}`)
-        .join("\n")}`
+        .join("\n")}`,
     );
   }
 
@@ -41,11 +38,7 @@ const notionBlocks = entry.notionPageId
   : [];
 
 const notionHeadings = notionBlocks
-  .filter(
-    (block) =>
-      block.type === "heading_2" ||
-      block.type === "heading_3"
-  )
+  .filter((block) => block.type === "heading_2" || block.type === "heading_3")
   .map((block) => {
     const heading = (block[block.type]?.rich_text ?? [])
       .map((item: { plain_text: string }) => item.plain_text)
@@ -62,7 +55,11 @@ const notionHeadings = notionBlocks
   })
   .filter((heading) => heading.heading !== "References");
 
-const tocSections: { heading: string; id: string; children: { heading: string; id: string }[] }[] = [];
+const tocSections: {
+  heading: string;
+  id: string;
+  children: { heading: string; id: string }[];
+}[] = [];
 const tocItems = notionHeadings;
 
 for (const heading of tocItems) {
@@ -72,7 +69,11 @@ for (const heading of tocItems) {
       id: heading.id,
     });
   } else {
-    tocSections.push({ heading: heading.heading, id: heading.id, children: [] });
+    tocSections.push({
+      heading: heading.heading,
+      id: heading.id,
+      children: [],
+    });
   }
 }
 
@@ -81,15 +82,23 @@ const referencesHeadingIndex = notionBlocks.findIndex(
     block.type === "heading_2" &&
     (block.heading_2?.rich_text ?? [])
       .map((item: { plain_text: string }) => item.plain_text)
-      .join("") === "References"
+      .join("") === "References",
 );
 
-const articleBlocks = referencesHeadingIndex === -1
-  ? notionBlocks
-  : notionBlocks.slice(0, referencesHeadingIndex);
+const articleBlocks =
+  referencesHeadingIndex === -1
+    ? notionBlocks
+    : notionBlocks.slice(0, referencesHeadingIndex);
 
-const listTypes = new Set(["bulleted_list_item", "numbered_list_item", "to_do"]);
-const renderBlocks: ({ type: "list"; blocks: typeof articleBlocks } | { type: "block"; block: (typeof articleBlocks)[number] })[] = [];
+const listTypes = new Set([
+  "bulleted_list_item",
+  "numbered_list_item",
+  "to_do",
+]);
+const renderBlocks: (
+  | { type: "list"; blocks: typeof articleBlocks }
+  | { type: "block"; block: (typeof articleBlocks)[number] }
+)[] = [];
 for (const block of articleBlocks) {
   const last = renderBlocks[renderBlocks.length - 1];
   if (listTypes.has(block.type)) {
@@ -109,7 +118,7 @@ const referenceParagraphs =
         .map((block) =>
           (block.paragraph?.rich_text ?? [])
             .map((item: { plain_text: string }) => item.plain_text)
-            .join("")
+            .join(""),
         );
 
 const notionReferences = [];
@@ -124,7 +133,10 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
   const number = citation ? Number(citation[1]) : null;
 
   notionReferences.push({
-    id: number !== null ? `reference-${number}` : `reference-uncited-${i / 2 + 1}`,
+    id:
+      number !== null
+        ? `reference-${number}`
+        : `reference-uncited-${i / 2 + 1}`,
     number,
     title: label.replace(/^\[\d+\]\s*/, ""),
     url,
@@ -145,13 +157,12 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
       </a>
 
       <header class="article-header">
-        <p class="article-category">FIELD GUIDE · FOUNDATIONS</p>
+        <p class="article-category">{entry.types.join(" · ").toUpperCase()}</p>
         <h1>{title}</h1>
         <p class="article-summary">{summary}</p>
         {/* header artwork deferred pending visual exploration */}
       </header>
       <div class="article-layout">
-          
         <nav class="article-toc" aria-label="On this page">
           <div class="article-toc-desktop">
             <p class="toc-label">ON THIS PAGE</p>
@@ -162,7 +173,9 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
                   {section.children.length > 0 && (
                     <ol class="toc-subsections">
                       {section.children.map((child) => (
-                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                        <li>
+                          <a href={`#${child.id}`}>{child.heading}</a>
+                        </li>
                       ))}
                     </ol>
                   )}
@@ -183,7 +196,9 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
                   {section.children.length > 0 && (
                     <ol class="toc-subsections">
                       {section.children.map((child) => (
-                        <li><a href={`#${child.id}`}>{child.heading}</a></li>
+                        <li>
+                          <a href={`#${child.id}`}>{child.heading}</a>
+                        </li>
                       ))}
                     </ol>
                   )}
@@ -194,18 +209,23 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
         </nav>
 
         <script>
-          document.querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure").forEach((details) => {
-            details.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
-              link.addEventListener("click", () => {
-                details.open = false;
-              });
+          document
+            .querySelectorAll<HTMLDetailsElement>(".article-toc-disclosure")
+            .forEach((details) => {
+              details
+                .querySelectorAll<HTMLAnchorElement>('a[href^="#"]')
+                .forEach((link) => {
+                  link.addEventListener("click", () => {
+                    details.open = false;
+                  });
+                });
             });
-          });
         </script>
 
         <div class="article-body">
           {renderBlocks.map((item) => {
-            if (item.type === "list") return <NotionLists blocks={item.blocks} />;
+            if (item.type === "list")
+              return <NotionLists blocks={item.blocks} />;
             const block = item.block;
             const richText = block[block.type]?.rich_text ?? [];
             const content = richText
@@ -218,13 +238,19 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
                 .replace(/[^a-z0-9]+/g, "-")
                 .replace(/^-|-$/g, "");
 
-              return block.type === "heading_2"
-                ? <h2 id={id}>{content}</h2>
-                : <h3 id={id}>{content}</h3>;
+              return block.type === "heading_2" ? (
+                <h2 id={id}>{content}</h2>
+              ) : (
+                <h3 id={id}>{content}</h3>
+              );
             }
 
             if (block.type === "paragraph") {
-              return <p><NotionRichText items={block.paragraph.rich_text ?? []} /></p>;
+              return (
+                <p>
+                  <NotionRichText items={block.paragraph.rich_text ?? []} />
+                </p>
+              );
             }
 
             if (block.type === "quote") {
@@ -237,29 +263,32 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
 
             if (block.type === "callout") {
               return (
-              <aside class="article-callout">
-                {block.callout.icon?.type === 'emoji' && (
-                  <span class="article-callout-icon" aria-hidden="true">
-                    {block.callout.icon.emoji}
-                  </span>
-                )}
-                <p>
-                  <NotionRichText items={block.callout.rich_text ?? []} />
-                </p>
-              </aside>
+                <aside class="article-callout">
+                  {block.callout.icon?.type === "emoji" && (
+                    <span class="article-callout-icon" aria-hidden="true">
+                      {block.callout.icon.emoji}
+                    </span>
+                  )}
+                  <p>
+                    <NotionRichText items={block.callout.rich_text ?? []} />
+                  </p>
+                </aside>
               );
             }
 
             if (block.type === "image") {
               const image = block.image;
-              const src = image.type === "external"
-                ? image.external?.url
-                : image.file?.url;
+              const src =
+                image.type === "external"
+                  ? image.external?.url
+                  : image.file?.url;
 
               if (!src) return null;
 
               const caption = image.caption ?? [];
-              const alt = caption.map((item: { plain_text?: string }) => item.plain_text ?? "").join("");
+              const alt = caption
+                .map((item: { plain_text?: string }) => item.plain_text ?? "")
+                .join("");
 
               return (
                 <figure class="article-figure">
@@ -284,149 +313,185 @@ for (let i = 0; i < referenceParagraphs.length; i += 2) {
                 .join("");
 
               return (
-              <div class="article-code-block">
-                <div class="article-code-header">
-                  <span class="article-code-language">{language}</span>
-                  <button
-                    type="button"
-                    class="article-code-copy"
-                    aria-label="Copy code to clipboard"
-                    title="Copy code"
-                  >
-                    <svg
-                      class="article-code-copy-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.75"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
+                <div class="article-code-block">
+                  <div class="article-code-header">
+                    <span class="article-code-language">{language}</span>
+                    <button
+                      type="button"
+                      class="article-code-copy"
+                      aria-label="Copy code to clipboard"
+                      title="Copy code"
                     >
-                      <rect x="8" y="8" width="13" height="13" rx="2" />
-                      <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
-                                        </svg>
-                  </button>
-                  <span class="article-code-copy-status" role="status" aria-atomic="true"></span>
+                      <svg
+                        class="article-code-copy-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <rect x="8" y="8" width="13" height="13" rx="2" />
+                        <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+                      </svg>
+                    </button>
+                    <span
+                      class="article-code-copy-status"
+                      role="status"
+                      aria-atomic="true"
+                    ></span>
+                  </div>
+                  <div class="article-code">
+                    <Code code={code} lang={language} theme="github-dark" />
+                  </div>
                 </div>
-                <div class="article-code">
-                  <Code code={code} lang={language} theme="github-dark" />
-                </div>
-              </div>
-            );
+              );
             }
 
             if (block.type === "table") {
-  const rows = block.children ?? [];
-  const hasColumnHeader = block.table?.has_column_header ?? false;
-  const hasRowHeader = block.table?.has_row_header ?? false;
+              const rows = block.children ?? [];
+              const hasColumnHeader = block.table?.has_column_header ?? false;
+              const hasRowHeader = block.table?.has_row_header ?? false;
 
-  return (
-  <div class="article-table-scroll" role="region" aria-label="Article data table" tabindex="0">
-    <table class="article-table">
-      {rows.map((row, rowIndex) => (
-        <tr>
-          {(row.table_row?.cells ?? []).map((cell: any[], cellIndex: number) => {
-  const isColumnHeader = hasColumnHeader && rowIndex === 0;
-  const isRowHeader = hasRowHeader && cellIndex === 0;
-
-  if (isColumnHeader) {
-    return <th scope="col"><NotionRichText items={cell} /></th>;
-  }
-
-  if (isRowHeader) {
-    return <th scope="row"><NotionRichText items={cell} /></th>;
-  }
-
-  return <td><NotionRichText items={cell} /></td>;
-})}
-        </tr>
-      ))}
-        </table>
-  </div>
-);
-}
-
-            console.warn(`Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`);
-            return import.meta.env.DEV
-              ? <div class="unsupported-notion-block" role="note">Unsupported Notion block: {block.type}</div>
-              : null;
-          })}
-</div>
-<section
-            class="article-references-preview"
-            aria-labelledby="references-preview-heading"
-          >
-            <h2 id="references-preview-heading">REFERENCES</h2>
-
-            <ol>
-              {notionReferences.map((reference) => (
-                <li
-                  id={reference.id}
-                  class={reference.cited ? "cited-reference" : "uncited-reference"}
+              return (
+                <div
+                  class="article-table-scroll"
+                  role="region"
+                  aria-label="Article data table"
+                  tabindex="0"
                 >
-                  {reference.cited && reference.number !== null && (
-                    <span class="reference-marker">[{reference.number}]</span>
+                  <table class="article-table">
+                    {rows.map((row, rowIndex) => (
+                      <tr>
+                        {(row.table_row?.cells ?? []).map(
+                          (cell: any[], cellIndex: number) => {
+                            const isColumnHeader =
+                              hasColumnHeader && rowIndex === 0;
+                            const isRowHeader = hasRowHeader && cellIndex === 0;
+
+                            if (isColumnHeader) {
+                              return (
+                                <th scope="col">
+                                  <NotionRichText items={cell} />
+                                </th>
+                              );
+                            }
+
+                            if (isRowHeader) {
+                              return (
+                                <th scope="row">
+                                  <NotionRichText items={cell} />
+                                </th>
+                              );
+                            }
+
+                            return (
+                              <td>
+                                <NotionRichText items={cell} />
+                              </td>
+                            );
+                          },
+                        )}
+                      </tr>
+                    ))}
+                  </table>
+                </div>
+              );
+            }
+
+            console.warn(
+              `Unsupported Notion article block: ${block.type} (page: ${entry.slug}, block: ${block.id})`,
+            );
+            return import.meta.env.DEV ? (
+              <div class="unsupported-notion-block" role="note">
+                Unsupported Notion block: {block.type}
+              </div>
+            ) : null;
+          })}
+        </div>
+        <section
+          class="article-references-preview"
+          aria-labelledby="references-preview-heading"
+        >
+          <h2 id="references-preview-heading">REFERENCES</h2>
+
+          <ol>
+            {notionReferences.map((reference) => (
+              <li
+                id={reference.id}
+                class={
+                  reference.cited ? "cited-reference" : "uncited-reference"
+                }
+              >
+                {reference.cited && reference.number !== null && (
+                  <span class="reference-marker">[{reference.number}]</span>
                 )}
                 <span class="reference-content">
                   <span class="reference-title">{reference.title}</span>{" "}
                   <a
                     href={reference.url}
                     aria-label={`Open source: ${reference.title}`}
-                  >[link]</a>
+                  >
+                    [link]
+                  </a>
                 </span>
-                </li>
-              ))}
-            </ol>
-          </section>
+              </li>
+            ))}
+          </ol>
+        </section>
       </div>
     </div>
   </main>
   <script>
-  document.querySelectorAll<HTMLButtonElement>(".article-code-copy").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const codeBlock = button.closest(".article-code-block");
-      const code = codeBlock?.querySelector("pre code")?.textContent;
+    document
+      .querySelectorAll<HTMLButtonElement>(".article-code-copy")
+      .forEach((button) => {
+        button.addEventListener("click", async () => {
+          const codeBlock = button.closest(".article-code-block");
+          const code = codeBlock?.querySelector("pre code")?.textContent;
 
-      if (code == null) return;
+          if (code == null) return;
 
-      try {
-        await navigator.clipboard.writeText(code);
-        const status = codeBlock?.querySelector<HTMLElement>(
-          ".article-code-copy-status"
-        );
+          try {
+            await navigator.clipboard.writeText(code);
+            const status = codeBlock?.querySelector<HTMLElement>(
+              ".article-code-copy-status",
+            );
 
-        if (status) {
-          status.textContent = "Code copied to clipboard";
-}
-        const icon = button.querySelector<SVGSVGElement>(".article-code-copy-icon");
+            if (status) {
+              status.textContent = "Code copied to clipboard";
+            }
+            const icon = button.querySelector<SVGSVGElement>(
+              ".article-code-copy-icon",
+            );
 
-        if (icon) {
-          icon.innerHTML = '<path d="M20 6 9 17l-5-5" />';
-          icon.style.color = "var(--thistle)";
-}
+            if (icon) {
+              icon.innerHTML = '<path d="M20 6 9 17l-5-5" />';
+              icon.style.color = "var(--thistle)";
+            }
 
-        button.setAttribute("aria-label", "Code copied to clipboard");
-        button.setAttribute("title", "Copied");
+            button.setAttribute("aria-label", "Code copied to clipboard");
+            button.setAttribute("title", "Copied");
 
-        window.setTimeout(() => {
-          if (icon) {
-            icon.innerHTML = `
+            window.setTimeout(() => {
+              if (icon) {
+                icon.innerHTML = `
               <rect x="8" y="8" width="13" height="13" rx="2" />
               <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
             `;
-            icon.style.color = "";
+                icon.style.color = "";
+              }
+              button.setAttribute("aria-label", "Copy code to clipboard");
+              button.setAttribute("title", "Copy code");
+            }, 2000);
+          } catch (error) {
+            console.error("Unable to copy code:", error);
           }
-          button.setAttribute("aria-label", "Copy code to clipboard");
-          button.setAttribute("title", "Copy code");
-        }, 2000);
-      } catch (error) {
-        console.error("Unable to copy code:", error);
-      }
-    });
-  });
-</script>
+        });
+      });
+  </script>
 </Layout>

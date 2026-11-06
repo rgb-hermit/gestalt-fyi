@@ -1,42 +1,296 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
-import SiteFooter from '../../components/SiteFooter.astro';
+import Layout from "../../layouts/Layout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import {
+  getCanonicalFieldGuideDomains,
+  getFieldGuideEntries,
+  getPublishableEntries,
+  validateFieldGuidePublication,
+} from "../../lib/notion";
+
+const allEntries = await getFieldGuideEntries();
+const publicationErrors = validateFieldGuidePublication(allEntries);
+
+if (publicationErrors.length > 0) {
+  throw new Error(
+    `Field Guide publication validation failed:\n${publicationErrors.join("\n")}`,
+  );
+}
+
+const publishedEntries = getPublishableEntries(allEntries).sort((a, b) =>
+  a.title.localeCompare(b.title, "en"),
+);
+
+const configuredDomains = await getCanonicalFieldGuideDomains();
+
+const activeDomains = new Set(
+  publishedEntries.flatMap((entry) => entry.domains),
+);
+
+const domains = ["All", ...configuredDomains.map((domain) => domain.name)];
+
+const domainDescriptions = Object.fromEntries(
+  configuredDomains.map((domain) => [domain.name, domain.description]),
+);
 ---
 
 <Layout
   title="Field Guide — gestalt.fyi"
   description="An evolving field guide to people, design and technology."
 >
-  <div class="page-shell">
-    <SiteHeader />
+  <div class="page-shell field-guide-shell">
+    <div class="field-guide-header-band">
+      <SiteHeader />
 
-    <main id="main-content" class="field-guide-landing">
-    <div class="construction-label">
-  <svg
-    class="construction-icon"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M12 3 5 20h14L12 3Z" />
-    <path d="M9 10h6M7 15h10M3 20h18" />
-  </svg>
-  <span>WORK IN PROGRESS</span>
-</div>
-      <h1>Field Guide</h1>
-      <p>
-        A work in progress. I'm building a field guide to the ideas,
-        behaviours and systems that shape how we design for people.
-      </p>
-      <p>More soon.</p>
+      <header class="index-intro">
+        <h1>Field Guide</h1>
+        <p>
+          A growing collection of UX concepts, cognitive biases, research
+          methods and design principles, with a focus on how people actually
+          think, feel and behave.
+        </p>
+      </header>
+    </div>
+
+    <main id="main-content" class="field-guide-index">
+      <div class="index-layout">
+        <nav class="domain-navigation" aria-label="Field Guide domains">
+          <div class="domain-navigation-desktop">
+            <h2>Domains</h2>
+
+            <ul>
+              {domains.map((domain) => (
+                <li>
+                  {domain !== "All" && !activeDomains.has(domain) ? (
+                    <span class="domain-item is-unavailable">{domain}</span>
+                  ) : (
+                    <a
+                      href={
+                        domain === "All"
+                          ? "/field-guide/"
+                          : `/field-guide/?domain=${encodeURIComponent(domain)}`
+                      }
+                      class:list={[
+                        "domain-item",
+                        { "is-selected": domain === "All" },
+                      ]}
+                      aria-current={domain === "All" ? "page" : undefined}
+                      data-domain-link={domain}
+                    >
+                      {domain}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <details class="domain-navigation-disclosure">
+            <summary>
+              <span class="domain-disclosure-label">DOMAINS</span>
+              <span
+                class="domain-disclosure-current"
+                id="selected-domain-label"
+              >
+                All
+              </span>
+              <span class="domain-disclosure-chevron" aria-hidden="true"></span>
+            </summary>
+
+            <ul>
+              {domains.map((domain) => (
+                <li>
+                  {domain !== "All" && !activeDomains.has(domain) ? (
+                    <span class="domain-item is-unavailable">{domain}</span>
+                  ) : (
+                    <a
+                      href={
+                        domain === "All"
+                          ? "/field-guide/"
+                          : `/field-guide/?domain=${encodeURIComponent(domain)}`
+                      }
+                      class:list={[
+                        "domain-item",
+                        { "is-selected": domain === "All" },
+                      ]}
+                      aria-current={domain === "All" ? "page" : undefined}
+                      data-domain-link={domain}
+                    >
+                      {domain}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </details>
+        </nav>
+
+        <section class="index-results" aria-labelledby="results-heading">
+          <div class="results-toolbar">
+            <h2 id="results-heading" class="visually-hidden">
+              All concepts
+            </h2>
+            <span class="sort-label">SORT: A–Z</span>
+          </div>
+
+          <div
+            class="domain-description"
+            id="domain-description"
+            hidden
+            data-descriptions={JSON.stringify(domainDescriptions)}
+          >
+            <p>
+              <strong id="domain-description-name"></strong>
+              <span id="domain-description-text"></span>
+            </p>
+          </div>
+
+          <div class="results-list">
+            {publishedEntries.map((entry) => (
+              <article
+                class="concept-row"
+                data-entry-domains={JSON.stringify(entry.domains)}
+              >
+                <div class="concept-details">
+                  <h3>
+                    <a
+                      href={`/field-guide/${entry.slug}/`}
+                      class="concept-link"
+                    >
+                      {entry.title}
+                    </a>
+                  </h3>
+
+                  {entry.types.length > 0 && (
+                    <p class="concept-types">
+                      {entry.types.join(" · ").toUpperCase()}
+                    </p>
+                  )}
+                </div>
+
+                <p class="concept-summary">{entry.summary}</p>
+
+                <a
+                  href={`/field-guide/${entry.slug}/`}
+                  class="concept-arrow"
+                  aria-label={`Read ${entry.title}`}
+                >
+                  <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
 
     <SiteFooter />
   </div>
 </Layout>
+
+<script>
+  const domainLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-domain-link]"),
+  );
+
+  const conceptRows = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-entry-domains]"),
+  );
+
+  const resultsHeading = document.getElementById("results-heading");
+  const domainDisclosure = document.querySelector<HTMLDetailsElement>(
+    ".domain-navigation-disclosure",
+  );
+  const selectedDomainLabel = document.getElementById("selected-domain-label");
+  const domainDescription = document.getElementById("domain-description");
+  const domainDescriptionName = document.getElementById(
+    "domain-description-name",
+  );
+  const domainDescriptionText = document.getElementById(
+    "domain-description-text",
+  );
+
+  const descriptions: Record<string, string> = JSON.parse(
+    domainDescription?.dataset.descriptions ?? "{}",
+  );
+  const availableDomains = new Set(
+    domainLinks.map((link) => link.dataset.domainLink),
+  );
+
+  function getSelectedDomain(): string {
+    const params = new URLSearchParams(window.location.search);
+    const requestedDomain = params.get("domain");
+
+    return requestedDomain && availableDomains.has(requestedDomain)
+      ? requestedDomain
+      : "All";
+  }
+
+  function updateDomainView(): void {
+    const selectedDomain = getSelectedDomain();
+    if (selectedDomainLabel) {
+      selectedDomainLabel.textContent = selectedDomain;
+    }
+    if (domainDescription && domainDescriptionName && domainDescriptionText) {
+      const description = descriptions[selectedDomain];
+
+      domainDescription.hidden = selectedDomain === "All" || !description;
+
+      domainDescriptionName.textContent = selectedDomain;
+      domainDescriptionText.textContent = description ? ` ${description}` : "";
+    }
+    domainLinks.forEach((link) => {
+      const isSelected = link.dataset.domainLink === selectedDomain;
+
+      link.classList.toggle("is-selected", isSelected);
+
+      if (isSelected) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+
+    conceptRows.forEach((row) => {
+      const domains: string[] = JSON.parse(row.dataset.entryDomains ?? "[]");
+
+      row.hidden =
+        selectedDomain !== "All" && !domains.includes(selectedDomain);
+    });
+
+    if (resultsHeading) {
+      resultsHeading.textContent =
+        selectedDomain === "All"
+          ? "All concepts"
+          : `${selectedDomain} concepts`;
+    }
+  }
+
+  domainLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const destination = new URL(link.href);
+      window.history.pushState({}, "", destination);
+      updateDomainView();
+      if (domainDisclosure) {
+        domainDisclosure.open = false;
+      }
+    });
+  });
+
+  window.addEventListener("popstate", updateDomainView);
+
+  updateDomainView();
+</script>

@@ -42,8 +42,7 @@
 }
 
 .article-back-label {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .article-back:hover {
@@ -82,7 +81,7 @@
 .article-content .article-summary {
   font-family: var(--serif);
   color: var(--thistle);
-  font-weight: 600;
+  font-weight: 400;
   font-size: clamp(20px, 2vw, 24px);
   line-height: 1.6;
   max-width: 560px;
@@ -163,7 +162,7 @@
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0em;
+  letter-spacing: 0;
   color: var(--thistle);
 }
 
@@ -174,8 +173,25 @@
   text-decoration: none;
 }
 
-.article-layout a:hover {
-  color: var(--clay-light);
+.article-references-preview a {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  display: inline-block;
+  color: var(--ivory);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.article-body sup > a {
+  color: var(--thistle);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-toc a:hover {
+  color: var(--thistle);
 }
 
 .article-toc a:focus-visible {
@@ -238,17 +254,6 @@
   overflow-wrap: break-word;
 }
 
-.article-references-preview a {
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1.6;
-  display: inline-block;
-  color: var(--ivory);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  overflow-wrap: anywhere;
-}
-
 .article-references-preview a:hover {
   color: var(--clay-light);
 }
@@ -272,6 +277,8 @@
   min-width: 0;
   padding-left: 32px;
   border-left: 1px solid var(--rule);
+  grid-column: 2;
+  grid-row: 1 / 3;
 }
 
 /* desktop article layout */
@@ -283,11 +290,6 @@
   margin: 0;
 }
 
-.article-layout .article-body {
-  grid-column: 2;
-  grid-row: 1 / 3;
-}
-
 .article-layout .article-references-preview {
   grid-column: 1;
   grid-row: 2;
@@ -295,7 +297,7 @@
 
 /* stack the columns on smaller screens */
 
-@media (max-width: 760px) {
+@media (width <= 760px) {
   /* mobile: show disclosure instead of static toc */
   .article-toc-desktop {
     display: none;
@@ -325,8 +327,8 @@
     display: block;
     width: 8px;
     height: 8px;
-    border-right: 1px solid currentColor;
-    border-bottom: 1px solid currentColor;
+    border-right: 1px solid currentcolor;
+    border-bottom: 1px solid currentcolor;
     transform: rotate(45deg);
   }
 
@@ -399,17 +401,16 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 4px;
-
   background:
     radial-gradient(
       circle at 70% 40%,
-      rgba(222, 204, 245, 0.85) 0%,
-      rgba(222, 204, 245, 0.2) 28%,
+      rgb(222 204 245 / 85%) 0%,
+      rgb(222 204 245 / 20%) 28%,
       transparent 45%
     ),
     radial-gradient(
       circle at 35% 65%,
-      rgba(39, 70, 144, 0.9) 0%,
+      rgb(39 70 144 / 90%) 0%,
       transparent 40%
     ),
     var(--forest);
@@ -529,7 +530,7 @@
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }
@@ -625,13 +626,13 @@
 }
 
 .article-table th[scope="col"] {
-  border-bottom: 1px solid rgba(205, 180, 219, 0.4);
+  border-bottom: 1px solid rgb(205 180 219 / 40%);
 }
 
 /* row header divider */
 
 .article-table:has(th[scope="row"]) tr > :first-child {
-  border-right: 1px solid rgba(205, 180, 219, 0.4);
+  border-right: 1px solid rgb(205 180 219 / 40%);
 }
 
 /* inline reference citations */
@@ -641,12 +642,6 @@
   font-size: 0.7em;
   line-height: 0;
   vertical-align: super;
-}
-
-.article-body sup a {
-  color: var(--thistle);
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
 .article-body sup a:hover {
@@ -755,7 +750,7 @@
 .article-toc .toc-subsections {
   grid-column: 2;
   margin-top: 10px;
-  padding-left: 0px;
+  padding-left: 0;
   counter-reset: none;
 }
 
@@ -786,17 +781,21 @@
   font-size: clamp(16px, 1.5vw, 19px);
   line-height: 1.8;
 }
+
 .article-body .notion-list li {
   margin: 0 0 4px;
-  padding-left: 0.2em; 
+  padding-left: 0.2em;
 }
+
 .article-body .notion-list .notion-list {
   margin: 4px 0;
 }
+
 .article-body .notion-task-list {
   list-style: none;
   padding-left: 0;
 }
+
 .article-body .notion-task-list > li {
   display: flex;
   flex-wrap: wrap;
