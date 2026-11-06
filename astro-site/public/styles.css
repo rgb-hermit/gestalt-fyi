@@ -275,7 +275,7 @@ a:focus-visible {
   min-height: 38px;
   padding: 8px 13px 8px 16px;
   border: 1px solid var(--thistle);
-  border-radius: 8px;
+  border-radius: 4px;
   box-shadow: 0 4px 16px rgb(0 0 0 / 16%);
   background-color: var(--thistle);
   color: var(--forest);
@@ -882,6 +882,10 @@ a:focus-visible {
     color 150ms ease;
 }
 
+.domain-item.is-unavailable {
+  color: var(--sage);
+}
+
 .domain-item:hover {
   background: var(--forest);
   color: var(--thistle);
@@ -961,7 +965,7 @@ a:focus-visible {
   margin: 0;
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.4;
   text-transform: uppercase;
 }

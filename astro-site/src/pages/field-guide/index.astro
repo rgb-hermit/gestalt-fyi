@@ -28,12 +28,8 @@ const activeDomains = new Set(
   publishedEntries.flatMap((entry) => entry.domains),
 );
 
-const domains = [
-  "All",
-  ...configuredDomains
-    .filter((domain) => activeDomains.has(domain.name))
-    .map((domain) => domain.name),
-];
+const domains = ["All", ...configuredDomains.map((domain) => domain.name)];
+
 const domainDescriptions = Object.fromEntries(
   configuredDomains.map((domain) => [domain.name, domain.description]),
 );
@@ -66,21 +62,25 @@ const domainDescriptions = Object.fromEntries(
             <ul>
               {domains.map((domain) => (
                 <li>
-                  <a
-                    href={
-                      domain === "All"
-                        ? "/field-guide/"
-                        : `/field-guide/?domain=${encodeURIComponent(domain)}`
-                    }
-                    class:list={[
-                      "domain-item",
-                      { "is-selected": domain === "All" },
-                    ]}
-                    aria-current={domain === "All" ? "page" : undefined}
-                    data-domain-link={domain}
-                  >
-                    {domain}
-                  </a>
+                  {domain !== "All" && !activeDomains.has(domain) ? (
+                    <span class="domain-item is-unavailable">{domain}</span>
+                  ) : (
+                    <a
+                      href={
+                        domain === "All"
+                          ? "/field-guide/"
+                          : `/field-guide/?domain=${encodeURIComponent(domain)}`
+                      }
+                      class:list={[
+                        "domain-item",
+                        { "is-selected": domain === "All" },
+                      ]}
+                      aria-current={domain === "All" ? "page" : undefined}
+                      data-domain-link={domain}
+                    >
+                      {domain}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -101,21 +101,25 @@ const domainDescriptions = Object.fromEntries(
             <ul>
               {domains.map((domain) => (
                 <li>
-                  <a
-                    href={
-                      domain === "All"
-                        ? "/field-guide/"
-                        : `/field-guide/?domain=${encodeURIComponent(domain)}`
-                    }
-                    class:list={[
-                      "domain-item",
-                      { "is-selected": domain === "All" },
-                    ]}
-                    aria-current={domain === "All" ? "page" : undefined}
-                    data-domain-link={domain}
-                  >
-                    {domain}
-                  </a>
+                  {domain !== "All" && !activeDomains.has(domain) ? (
+                    <span class="domain-item is-unavailable">{domain}</span>
+                  ) : (
+                    <a
+                      href={
+                        domain === "All"
+                          ? "/field-guide/"
+                          : `/field-guide/?domain=${encodeURIComponent(domain)}`
+                      }
+                      class:list={[
+                        "domain-item",
+                        { "is-selected": domain === "All" },
+                      ]}
+                      aria-current={domain === "All" ? "page" : undefined}
+                      data-domain-link={domain}
+                    >
+                      {domain}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
