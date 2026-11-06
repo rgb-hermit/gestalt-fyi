@@ -9,9 +9,7 @@ export interface NotionBlock {
   [key: string]: any;
 }
 
-export async function getNotionBlocks(
-  pageId: string
-): Promise<NotionBlock[]> {
+export async function getNotionBlocks(pageId: string): Promise<NotionBlock[]> {
   const token = import.meta.env.NOTION_API_TOKEN;
 
   if (!token) {
@@ -22,9 +20,7 @@ export async function getNotionBlocks(
   let cursor: string | undefined;
 
   do {
-    const url = new URL(
-      `${NOTION_API_URL}/blocks/${pageId}/children`
-    );
+    const url = new URL(`${NOTION_API_URL}/blocks/${pageId}/children`);
 
     url.searchParams.set("page_size", "100");
 
@@ -40,9 +36,7 @@ export async function getNotionBlocks(
     });
 
     if (!response.ok) {
-      throw new Error(
-        `Notion API request failed: ${response.status}`
-      );
+      throw new Error(`Notion API request failed: ${response.status}`);
     }
 
     const data = await response.json();
@@ -54,16 +48,15 @@ export async function getNotionBlocks(
   return blocks;
 }
 
-
 // load descendants of list items so nested lists are not flattened or lost.
 export async function getArticleBlocks(pageId: string): Promise<NotionBlock[]> {
   const blocks = await getNotionBlocks(pageId);
   const childBlockTypes = new Set([
-  "bulleted_list_item",
-  "numbered_list_item",
-  "to_do",
-  "table",
-]);
+    "bulleted_list_item",
+    "numbered_list_item",
+    "to_do",
+    "table",
+  ]);
   async function loadChildren(items: NotionBlock[]): Promise<void> {
     for (const item of items) {
       if (childBlockTypes.has(item.type) && item.has_children) {
@@ -76,8 +69,109 @@ export async function getArticleBlocks(pageId: string): Promise<NotionBlock[]> {
   return blocks;
 }
 
+const FIELD_GUIDE_DOMAINS_DATABASE_ID = "10af85e3a37844569dfffe2db04c6400";
+
+export interface NotionDomain {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+}
+
+export async function getCanonicalFieldGuideDomains(): Promise<NotionDomain[]> {
+  const token = import.meta.env.NOTION_API_TOKEN;
+
+  if (!token) {
+    throw new Error("NOTION_API_TOKEN is not configured");
+  }
+
+  const domains: NotionDomain[] = [];
+  let cursor: string | undefined;
+
+  do {
+    const response = await fetch(
+      `${NOTION_API_URL}/databases/${FIELD_GUIDE_DOMAINS_DATABASE_ID}/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Notion-Version": NOTION_VERSION,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          page_size: 100,
+          ...(cursor ? { start_cursor: cursor } : {}),
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Notion Domains query failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    for (const page of data.results) {
+      const properties = page.properties;
+
+      domains.push({
+        id: page.id,
+        name: (properties["Name"]?.title ?? [])
+          .map((item: { plain_text: string }) => item.plain_text)
+          .join(""),
+        slug: (properties["Slug"]?.rich_text ?? [])
+          .map((item: { plain_text: string }) => item.plain_text)
+          .join(""),
+        description: (properties["Description"]?.rich_text ?? [])
+          .map((item: { plain_text: string }) => item.plain_text)
+          .join(""),
+      });
+    }
+
+    cursor = data.next_cursor ?? undefined;
+  } while (cursor);
+
+  return domains.sort((a, b) => a.name.localeCompare(b.name, "en"));
+}
 
 const FIELD_GUIDE_DATABASE_ID = "052459fcf9df4a0985d0a0e68375c93b";
+
+export async function getFieldGuideDomains(): Promise<string[]> {
+  const token = import.meta.env.NOTION_API_TOKEN;
+
+  if (!token) {
+    throw new Error("NOTION_API_TOKEN is not configured");
+  }
+
+  const response = await fetch(
+    `${NOTION_API_URL}/databases/${FIELD_GUIDE_DATABASE_ID}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Notion-Version": NOTION_VERSION,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Notion database schema request failed: ${response.status}`,
+    );
+  }
+
+  const database = await response.json();
+  const domainsProperty = database.properties?.["Domains"];
+
+  if (domainsProperty?.type !== "multi_select") {
+    throw new Error(
+      'Expected "Domains" to be a multi-select property in Notion.',
+    );
+  }
+
+  return domainsProperty.multi_select.options
+    .map((option: { name: string }) => option.name)
+    .sort((a: string, b: string) => a.localeCompare(b, "en"));
+}
 
 interface NotionRichText {
   plain_text: string;
@@ -136,13 +230,11 @@ export async function getFieldGuideEntries(): Promise<NotionFieldGuideEntry[]> {
           page_size: 100,
           ...(cursor ? { start_cursor: cursor } : {}),
         }),
-      }
+      },
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Notion database query failed: ${response.status}`
-      );
+      throw new Error(`Notion database query failed: ${response.status}`);
     }
 
     const data = await response.json();
@@ -160,28 +252,24 @@ export async function getFieldGuideEntries(): Promise<NotionFieldGuideEntry[]> {
       slug: plainText(properties["Slug"]?.rich_text),
       summary: plainText(properties["Summary"]?.rich_text),
       domains: (properties["Domains"]?.multi_select ?? []).map(
-        (option) => option.name
+        (option) => option.name,
       ),
       // During migration, prefer the final multi-select property when present.
       // Never read the legacy single-select "Type" as a classification array.
-      types: (
-        properties["Type"]?.type === "multi_select"
+      types:
+        (properties["Type"]?.type === "multi_select"
           ? properties["Type"].multi_select
           : properties["Type Revision"]?.multi_select
-      )?.map((option) => option.name) ?? [],
-      editorialStatus:
-        properties["Editorial status"]?.select?.name ?? null,
-      publicationStatus:
-        properties["Publication status"]?.select?.name ?? null,
-      launchPriority:
-        properties["Launch priority"]?.select?.name ?? null,
+        )?.map((option) => option.name) ?? [],
+      editorialStatus: properties["Editorial status"]?.select?.name ?? null,
+      publicationStatus: properties["Publication status"]?.select?.name ?? null,
+      launchPriority: properties["Launch priority"]?.select?.name ?? null,
     };
   });
 }
 
-
 export function getPublishableEntries(
-  entries: NotionFieldGuideEntry[]
+  entries: NotionFieldGuideEntry[],
 ): NotionFieldGuideEntry[] {
   return entries.filter((entry) => {
     // preserve articles that are already published.
@@ -197,9 +285,8 @@ export function getPublishableEntries(
   });
 }
 
-
 export function validateFieldGuidePublication(
-  entries: NotionFieldGuideEntry[]
+  entries: NotionFieldGuideEntry[],
 ): string[] {
   const errors: string[] = [];
 
@@ -210,7 +297,7 @@ export function validateFieldGuidePublication(
       entry.editorialStatus !== "Ready"
     ) {
       errors.push(
-        `"${entry.title || entry.notionPageId}" is queued for publication but editorial status is not Ready.`
+        `"${entry.title || entry.notionPageId}" is queued for publication but editorial status is not Ready.`,
       );
     }
   }
@@ -231,9 +318,7 @@ export function validateFieldGuidePublication(
     }
 
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.slug)) {
-      errors.push(
-        `"${identifier}" has an invalid slug: "${entry.slug}".`
-      );
+      errors.push(`"${identifier}" has an invalid slug: "${entry.slug}".`);
     }
 
     if (entry.slug) {
@@ -241,7 +326,7 @@ export function validateFieldGuidePublication(
 
       if (existing) {
         errors.push(
-          `Duplicate slug "${entry.slug}" used by "${existing}" and "${identifier}".`
+          `Duplicate slug "${entry.slug}" used by "${existing}" and "${identifier}".`,
         );
       } else {
         slugs.set(entry.slug, identifier);
@@ -251,4 +336,3 @@ export function validateFieldGuidePublication(
 
   return errors;
 }
-

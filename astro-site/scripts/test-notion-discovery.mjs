@@ -1,4 +1,3 @@
-
 import { createServer } from "vite";
 
 const server = await createServer({
@@ -7,17 +6,17 @@ const server = await createServer({
   envDir: process.cwd(),
   define: {
     "import.meta.env.NOTION_API_TOKEN": JSON.stringify(
-      process.env.NOTION_API_TOKEN
+      process.env.NOTION_API_TOKEN,
     ),
   },
 });
 
 try {
   const {
-  getFieldGuideEntries,
-  getPublishableEntries,
-  validateFieldGuidePublication,
-} = await server.ssrLoadModule("/src/lib/notion.ts");
+    getFieldGuideEntries,
+    getPublishableEntries,
+    validateFieldGuidePublication,
+  } = await server.ssrLoadModule("/src/lib/notion.ts");
 
   const entries = await getFieldGuideEntries();
 
@@ -25,12 +24,10 @@ try {
 
   const counts = (property) =>
     Object.fromEntries(
-      [...new Set(entries.map((entry) => entry[property]))].map(
-        (value) => [
-          value ?? "(empty)",
-          entries.filter((entry) => entry[property] === value).length,
-        ]
-      )
+      [...new Set(entries.map((entry) => entry[property]))].map((value) => [
+        value ?? "(empty)",
+        entries.filter((entry) => entry[property] === value).length,
+      ]),
     );
 
   console.log(
@@ -39,15 +36,15 @@ try {
       [...new Set(entries.flatMap((entry) => entry.types))].map((type) => [
         type,
         entries.filter((entry) => entry.types.includes(type)).length,
-      ])
-    )
+      ]),
+    ),
   );
 
   console.log("Publication statuses:", counts("publicationStatus"));
   console.log("Launch priorities:", counts("launchPriority"));
   console.log(
     "Records missing a title or slug:",
-    entries.filter((entry) => !entry.title || !entry.slug).length
+    entries.filter((entry) => !entry.title || !entry.slug).length,
   );
 
   // test publication eligibility using simulated records.
@@ -92,9 +89,7 @@ try {
     }
   }
 
-  console.log(
-    `Publication eligibility tests passed: ${testCases.length}`
-  );
+  console.log(`Publication eligibility tests passed: ${testCases.length}`);
 
   // test publication validation using simulated records.
   const validEntry = {
@@ -175,15 +170,12 @@ try {
 
     if (errors.length !== testCase.expectedErrors) {
       throw new Error(
-        `validation test "${testCase.name}" failed: expected ${testCase.expectedErrors} errors, received ${errors.length}. ${errors.join(" ")}`
+        `validation test "${testCase.name}" failed: expected ${testCase.expectedErrors} errors, received ${errors.length}. ${errors.join(" ")}`,
       );
     }
   }
 
-  console.log(
-    `Publication validation tests passed: ${validationCases.length}`
-  );
-
+  console.log(`Publication validation tests passed: ${validationCases.length}`);
 } finally {
   await server.close();
 }

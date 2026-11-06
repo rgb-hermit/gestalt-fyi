@@ -22,44 +22,46 @@ const { items = [] } = Astro.props;
   const annotations = item.annotations ?? {};
   const content = item.plain_text;
 
-  const formatted = annotations.code
-    ? <code>{content}</code>
-    : annotations.bold && annotations.italic
-      ? <strong><em>{content}</em></strong>
-      : annotations.bold
-        ? <strong>{content}</strong>
-        : annotations.italic
-          ? <em>{content}</em>
-          : annotations.strikethrough
-            ? <del>{content}</del>
-            : annotations.underline
-              ? <u>{content}</u>
-              : content;
-const parts = content.split(/(\[\d+\])/g);
+  const formatted = annotations.code ? (
+    <code>{content}</code>
+  ) : annotations.bold && annotations.italic ? (
+    <strong>
+      <em>{content}</em>
+    </strong>
+  ) : annotations.bold ? (
+    <strong>{content}</strong>
+  ) : annotations.italic ? (
+    <em>{content}</em>
+  ) : annotations.strikethrough ? (
+    <del>{content}</del>
+  ) : annotations.underline ? (
+    <u>{content}</u>
+  ) : (
+    content
+  );
+  const parts = content.split(/(\[\d+\])/g);
 
-if (parts.length > 1 && !item.href) {
-  return parts.map((part) => {
-    const match = /^\[(\d+)\]$/.exec(part);
+  if (parts.length > 1 && !item.href) {
+    return parts.map((part) => {
+      const match = /^\[(\d+)\]$/.exec(part);
 
-    if (match) {
-      const number = match[1];
+      if (match) {
+        const number = match[1];
 
-      return (
-        <sup class="article-citation">
-          <a
-            href={`#reference-${number}`}
-            aria-label={`Jump to reference ${number}`}
-          >
-            [{number}]
-          </a>
-        </sup>
-      );
-    }
+        return (
+          <sup class="article-citation">
+            <a
+              href={`#reference-${number}`}
+              aria-label={`Jump to reference ${number}`}
+            >
+              [{number}]
+            </a>
+          </sup>
+        );
+      }
 
-    return part;
-  });
-}
-  return item.href
-    ? <a href={item.href}>{formatted}</a>
-    : formatted;
+      return part;
+    });
+  }
+  return item.href ? <a href={item.href}>{formatted}</a> : formatted;
 })}

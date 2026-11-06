@@ -2,9 +2,16 @@
 import NotionRichText from "./notion-rich-text.astro";
 import type { NotionBlock } from "../../lib/notion";
 
-interface Props { blocks: NotionBlock[]; }
+interface Props {
+  blocks: NotionBlock[];
+}
 const { blocks } = Astro.props;
-const kind = (block: NotionBlock) => block.type === "numbered_list_item" ? "ol" : block.type === "to_do" ? "tasks" : "ul";
+const kind = (block: NotionBlock) =>
+  block.type === "numbered_list_item"
+    ? "ol"
+    : block.type === "to_do"
+      ? "tasks"
+      : "ul";
 const groups: { type: string; items: NotionBlock[] }[] = [];
 for (const block of blocks) {
   const type = kind(block);
@@ -13,7 +20,8 @@ for (const block of blocks) {
   else groups.push({ type, items: [block] });
 }
 ---
-{groups.map((group) => (
+
+{groups.map((group) =>
   group.type === "ol" ? (
     <ol class="notion-list notion-numbered-list">
       {group.items.map((item) => (
@@ -27,8 +35,19 @@ for (const block of blocks) {
     <ul class="notion-list notion-task-list">
       {group.items.map((item) => (
         <li>
-          <input type="checkbox" checked={Boolean(item.to_do?.checked)} disabled aria-label={(item.to_do?.rich_text ?? []).map((part: {plain_text:string}) => part.plain_text).join("") || "Task"} />
-          <span><NotionRichText items={item.to_do?.rich_text ?? []} /></span>
+          <input
+            type="checkbox"
+            checked={Boolean(item.to_do?.checked)}
+            disabled
+            aria-label={
+              (item.to_do?.rich_text ?? [])
+                .map((part: { plain_text: string }) => part.plain_text)
+                .join("") || "Task"
+            }
+          />
+          <span>
+            <NotionRichText items={item.to_do?.rich_text ?? []} />
+          </span>
           {item.children?.length ? <Astro.self blocks={item.children} /> : null}
         </li>
       ))}
@@ -42,5 +61,5 @@ for (const block of blocks) {
         </li>
       ))}
     </ul>
-  )
-))}
+  ),
+)}

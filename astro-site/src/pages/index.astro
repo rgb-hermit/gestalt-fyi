@@ -1,13 +1,15 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
+import Layout from "../layouts/Layout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 ---
 
-<Layout title="gestalt.fyi — People before technology" description="Product design, human behaviour and thoughtful technology.">
-<div class="page-shell">
+<Layout
+  title="gestalt.fyi — People before technology"
+  description="Product design, human behaviour and thoughtful technology."
+>
+  <div class="page-shell">
     <SiteHeader />
-    
 
     <main id="main-content" class="hero">
       <!-- decorative wavy line -->
@@ -52,24 +54,24 @@ import SiteFooter from '../components/SiteFooter.astro';
       </svg>
 
       <h1 class="hero-title">
-        People before technology.<br />
+        People before technology.
+        <br />
         Technology for people.
       </h1>
 
       <div class="hero-copy">
         <p>
-          I'm a product designer trying to make sense of the messy,
-          complicated business of being human: how people think and
-          behave, why systems work the way they do, and whether the
-          technology we're building actually makes anything better.
-          I like questioning assumptions, connecting the dots, and
-          looking at problems from different angles.
+          I'm a product designer trying to make sense of the messy, complicated
+          business of being human: how people think and behave, why systems work
+          the way they do, and whether the technology we're building actually
+          makes anything better. I like questioning assumptions, connecting the
+          dots, and looking at problems from different angles.
         </p>
 
         <p>
-          I work across product strategy and design, help bridge the
-          gap between design and development, and occasionally speak
-          about UX and technology.
+          I work across product strategy and design, help bridge the gap between
+          design and development, and occasionally speak about UX and
+          technology.
         </p>
       </div>
 
@@ -101,21 +103,13 @@ import SiteFooter from '../components/SiteFooter.astro';
           </svg>
         </button>
 
-        <div
-          class="contact-details"
-          id="contact-details"
-          hidden
-        >
+        <div class="contact-details" id="contact-details" hidden>
           <p class="contact-label">EMAIL</p>
 
           <div class="contact-actions">
             <span id="email-address" class="email-address"></span>
 
-            <button
-              class="copy-email"
-              id="copy-email"
-              type="button"
-            >
+            <button class="copy-email" id="copy-email" type="button">
               Copy email
             </button>
           </div>
@@ -128,11 +122,10 @@ import SiteFooter from '../components/SiteFooter.astro';
           ></p>
         </div>
       </div>
-    
     </main>
 
-  <SiteFooter />
-</div>
+    <SiteFooter />
+  </div>
 
   <script>
     (() => {
@@ -141,7 +134,7 @@ import SiteFooter from '../components/SiteFooter.astro';
       const emailAddress = document.getElementById("email-address");
       const copyEmail = document.getElementById("copy-email");
       const contactFeedback = document.getElementById("contact-feedback");
-        // don't initialise the contact controls if any are missing.
+      // don't initialise the contact controls if any are missing.
       if (
         !contactTrigger ||
         !contactDetails ||
