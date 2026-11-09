@@ -126,6 +126,14 @@ a:focus-visible {
   font-weight: 400;
 }
 
+.brand-wave {
+  display: block;
+  width: 54px;
+  height: auto;
+  flex: 0 0 auto;
+  color: var(--thistle);
+}
+
 .brand-mark {
   width: 12px;
   height: 12px;
@@ -177,15 +185,6 @@ a:focus-visible {
   max-width: 760px;
   margin: auto;
   padding-block: 100px 112px;
-}
-
-.hero-wave {
-  display: block;
-  width: min(100%, 360px);
-  height: 10px;
-  margin-bottom: 34px;
-  color: var(--thistle);
-  overflow: visible;
 }
 
 .hero-title {
