@@ -1,8 +1,10 @@
 /**
- * Capture queued operations before the build, then acknowledge them only
- * after GitHub Pages deployment succeeds. No recurring jobs or snapshots.
+ * One-off editorial release records; no article snapshots or background polling.
+ * Capture before build, verify against built pages, acknowledge after Pages deploy.
  */
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, access } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { resolve } from "node:path";
 
 const base = "https://api.notion.com/v1";
 const databaseId = "052459fcf9df4a0985d0a0e68375c93b";
@@ -12,14 +14,54 @@ const headers = {
   "Notion-Version": "2022-06-28",
   "Content-Type": "application/json",
 };
+const recordPath = ".release/queued.json";
 
 async function request(path, options = {}) {
   const response = await fetch(base + path, { ...options, headers });
   if (!response.ok) throw new Error(`Notion ${path}: HTTP ${response.status} ${await response.text()}`);
   return response.json();
 }
-
-async function capture() {
+function plainText(items = []) {
+  return items.map((item) => item.plain_text).join("");
+}
+function propertiesOf(page) {
+  return {
+    status: page.properties["Publication status"]?.select?.name,
+    editorial: page.properties["Editorial status"]?.select?.name,
+    slug: plainText(page.properties.Slug?.rich_text),
+    firstPublished: page.properties["First published"]?.date?.start ?? null,
+    lastEdited: page.last_edited_time,
+  };
+}
+function stable(value) {
+  if (Array.isArray(value)) return value.map(stable);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value)
+      .filter(([key]) => !["last_edited_time", "created_time", "file", "url", "expiry_time", "request_id"].includes(key))
+      .sort(([a], [b]) => a.localeCompare(b, "en"))
+      .map(([key, item]) => [key, stable(item)]));
+  }
+  return value;
+}
+async function children(id) {
+  const results = [];
+  let cursor;
+  do {
+    const data = await request(`/blocks/${id}/children?page_size=100${cursor ? `&start_cursor=${encodeURIComponent(cursor)}` : ""}`);
+    for (const block of data.results) {
+      const item = { id: block.id, type: block.type, data: block[block.type] };
+      if (block.has_children) item.children = await children(block.id);
+      results.push(item);
+    }
+    cursor = data.next_cursor;
+  } while (cursor);
+  return results;
+}
+async function fingerprint(id) {
+  const blocks = await children(id);
+  return createHash("sha256").update(JSON.stringify(stable(blocks))).digest("hex");
+}
+async function queryQueued() {
   const entries = [];
   let cursor;
   do {
@@ -28,53 +70,87 @@ async function capture() {
       body: JSON.stringify({ page_size: 100, ...(cursor ? { start_cursor: cursor } : {}) }),
     });
     for (const page of data.results) {
-      const status = page.properties["Publication status"]?.select?.name;
-      if (status !== "Queued Publish" && status !== "Queued Unpublish") continue;
-      const editorial = page.properties["Editorial status"]?.select?.name;
-      if (status === "Queued Publish" && editorial !== "Ready") {
+      const props = propertiesOf(page);
+      if (!["Queued Publish", "Queued Unpublish"].includes(props.status)) continue;
+      if (props.status === "Queued Publish" && props.editorial !== "Ready") {
         throw new Error(`Queued page ${page.id} is not editorially Ready`);
       }
-      entries.push({
-        id: page.id,
-        status,
-        lastEdited: page.last_edited_time,
-        slug: (page.properties.Slug?.rich_text ?? []).map((t) => t.plain_text).join(""),
-      });
+      entries.push({ id: page.id, ...props, contentHash: await fingerprint(page.id) });
     }
     cursor = data.next_cursor;
   } while (cursor);
+  return entries;
+}
+export function evaluateReleaseEntry(entry, current, phase) {
+  if (!current || entry.status !== current.status || entry.slug !== current.slug ||
+      entry.lastEdited !== current.lastEdited || entry.contentHash !== current.contentHash) {
+    return "Notion content or publication metadata changed";
+  }
+  if (entry.status === "Queued Publish" && current.editorial !== "Ready") {
+    return "Article is no longer editorially Ready";
+  }
+  if (phase === "built" && entry.status === "Queued Publish" && !entry.slug) {
+    return "Missing article slug";
+  }
+  return null;
+}
+async function currentEntry(entry) {
+  const page = await request(`/pages/${entry.id}`);
+  return { id: entry.id, ...propertiesOf(page), contentHash: await fingerprint(entry.id) };
+}
+async function capture() {
+  const entries = await queryQueued();
   await mkdir(".release", { recursive: true });
-  await writeFile(".release/queued.json", JSON.stringify(entries, null, 2));
+  await writeFile(recordPath, JSON.stringify(entries, null, 2));
   console.log(`Captured ${entries.length} queued editorial operation(s)`);
 }
-
+async function verifyBuilt() {
+  const entries = JSON.parse(await readFile(recordPath, "utf8"));
+  for (const entry of entries) {
+    const current = await currentEntry(entry);
+    const issue = evaluateReleaseEntry(entry, current, "built");
+    if (issue) throw new Error(`Release changed during build (${entry.id}): ${issue}`);
+    if (entry.status === "Queued Publish") {
+      await access(resolve("dist/field-guide", entry.slug, "index.html"));
+    } else {
+      try {
+        await access(resolve("dist/field-guide", entry.slug, "index.html"));
+        throw new Error(`Queued unpublish still exists in output: ${entry.slug}`);
+      } catch (error) {
+        if (error.code !== "ENOENT") throw error;
+      }
+    }
+  }
+  console.log(`Verified ${entries.length} queued operation(s) against build output`);
+}
 async function acknowledge() {
-  const entries = JSON.parse(await readFile(".release/queued.json", "utf8"));
+  const entries = JSON.parse(await readFile(recordPath, "utf8"));
   let skipped = 0;
   for (const entry of entries) {
-    const current = await request(`/pages/${entry.id}`);
-    const status = current.properties["Publication status"]?.select?.name;
-    const slug = (current.properties.Slug?.rich_text ?? []).map((t) => t.plain_text).join("");
-    if (status !== entry.status || current.last_edited_time !== entry.lastEdited || slug !== entry.slug) {
-      console.warn(`Skipping changed page ${entry.id}; manual review required`);
+    const current = await currentEntry(entry);
+    const issue = evaluateReleaseEntry(entry, current, "deployed");
+    if (issue) {
+      console.warn(`Skipping ${entry.id}: ${issue}; manual review required`);
       skipped++;
       continue;
     }
-    const nextStatus = entry.status === "Queued Publish" ? "Deployed" : "Unpublished";
-    const properties = { "Publication status": { select: { name: nextStatus } } };
-    if (nextStatus === "Deployed") {
-      properties["Last deployed"] = { date: { start: new Date().toISOString() } };
+    const next = entry.status === "Queued Publish" ? "Deployed" : "Unpublished";
+    const properties = { "Publication status": { select: { name: next } } };
+    if (next === "Deployed") {
+      const date = new Date().toISOString();
+      properties["Last deployed"] = { date: { start: date } };
+      if (!entry.firstPublished) properties["First published"] = { date: { start: date } };
     }
-    await request(`/pages/${entry.id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ properties }),
-    });
-    console.log(`Confirmed ${entry.id}: ${entry.status} -> ${nextStatus}`);
+    await request(`/pages/${entry.id}`, { method: "PATCH", body: JSON.stringify({ properties }) });
+    console.log(`Confirmed ${entry.id}: ${entry.status} -> ${next}`);
   }
-  if (skipped) console.warn(`${skipped} changed page(s) were not acknowledged`);
+  if (skipped) throw new Error(`${skipped} article(s) changed after build; manual review required`);
 }
-
-if (!token) throw new Error("NOTION_API_TOKEN is required");
-if (process.argv[2] === "capture") await capture();
-else if (process.argv[2] === "acknowledge") await acknowledge();
-else throw new Error("Usage: node scripts/editorial-release.mjs capture|acknowledge");
+const mode = process.argv[2];
+if (mode && !["capture", "verify-built", "acknowledge"].includes(mode)) throw new Error("Unknown editorial release mode");
+if (mode) {
+  if (!token) throw new Error("NOTION_API_TOKEN is required");
+  if (mode === "capture") await capture();
+  if (mode === "verify-built") await verifyBuilt();
+  if (mode === "acknowledge") await acknowledge();
+}
