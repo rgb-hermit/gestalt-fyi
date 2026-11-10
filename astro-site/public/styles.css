@@ -316,7 +316,7 @@ a:focus-visible {
 }
 
 .email-address {
-  font-family: var(--inter);
+  font-family: var(--body);
   color: var(--sage);
   font-size: 14px;
   overflow-wrap: anywhere;
