@@ -280,13 +280,20 @@ a:focus-visible {
   flex: 0 0 auto;
 }
 
+.contact-email {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .contact-details {
   width: min(100%, 360px);
   margin-top: 20px;
-  padding: 18px 20px;
-  border: 1px solid var(--rule);
+  padding: 24px;
+  border: 0;
   border-radius: 4px;
-  background: transparent;
+  background: var(--deep-evergreen);
 }
 
 .contact-details[hidden] {
@@ -294,49 +301,55 @@ a:focus-visible {
 }
 
 .contact-label {
-  margin: 0 0 8px;
+  margin: 0;
   color: var(--thistle);
   font-family: var(--mono);
-  font-size: 14px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.09em;
 }
 
 .contact-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
 }
 
 .email-address {
-  font-family: var(--mono);
-  color: var(--ivory);
-  font-size: 12px;
+  font-family: var(--inter);
+  color: var(--sage);
+  font-size: 14px;
   overflow-wrap: anywhere;
 }
 
 .copy-email {
-  padding: 0;
-  border: 0;
-  font-family: var(--body);
-  font-size: 14px;
-  color: var(--ivory);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  display: inline-flex;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 1px solid var(--ivory);
+  border-radius: 4px;
   background: transparent;
+  color: var(--ivory);
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .copy-email:hover {
+  border-color: var(--thistle);
   color: var(--thistle);
 }
 
 .contact-feedback {
-  min-height: 0;
   margin: 8px 0 0;
-  color: var(--body-ink);
-  font-size: 11px;
+  color: var(--sage);
+  font-family: var(--mono);
+  font-size: 12px;
   line-height: 1.6;
+  min-height: 1.6em;
 }
 
 /* --------------------------------
