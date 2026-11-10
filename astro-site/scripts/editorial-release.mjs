@@ -36,6 +36,10 @@ function propertiesOf(page) {
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
   if (value && typeof value === "object") {
+    // Notion-hosted file URLs expire; their changes are not editorial changes.
+    if (value.type === "file" && value.file?.url) {
+      return stable({ ...value, file: { ...value.file, url: null, expiry_time: null } });
+    }
     return Object.fromEntries(Object.entries(value)
       .filter(([key]) => !["last_edited_time", "created_time", "expiry_time", "request_id"].includes(key))
       .sort(([a], [b]) => a.localeCompare(b, "en"))
