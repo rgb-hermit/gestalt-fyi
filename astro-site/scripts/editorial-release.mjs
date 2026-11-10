@@ -37,7 +37,7 @@ function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
   if (value && typeof value === "object") {
     return Object.fromEntries(Object.entries(value)
-      .filter(([key]) => !["last_edited_time", "created_time", "file", "url", "expiry_time", "request_id"].includes(key))
+      .filter(([key]) => !["last_edited_time", "created_time", "expiry_time", "request_id"].includes(key))
       .sort(([a], [b]) => a.localeCompare(b, "en"))
       .map(([key, item]) => [key, stable(item)]));
   }
