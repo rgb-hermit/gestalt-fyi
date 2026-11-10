@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      release_type:
+        description: "deployment purpose (editorial write-back is not enabled yet)"
+        required: true
+        type: choice
+        default: site
+        options:
+          - site
+          - editorial
 
 permissions:
   contents: read
@@ -29,6 +38,15 @@ jobs:
           node-version: "24"
           cache: npm
           cache-dependency-path: astro-site/package-lock.json
+      - name: identify deployment purpose
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          RELEASE_TYPE: ${{ inputs.release_type }}
+        run: |
+          echo "deployment purpose: $RELEASE_TYPE"
+          if [ "$RELEASE_TYPE" = "editorial" ]; then
+            echo "editorial release selected; Notion status write-back is not yet implemented"
+          fi
       - run: npm ci
       - run: npm run test:publishing
       - run: npm run build
