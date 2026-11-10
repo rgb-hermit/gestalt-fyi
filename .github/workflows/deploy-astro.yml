@@ -30,6 +30,7 @@ jobs:
           cache: npm
           cache-dependency-path: astro-site/package-lock.json
       - run: npm ci
+      - run: npm run test:publishing
       - run: npm run build
         env:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
