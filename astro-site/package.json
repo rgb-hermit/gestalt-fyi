@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test:publishing": "node --test src/lib/editorial-release.test.ts src/lib/release-manifest.test.ts src/lib/release-confirmation.test.ts"
+    "test:publishing": "node --test src/lib/editorial-release.test.ts src/lib/release-manifest.test.ts src/lib/release-confirmation.test.ts scripts/editorial-release.test.mjs"
   },
   "dependencies": {
     "astro": "^7.4.4",
