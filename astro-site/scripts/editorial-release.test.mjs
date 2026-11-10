@@ -1,33 +1,34 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { evaluateReleaseEntry } from "./editorial-release.mjs";
+import { releaseChange } from "./editorial-release.mjs";
 
-const entry = {
-  id: "page-a",
-  status: "Queued Publish",
-  editorial: "Ready",
-  slug: "accessibility",
-  lastEdited: "2026-11-11T00:00:00Z",
-  contentHash: "hash-a",
+const queued = {
+  id: "page-a", status: "Queued Publish", editorial: "Ready",
+  slug: "accessibility", lastEdited: "2026-11-11T00:00:00Z",
   firstPublished: null,
 };
 
-test("unchanged ready article is eligible for confirmation", () => {
-  assert.equal(evaluateReleaseEntry(entry, { ...entry }, "built"), null);
-  assert.equal(evaluateReleaseEntry(entry, { ...entry }, "deployed"), null);
+test("unchanged queued publication can be acknowledged", () => {
+  assert.equal(releaseChange(queued, { ...queued }), null);
 });
-test("edited blocks invalidate release even if page timestamp is unchanged", () => {
-  assert.match(evaluateReleaseEntry(entry, { ...entry, contentHash: "hash-b" }, "built"), /changed/);
+test("revisions use the same queued publishing state", () => {
+  assert.equal(releaseChange({ ...queued, firstPublished: "2026-01-01" },
+    { ...queued, firstPublished: "2026-01-01" }), null);
 });
-test("status, slug and page metadata edits invalidate release", () => {
-  for (const change of [{ status: "Published" }, { slug: "changed" }, { lastEdited: "later" }]) {
-    assert.match(evaluateReleaseEntry(entry, { ...entry, ...change }, "deployed"), /changed/);
+test("unchanged queued unpublishing can be acknowledged", () => {
+  const removing = { ...queued, status: "Queued Unpublish" };
+  assert.equal(releaseChange(removing, { ...removing }), null);
+});
+test("status, slug and modification changes block acknowledgement", () => {
+  for (const change of [
+    { status: "Published" }, { slug: "other" }, { lastEdited: "later" },
+  ]) {
+    assert.match(releaseChange(queued, { ...queued, ...change }), /changed/);
   }
 });
-test("unready queued article is rejected", () => {
-  assert.match(evaluateReleaseEntry(entry, { ...entry, editorial: "Draft" }, "deployed"), /Ready/);
+test("article no longer ready is not acknowledged", () => {
+  assert.match(releaseChange(queued, { ...queued, editorial: "Writing" }), /Ready/);
 });
-test("queued removal remains eligible when unchanged", () => {
-  const removed = { ...entry, status: "Queued Unpublish" };
-  assert.equal(evaluateReleaseEntry(removed, { ...removed }, "built"), null);
+test("missing current record is rejected", () => {
+  assert.match(releaseChange(queued, null), /changed/);
 });
