@@ -37,7 +37,7 @@
   --surface-raised: rgb(255 255 255 / 4%);
   --display: "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, sans-serif;
-  --serif: "Noto Serif", georgia, serif;
+  --serif: "Merriweather", georgia, serif;
   --mono: "Roboto Mono", "SFMono-Regular", consolas, monospace;
   --page-width: 1440px;
   --page-gutter: clamp(24px, 5.5vw, 80px);
