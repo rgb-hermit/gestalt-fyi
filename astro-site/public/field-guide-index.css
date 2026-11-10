@@ -432,4 +432,12 @@ a.domain-item:hover {
       transition: none;
     }
   }
+
+    .domain-navigation-disclosure .domain-item.is-selected {
+      color: var(--thistle);
+  }
+
+    .domain-navigation-disclosure .domain-item.is-selected::before {
+      display: none;
+  }
 }
