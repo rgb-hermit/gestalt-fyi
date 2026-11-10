@@ -80,7 +80,7 @@
 
 .article-content .article-summary {
   font-family: var(--serif);
-  color: var(--thistle);
+  color: var(--sage);
   font-weight: 400;
   font-size: clamp(20px, 2vw, 24px);
   line-height: 1.6;
