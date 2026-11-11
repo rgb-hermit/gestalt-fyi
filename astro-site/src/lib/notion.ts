@@ -273,7 +273,10 @@ export function getPublishableEntries(
 ): NotionFieldGuideEntry[] {
   return entries.filter((entry) => {
     // preserve articles that are already published.
-    if (entry.publicationStatus === "Published") {
+    if (
+      entry.publicationStatus === "Published" ||
+      entry.publicationStatus === "Deployed"
+    ) {
       return true;
     }
 
