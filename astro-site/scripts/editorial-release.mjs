@@ -61,6 +61,9 @@ async function queued() {
     }
     cursor = data.next_cursor;
   } while (cursor);
+  if (entries.length === 0) {
+    throw new Error("No articles queued for editorial release. Nothing to publish or unpublish.");
+  }
   return entries;
 }
 
