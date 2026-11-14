@@ -62,6 +62,16 @@
 
 /* field guide index */
 
+.field-guide-home-link {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--thistle);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .field-guide-shell {
   max-width: none;
   background: var(--deep-evergreen);
@@ -84,11 +94,6 @@
 .field-guide-header-band > * {
   position: relative;
   z-index: 1;
-}
-
-/* temporary: hide field guide footer during visual refinement */
-.field-guide-shell .site-footer {
-  display: none;
 }
 
 .field-guide-index {

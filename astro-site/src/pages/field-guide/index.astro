@@ -1,7 +1,5 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import SiteHeader from "../../components/SiteHeader.astro";
-import SiteFooter from "../../components/SiteFooter.astro";
 import {
   getCanonicalFieldGuideDomains,
   getFieldGuideEntries,
@@ -42,7 +40,7 @@ const domainDescriptions = Object.fromEntries(
   <link rel="stylesheet" href="/field-guide-index.css" />
   <div class="page-shell field-guide-shell">
     <div class="field-guide-header-band">
-      <SiteHeader />
+      <a class="field-guide-home-link" href="/">← Home</a>
 
       <header class="index-intro">
         <h1>Field Guide</h1>
@@ -186,7 +184,6 @@ const domainDescriptions = Object.fromEntries(
       </div>
     </main>
 
-    <SiteFooter />
   </div>
 </Layout>
 
