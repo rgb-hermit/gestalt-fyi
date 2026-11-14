@@ -12,7 +12,7 @@ This directory contains the Astro application for [gestalt.fyi](https://gestalt.
 - `src/layouts/Layout.astro` — shared document layout
 - `src/lib/notion.ts` — read-only Notion retrieval and publication validation
 - `public/styles.css` — site-wide styles and design tokens
-- `public/field-guide.css` — Field Guide article styles
+- `public/field-guide-article.css` — Field Guide article styles
 - `test-notion-discovery.mjs` — Notion discovery and publication validation checks
 
 Published Field Guide content comes from Notion. Unused local content fixtures and Astro starter assets were removed during repository cleanup.
