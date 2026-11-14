@@ -19,7 +19,7 @@
 
   /* blue */
   --french-blue: #274690;
-  --smart-blue: #3f69CA;
+  --smart-blue: #3f69ca;
   --wisteria: #8fa7e0;
 
   /* oranges */
@@ -34,7 +34,7 @@
 
   /* utility */
   --body-ink: #e0e5db;
-  --ink: #242424; 
+  --ink: #242424;
   --rule: rgb(248 245 235 / 25%);
   --surface-raised: rgb(255 255 255 / 4%);
   --display: "Inter", system-ui, sans-serif;
@@ -108,46 +108,6 @@ a:focus-visible {
 .contact {
   position: relative;
   margin-top: 32px;
-}
-
-.contact-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 38px;
-  padding: 8px 13px 8px 16px;
-  border: 1px solid var(--thistle);
-  border-radius: 4px;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 16%);
-  background-color: var(--thistle);
-  color: var(--forest);
-  cursor: pointer;
-  font-family: var(--body);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.015em;
-  transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease;
-}
-
-.contact-trigger:hover {
-  background-color: var(--ivory);
-  border-color: var(--ivory);
-  color: var(--forest);
-}
-
-.contact-trigger[aria-expanded="true"] {
-  background-color: var(--thistle);
-  border-color: var(--thistle);
-  color: var(--forest);
-}
-
-.contact-trigger:focus-visible {
-  outline: 2px solid var(--ivory);
-  outline-offset: 4px;
 }
 
 .external-arrow {
@@ -415,29 +375,29 @@ a:focus-visible {
   margin-top: 20px;
 }
 
-.home-page .contact-trigger {
-  min-height: 0;
+.contact-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   padding: 0;
   border: 0;
-  border-radius: 0;
-  box-shadow: none;
   background: transparent;
   color: var(--smart-blue);
+  cursor: pointer;
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 400;
   text-decoration: underline;
 }
 
-.home-page .contact-trigger:hover,
-.home-page .contact-trigger[aria-expanded="true"] {
-  border: 0;
-  background: transparent;
+.contact-trigger:hover,
+.contact-trigger[aria-expanded="true"] {
   color: var(--forest);
 }
 
-.home-page .contact-trigger:focus-visible {
+.contact-trigger:focus-visible {
   outline: 2px solid var(--smart-blue);
+  outline-offset: 4px;
 }
 
 .home-page .contact-details {
@@ -477,8 +437,8 @@ a:focus-visible {
   }
 
   .home-sidebar::after {
-  display: none;
-}
+    display: none;
+  }
 
   .home-navigation {
     grid-row: 1;
@@ -545,9 +505,6 @@ a:focus-visible {
     animation-iteration-count: 1 !important;
   }
 
-  .contact-trigger {
-    transition: none;
-  }
 }
 
 /* keyboard skip navigation */
