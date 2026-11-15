@@ -114,6 +114,7 @@
 
 .index-intro h1 {
   margin: 0;
+  color: var(--ivory);
   font-family: var(--display);
   font-size: clamp(36px, 3.2vw, 44px);
   font-weight: 700;
