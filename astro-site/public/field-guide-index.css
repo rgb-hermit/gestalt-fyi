@@ -126,6 +126,8 @@
 }
 
 .index-intro-content {
+  grid-column: 2;
+  min-width: 0;
   display: grid;
   grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.4fr) 24px;
   align-items: center;
@@ -194,9 +196,7 @@
   text-underline-offset: 2px;}
 
 .domain-item.is-unavailable {
-  color: var(--forest);
-
-  opacity: 0.6;
+  color: var(--forest-muted);
   text-decoration: none;}
 
 a.domain-item:hover {
@@ -369,6 +369,7 @@ a.domain-item:hover {
   }
 
   .index-intro-content {
+    grid-column: 1;
     padding-left: 0;
   }
 
