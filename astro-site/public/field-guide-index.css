@@ -117,12 +117,12 @@
 
 .index-intro-artwork {
   position: absolute;
-  top: 0;
+  top: -160px;
   left: calc(-1 * (var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2)));
   width: calc(180px + var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2));
-  height: 220px;
+  height: 400px;
   object-fit: cover;
-  object-position: center;
+  object-position: center 55%;
 }
 
 .index-intro-content {
@@ -361,9 +361,10 @@ a.domain-item:hover {
 
   .index-intro-artwork {
     position: relative;
+    top: -48px;
     left: calc(-1 * var(--page-gutter));
     width: calc(min(180px, 55vw) + var(--page-gutter));
-    height: 150px;
+    height: 200px;
     max-height: none;
   }
 
