@@ -107,6 +107,7 @@
 }
 
 .index-intro {
+  position: relative;
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
   gap: 40px;
@@ -115,9 +116,12 @@
 }
 
 .index-intro-artwork {
-  width: 100%;
-  max-height: 180px;
-  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: calc(-1 * (var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2)));
+  width: calc(180px + var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2));
+  height: 220px;
+  object-fit: cover;
   object-position: center;
 }
 
@@ -356,8 +360,11 @@ a.domain-item:hover {
   }
 
   .index-intro-artwork {
-    width: min(180px, 55vw);
-    max-height: 150px;
+    position: relative;
+    left: calc(-1 * var(--page-gutter));
+    width: calc(min(180px, 55vw) + var(--page-gutter));
+    height: 150px;
+    max-height: none;
   }
 
   .index-intro-content {
