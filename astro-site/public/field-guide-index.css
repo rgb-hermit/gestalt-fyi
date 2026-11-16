@@ -6,9 +6,10 @@
   border-radius: 8px;
   margin-top: 24px;
   padding: 20px 24px;
-  background: var(--forest);
-  color: var(--ivory);
-}
+  background: var(--ivory);
+  color: var(--ink);
+
+  border: 1px solid var(--sage);}
 
 .domain-description[hidden] {
   display: none;
@@ -28,9 +29,10 @@
 .index-intro p {
   max-width: 620px;
   margin: 0;
-  color: var(--body-ink);
-  font-size: 16px;
-  line-height: 1.5;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.85;
 }
 
 /* field guide landing page */
@@ -47,7 +49,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 24px;
-  color: var(--thistle);
+  color: var(--forest);
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -65,7 +67,7 @@
 .field-guide-home-link {
   display: inline-block;
   margin-top: 24px;
-  color: var(--thistle);
+  color: var(--forest);
   font-family: var(--mono);
   font-size: 12px;
   text-decoration: underline;
@@ -74,13 +76,15 @@
 
 .field-guide-shell {
   max-width: none;
-  background: var(--deep-evergreen);
-}
+  background: var(--ivory);
+
+  color: var(--ink);
+  color-scheme: light;}
 
 .field-guide-header-band {
   position: relative;
   padding-bottom: 32px;
-  background: var(--forest);
+  background: var(--ivory);
 }
 
 .field-guide-header-band::before {
@@ -88,7 +92,7 @@
   position: absolute;
   z-index: 0;
   inset: 0 calc(-1 * var(--page-gutter));
-  background: var(--forest);
+  background: var(--ivory);
 }
 
 .field-guide-header-band > * {
@@ -103,19 +107,38 @@
 }
 
 .index-intro {
+  position: relative;
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
-  align-items: center;
+  grid-template-columns: 180px minmax(0, 1fr);
   gap: 40px;
-  padding-bottom: 32px;
-  column-gap: 73px;
-  padding-top: 64px;
+  align-items: center;
+  padding-block: 64px 32px;
+}
+
+.index-intro-artwork {
+  position: absolute;
+  top: -160px;
+  left: calc(-1 * (var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2)));
+  width: calc(180px + var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2));
+  height: 400px;
+  object-fit: cover;
+  object-position: center 55%;
+}
+
+.index-intro-content {
+  grid-column: 2;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.4fr) 24px;
+  align-items: center;
+  gap: 24px;
+  padding-left: 32px;
 }
 
 .index-intro h1 {
   margin: 0;
-  color: var(--ivory);
-  font-family: var(--display);
+  color: var(--forest);
+  font-family: var(--serif);
   font-size: clamp(36px, 3.2vw, 44px);
   font-weight: 700;
   line-height: 1.15;
@@ -124,7 +147,7 @@
 
 .index-layout {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
+  grid-template-columns: 180px minmax(0, 1fr);
   gap: 40px;
   padding-top: 32px;
 }
@@ -132,14 +155,14 @@
 .index-results {
   min-width: 0;
   padding-left: 32px;
-  border-left: 1px solid var(--rule);
+  border-left: 1px solid var(--sage);
 }
 
 .domain-navigation h2 {
   margin: 0 0 40px;
-  color: var(--thistle);
+  color: var(--forest);
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
 }
@@ -156,46 +179,48 @@
 /* mobile domain navigation: hidden on desktop */
 .domain-navigation-disclosure {
   display: none;
-}
+
+  border: 1px solid var(--sage);}
 
 .domain-item {
   position: relative;
   display: block;
   padding: 8px 0;
-  color: var(--ivory);
-  font-size: 14px;
+  color: var(--smart-blue);
+  font-size: 12px;
   line-height: 1.4;
-  text-decoration: none;
+  text-decoration: underline;
   transition: color 150ms ease;
-}
+
+  font-family: var(--mono);
+  text-underline-offset: 2px;}
 
 .domain-item.is-unavailable {
-  color: var(--sage);
-}
+  color: var(--forest-muted);
+  text-decoration: none;}
 
 a.domain-item:hover {
-  color: var(--thistle);
+  color: var(--forest);
 }
 
 .domain-item:focus-visible {
-  outline: 2px solid var(--thistle);
+  outline: 2px solid var(--smart-blue);
   outline-offset: 3px;
 }
 
 .domain-item.is-selected {
-  color: var(--ivory);
-  font-weight: 600;
-}
+  color: var(--forest);
+  font-weight: 400;
+
+  text-decoration: none;}
 
 .domain-item.is-selected::before {
-  content: "";
+  content: "/";
   position: absolute;
   top: 50%;
-  left: -24px;
-  width: 10px;
-  height: 10px;
-  border: 2px solid var(--thistle);
-  border-radius: 50%;
+  left: -16px;
+  color: var(--forest);
+  font: inherit;
   transform: translateY(-50%);
 }
 
@@ -209,7 +234,7 @@ a.domain-item:hover {
 }
 
 .sort-label {
-  color: var(--thistle);
+  color: var(--forest);
   font-family: var(--mono);
   font-size: 14px;
 }
@@ -241,8 +266,8 @@ a.domain-item:hover {
 
 .concept-details h3 {
   margin: 0 0 8px;
-  color: var(--ivory);
-  font-family: var(--display);
+  color: var(--forest);
+  font-family: var(--serif);
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.25;
@@ -255,12 +280,12 @@ a.domain-item:hover {
 }
 
 .concept-link:hover {
-  color: var(--thistle);
+  color: var(--smart-blue);
 }
 
 .concept-types {
   margin: 0;
-  color: var(--thistle);
+  color: var(--forest);
   font-family: var(--mono);
   font-size: 12px;
   line-height: 1.4;
@@ -269,10 +294,10 @@ a.domain-item:hover {
 
 .concept-summary {
   margin: 0;
-  color: var(--sage);
-  font-family: var(--serif);
-  font-size: 16px;
-  line-height: 1.5;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.85;
 }
 
 .concept-arrow {
@@ -281,17 +306,27 @@ a.domain-item:hover {
   justify-content: center;
   min-width: 24px;
   min-height: 32px;
-  color: var(--ivory);
-  font-size: 20px;
+  color: var(--smart-blue);
   line-height: 1;
   text-decoration: none;
 }
 
+.concept-arrow svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
 .concept-arrow:hover {
-  color: var(--thistle);
+  color: var(--forest);
 }
 
 @media (width <= 900px) {
+  .index-intro-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
   .concept-row {
     grid-template-columns: minmax(0, 1fr) 24px;
     gap: 12px 16px;
@@ -322,6 +357,20 @@ a.domain-item:hover {
 
   .index-intro {
     padding-top: 48px;
+  }
+
+  .index-intro-artwork {
+    position: relative;
+    top: -48px;
+    left: calc(-1 * var(--page-gutter));
+    width: calc(min(180px, 55vw) + var(--page-gutter));
+    height: 200px;
+    max-height: none;
+  }
+
+  .index-intro-content {
+    grid-column: 1;
+    padding-left: 0;
   }
 
   .field-guide-header-band {
@@ -356,7 +405,7 @@ a.domain-item:hover {
 
   .domain-navigation-disclosure {
     display: block;
-    border: 1px solid var(--rule);
+    border: 1px solid var(--sage);
     border-radius: 4px;
   }
 
@@ -374,7 +423,7 @@ a.domain-item:hover {
   }
 
   .domain-navigation-disclosure > summary:focus-visible {
-    outline: 2px solid var(--thistle);
+    outline: 2px solid var(--smart-blue);
     outline-offset: 4px;
   }
 
@@ -382,13 +431,13 @@ a.domain-item:hover {
     font-family: var(--mono);
     font-size: 14px;
     letter-spacing: 0.12em;
-    color: var(--thistle);
+    color: var(--forest);
   }
 
   .domain-disclosure-current {
     margin-left: auto;
     font-size: 14px;
-    color: var(--ivory);
+    color: var(--ink);
     text-align: right;
   }
 
@@ -440,7 +489,7 @@ a.domain-item:hover {
   }
 
     .domain-navigation-disclosure .domain-item.is-selected {
-      color: var(--thistle);
+      color: var(--forest);
   }
 
     .domain-navigation-disclosure .domain-item.is-selected::before {
