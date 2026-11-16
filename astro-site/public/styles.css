@@ -14,6 +14,7 @@
 
   /* greens */
   --forest: #163b32;
+  --forest-muted: rgb(22 59 50 / 60%);
   --deep-evergreen: #102d26;
   --sage: #a9b9b1;
 
@@ -297,8 +298,7 @@ a {
 }
 
 .home-navigation > .home-nav-soon {
-  color: var(--forest);
-  opacity: 0.6;
+  color: var(--forest-muted);
   text-decoration: none;
   cursor: help;
 }
