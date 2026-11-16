@@ -297,7 +297,8 @@ a {
 }
 
 .home-navigation > .home-nav-soon {
-  color: var(--sage);
+  color: var(--forest);
+  opacity: 0.6;
   text-decoration: none;
   cursor: help;
 }
