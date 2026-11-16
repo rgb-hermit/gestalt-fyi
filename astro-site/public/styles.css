@@ -202,7 +202,7 @@ a:focus-visible {
 .home-layout {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) max-content minmax(0, 1.5fr);
-  column-gap: 48px;
+  column-gap: 0;
   min-height: 0;
 }
 
@@ -216,7 +216,7 @@ a:focus-visible {
   content: "";
   position: absolute;
   top: 130px;
-  right: -24px;
+  right: 0;
   width: 1px;
   height: 638px;
   background: var(--sage);
@@ -252,7 +252,8 @@ a:focus-visible {
   font-weight: 400;
   line-height: 1.6;
   grid-column: 2;
-  padding: 130px 0 0;
+  margin-left: 48px;
+  padding: 130px 32px 0 0;
   position: relative;
 }
 
@@ -330,7 +331,7 @@ a:focus-visible {
   min-width: 0;
   min-height: 0;
   margin: 0;
-  padding: 116px 64px 0 0;
+  padding: 116px 64px 0 32px;
 }
 
 .home-page .hero-title {
@@ -424,7 +425,18 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-@media (width <= 1100px) {
+@media (880px < width <= 1100px) {
+  .home-navigation {
+    margin-left: 32px;
+    padding-right: 24px;
+  }
+
+  .home-page .home-content {
+    padding-left: 24px;
+  }
+}
+
+@media (width <= 880px) {
   .home-layout {
     grid-template-columns: minmax(0, 40%) minmax(0, 60%);
     column-gap: 0;
@@ -453,6 +465,7 @@ a:focus-visible {
     align-self: start;
     gap: 24px;
     padding: 72px 24px 0;
+    margin-left: 0;
   }
 
   .home-navigation::after {
