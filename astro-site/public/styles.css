@@ -297,9 +297,8 @@ a {
 }
 
 .home-navigation > .home-nav-soon {
-  color: var(--forest);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--sage);
+  text-decoration: none;
   cursor: help;
 }
 
