@@ -263,7 +263,7 @@ a.domain-item:hover {
 .concept-details h3 {
   margin: 0 0 8px;
   color: var(--forest);
-  font-family: var(--mono);
+  font-family: var(--serif);
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.25;
