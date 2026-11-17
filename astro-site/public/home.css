@@ -1,90 +1,4 @@
 /* --------------------------------
-   3. contact button and email
--------------------------------- */
-
-.contact {
-  position: relative;
-  margin-top: 32px;
-}
-
-.external-arrow {
-  display: block;
-  width: 13px;
-  height: 13px;
-  flex: 0 0 auto;
-}
-
-.contact-email {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.contact-details {
-  width: 100%;
-  margin-top: 24px;
-}
-
-.contact-details[hidden] {
-  display: none;
-}
-
-.contact-label {
-  color: var(--forest);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.09em;
-}
-
-.contact-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.email-address {
-  font-family: var(--body);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: inherit;
-  color: var(--ink);
-  overflow-wrap: anywhere;
-}
-
-.copy-email {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--smart-blue);
-  font-family: var(--mono);
-  font-size: 12px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.copy-email:hover {
-  color: var(--forest);
-}
-
-.contact-feedback {
-  margin: 8px 0 0;
-  color: var(--forest);
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.contact-feedback:empty {
-  display: none;
-}
-
-/* --------------------------------
    homepage editorial layout
 -------------------------------- */
 
@@ -264,45 +178,6 @@
   margin-top: 28px;
 }
 
-.home-page .contact {
-  margin-top: 20px;
-}
-
-.contact-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--smart-blue);
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 400;
-  text-decoration: underline;
-}
-
-.contact-trigger:hover,
-.contact-trigger[aria-expanded="true"] {
-  color: var(--forest);
-}
-
-.contact-chevron {
-  flex: 0 0 auto;
-  transition: transform 160ms ease;
-}
-
-.contact-trigger[aria-expanded="true"] .contact-chevron {
-  transform: rotate(180deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contact-chevron {
-    transition: none;
-  }
-}
-
 .home-acknowledgement {
   max-width: 540px;
   margin-top: auto;
@@ -374,14 +249,6 @@
     height: 0;
     min-height: 480px;
     object-fit: cover;
-  }
-
-  .home-page .contact {
-    min-height: 140px;
-  }
-
-  .home-page .contact-details {
-    margin-top: 24px;
   }
 
 }
