@@ -35,33 +35,6 @@
   line-height: 1.85;
 }
 
-/* field guide landing page */
-.field-guide-landing {
-  flex: 1;
-  width: 100%;
-  max-width: 720px;
-  padding-block: 100px 112px;
-}
-
-/* construction status */
-.construction-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 24px;
-  color: var(--forest);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-}
-
-.construction-icon {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  color: var(--clay-light);
-}
-
 /* field guide index */
 
 .field-guide-home-link {
