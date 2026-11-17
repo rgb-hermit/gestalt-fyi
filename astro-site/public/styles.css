@@ -19,13 +19,10 @@
   --sage: #a9b9b1;
 
   /* blue */
-  --french-blue: #274690;
   --smart-blue: #3f69ca;
-  --wisteria: #8fa7e0;
 
   /* oranges */
   --clay: #dda15e;
-  --clay-light: #ffc685;
 
   /* purple */
   --thistle: #cdb4db;
@@ -34,11 +31,7 @@
   --ivory: #f8f5eb;
 
   /* utility */
-  --body-ink: #e0e5db;
   --ink: #242424;
-  --rule: rgb(248 245 235 / 25%);
-  --surface-raised: rgb(255 255 255 / 4%);
-  --display: "Roboto", system-ui, sans-serif;
   --body: "Roboto", system-ui, sans-serif;
   --serif: "Roboto Serif", georgia, serif;
   --mono: "Roboto Mono", "SFMono-Regular", consolas, monospace;
