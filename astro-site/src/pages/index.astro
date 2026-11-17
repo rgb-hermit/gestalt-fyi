@@ -77,65 +77,6 @@ import Layout from "../layouts/Layout.astro";
         </p>
       </div>
 
-      <div class="contact">
-        <button
-          class="contact-trigger"
-          id="contact-trigger"
-          type="button"
-          aria-expanded="false"
-          aria-controls="contact-details"
-        >
-          <span>Get in touch</span>
-          <svg
-            class="contact-chevron"
-            viewBox="0 0 16 16"
-            width="14"
-            height="14"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m4 6 4 4 4-4" />
-          </svg>
-        </button>
-
-        <div class="contact-details" id="contact-details" hidden>
-          <div class="contact-actions">
-            <div class="contact-email">
-              <span class="contact-label">EMAIL:</span>
-              <span id="email-address" class="email-address"></span>
-            </div>
-
-            <button class="copy-email" id="copy-email" type="button">
-              Copy email
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <rect x="8" y="8" width="13" height="13" rx="2" />
-                <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
-              </svg>
-            </button>
-          </div>
-
-          <p
-            class="contact-feedback"
-            id="contact-feedback"
-            role="status"
-            aria-live="polite"
-          ></p>
-        </div>
-      </div>
       <section class="home-acknowledgement" aria-label="Acknowledgement of Country">
         <h2>Always was, always will be — Aboriginal land</h2>
         <p>
@@ -148,50 +89,4 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </div>
 
-  <script>
-    (() => {
-      const contactTrigger = document.getElementById("contact-trigger");
-      const contactDetails = document.getElementById("contact-details");
-      const emailAddress = document.getElementById("email-address");
-      const copyEmail = document.getElementById("copy-email");
-      const contactFeedback = document.getElementById("contact-feedback");
-      // don't initialise the contact controls if any are missing.
-      if (
-        !contactTrigger ||
-        !contactDetails ||
-        !emailAddress ||
-        !copyEmail ||
-        !contactFeedback
-      ) {
-        return;
-      }
-
-      // assemble the address at runtime rather than writing it
-      // as a complete address in the HTML.
-      const email = ["hello", "gestalt.fyi"].join("@");
-
-      contactTrigger.addEventListener("click", () => {
-        const isExpanded =
-          contactTrigger.getAttribute("aria-expanded") === "true";
-
-        contactTrigger.setAttribute("aria-expanded", String(!isExpanded));
-        contactDetails.hidden = isExpanded;
-        contactFeedback.textContent = "";
-
-        if (!isExpanded) {
-          emailAddress.textContent = email;
-        }
-      });
-
-      copyEmail.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(email);
-          contactFeedback.textContent = "Copied to clipboard.";
-        } catch (error) {
-          contactFeedback.textContent =
-            "Copy isn't available here. You can select the email address and copy it manually.";
-        }
-      });
-    })();
-  </script>
 </Layout>
