@@ -107,41 +107,48 @@ for (const block of articleBlocks) {
   } else {
     renderBlocks.push({ type: "block", block });
   }
+
 }
-
-const referenceParagraphs =
-  referencesHeadingIndex === -1
-    ? []
-    : notionBlocks
-        .slice(referencesHeadingIndex + 1)
-        .filter((block) => block.type === "paragraph")
-        .map((block) =>
-          (block.paragraph?.rich_text ?? [])
-            .map((item: { plain_text: string }) => item.plain_text)
-            .join(""),
-        );
-
 const notionReferences = [];
 
-for (let i = 0; i < referenceParagraphs.length; i += 2) {
-  const label = referenceParagraphs[i];
-  const url = referenceParagraphs[i + 1];
+if (referencesHeadingIndex !== -1) {
+  const referenceBlocks = notionBlocks.slice(referencesHeadingIndex + 1);
 
-  if (!label || !url) continue;
+  for (const block of referenceBlocks) {
+    if (block.type !== "paragraph") continue;
 
-  const citation = label.match(/^\[(\d+)\]\s*/);
-  const number = citation ? Number(citation[1]) : null;
+    const richText = block.paragraph?.rich_text ?? [];
+    if (richText.length === 0) continue;
 
-  notionReferences.push({
-    id:
-      number !== null
-        ? `reference-${number}`
-        : `reference-uncited-${i / 2 + 1}`,
-    number,
-    title: label.replace(/^\[\d+\]\s*/, ""),
-    url,
-    cited: number !== null,
-  });
+    const label = richText
+      .map((item: { plain_text: string }) => item.plain_text)
+      .join("")
+      .trim();
+
+    const linkedItem = richText.find(
+      (item: { href?: string | null }) => item.href,
+    );
+
+    if (!linkedItem?.href) {
+      throw new Error(
+        `Reference has no URL in article "${entry.slug}": ${label}`,
+      );
+    }
+
+    const citation = label.match(/^\[(\d+)\]\s*/);
+    const number = citation ? Number(citation[1]) : null;
+
+    notionReferences.push({
+      id:
+        number !== null
+          ? `reference-${number}`
+          : `reference-uncited-${notionReferences.length + 1}`,
+      number,
+      title: label.replace(/^\[\d+\]\s*/, "").trim(),
+      url: linkedItem.href,
+      cited: number !== null,
+    });
+  }
 }
 ---
 
