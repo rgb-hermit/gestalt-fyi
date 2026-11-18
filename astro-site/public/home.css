@@ -18,8 +18,8 @@
 .home-layout {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) max-content minmax(0, 1.5fr);
+  grid-template-rows: minmax(466px, auto);
   column-gap: 0;
-  min-height: 0;
 }
 
 .home-sidebar {
@@ -31,15 +31,18 @@
 .home-navigation::after {
   content: "";
   position: absolute;
-  top: 24px;
+  top: 26px;
   right: 0;
+  bottom: 0;
   width: 1px;
-  height: 100%;
   background: var(--sage);
 }
 
 .home-artwork {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  height: 100%;
 }
 
 .home-status {
@@ -51,8 +54,10 @@
 
 .home-botanical {
   display: block;
+  flex: 1 1 440px;
   width: 100%;
-  height: 440px;
+  min-height: 440px;
+  height: 0;
   object-fit: cover;
   object-position: center;
 }
@@ -146,7 +151,7 @@
   min-width: 0;
   min-height: 0;
   margin: 0;
-  padding: 24px 0 0 24px;
+  padding: 24px 24px 0;
 }
 
 .home-page .hero-title {
@@ -176,7 +181,7 @@
   margin-top: 28px;
 }
 
-@media (width <= 1100px) {
+@media (width <= 900px) {
   .home-layout {
     grid-template-columns: minmax(0, 40%) minmax(0, 60%);
     column-gap: 0;
@@ -219,12 +224,12 @@
     padding: 16px 40px 32px 24px;
   }
 
-  .home-botanical {
-    flex: 1;
-    height: 0;
-    min-height: 100%;
-    object-fit: cover;
-  }
+.home-botanical {
+  flex: 1 1 auto;
+  height: 440px;
+  min-height: 440px;
+  object-fit: cover;
+}
 
 }
 
@@ -274,7 +279,7 @@
 
   .home-page .home-content {
     min-height: 0;
-    padding: 32px 32px 0;
+    padding: 32px;
   }
 
   .home-page .hero-title {
@@ -283,7 +288,7 @@
 
   .home-page {
     justify-content: flex-start;
-    margin-top: 80px;
+    margin-top: 32px;
     padding-top: 0;
   }
 }

@@ -38,7 +38,7 @@
 /* field guide index */
 
 .field-guide-shell {
-  max-width: none;
+  max-width: calc(900px + 2 * var(--page-gutter));
   background: var(--ivory);
   color: var(--ink);
   color-scheme: light;
@@ -73,12 +73,13 @@
   position: relative;
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
-  gap: 40px;
+  gap: 32px;
   align-items: center;
   padding-block: 64px 32px;
 }
 
 .index-intro-artwork {
+  display: none;
   position: absolute;
   top: -160px;
   left: calc(-1 * (var(--page-gutter) + max(0px, (100vw - var(--page-width)) / 2)));
@@ -111,7 +112,7 @@
 .index-layout {
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
-  gap: 40px;
+  gap: 32px;
   padding-top: 32px;
 }
 
@@ -121,19 +122,24 @@
   border-left: 1px solid var(--sage);
 }
 
-.domain-navigation h2 {
-  margin: 0 0 40px;
+.index-section-label {
+  margin: 0;
   color: var(--forest);
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.domain-navigation .index-section-label {
+  margin-bottom: 40px;
 }
 
 .domain-navigation ul {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -190,17 +196,11 @@ a.domain-item:hover {
 
 .results-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: flex-start;
   min-height: 54px;
   padding-top: 0;
   padding-bottom: 16px;
-}
-
-.sort-label {
-  color: var(--forest);
-  font-family: var(--mono);
-  font-size: 14px;
 }
 
 .results-list {
@@ -345,7 +345,7 @@ a.domain-item:hover {
     padding-block: 48px 80px;
   }
 
-  .domain-navigation h2 {
+  .domain-navigation .index-section-label {
     margin-bottom: 16px;
   }
 
