@@ -156,14 +156,14 @@ if (referencesHeadingIndex !== -1) {
   <link rel="stylesheet" href="/field-guide-article.css" />
   <main id="main-content" class="field-guide-article">
     <div class="article-content">
-      <a href="/field-guide/" class="article-back">
-        <span class="article-back-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 12H5m6-6-6 6 6 6" />
-          </svg>
-        </span>
-        <span class="article-back-label">Field Guide</span>
-      </a>
+      <nav class="article-breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li>
+      <a href="/field-guide/">Field Guide</a>
+    </li>
+    <li aria-current="page">{title}</li>
+  </ol>
+</nav>
 
       <header class="article-header">
         <p class="article-category">{entry.types.join(" · ").toUpperCase()}</p>
