@@ -2,7 +2,7 @@ name: Build and deploy Astro site
 
 on:
   push:
-    branches: [main, astro-proof-of-concept]
+    branches: [main, astro-proof-of-concept, feature/editorial-snapshot-separation]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -26,7 +26,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  capture-initial-snapshot:
+    if: github.ref == 'refs/heads/feature/editorial-snapshot-separation' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: astro-site
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+      - name: capture candidate from published notion articles
+        env:
+          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
+        run: node scripts/capture-initial-snapshot.mjs
+      - uses: actions/upload-artifact@v6
+        with:
+          name: initial-snapshot-candidate
+          path: astro-site/.release/initial-baseline-candidate.json
+          if-no-files-found: error
+          retention-days: 7
+
   build:
+    if: github.ref != 'refs/heads/feature/editorial-snapshot-separation'
     runs-on: ubuntu-latest
     defaults:
       run:
