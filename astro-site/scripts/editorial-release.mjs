@@ -155,6 +155,13 @@ async function verifyBuilt() {
   console.log(`Verified ${entries.length} queued operation(s) in built site`);
 }
 
+/** A retried deployment must not rewrite already acknowledged publication dates. */
+export function alreadyAcknowledged(entry, current) {
+  return entry.status === "Queued Publish"
+    ? current.status === "Deployed" || current.status === "Published"
+    : current.status === "Undeployed";
+}
+
 async function acknowledge() {
   const snapshot = assertApprovedContent(JSON.parse(await readFile("src/content/field-guide-approved.json", "utf8")));
   const entries = snapshot.releaseOperations;
@@ -164,6 +171,10 @@ async function acknowledge() {
   let skipped = 0;
   for (const entry of entries) {
     const current = details(await request(`/pages/${entry.id}`));
+    if (alreadyAcknowledged(entry, current)) {
+      console.log(`Already acknowledged ${entry.id}; no changes needed`);
+      continue;
+    }
     const issue = releaseChange(entry, current);
     if (issue) {
       console.warn(`Skipped ${entry.id}: ${issue}; manual review needed`);
