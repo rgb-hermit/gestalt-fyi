@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      acknowledge_release_id:
+        description: 'Recovery only: deployed editorial release ID to acknowledge'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -49,19 +54,26 @@ jobs:
         uses: actions/deploy-pages@v5
 
       - uses: actions/checkout@v7
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || inputs.acknowledge_release_id != ''
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v7
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || inputs.acknowledge_release_id != ''
         with:
           node-version: "24"
+      - name: classify deployed editorial release
+        id: editorial
+        if: github.event_name == 'push' || inputs.acknowledge_release_id != ''
+        working-directory: astro-site
+        env:
+          RECOVERY_RELEASE_ID: ${{ inputs.acknowledge_release_id }}
+        run: node scripts/release-trigger.mjs
       - name: acknowledge editorial release in Notion
-        if: github.event_name == 'push'
+        if: steps.editorial.outputs.acknowledge == 'true'
         working-directory: astro-site
         env:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: |
-          if [[ "$(git log -1 --format=%s)" == "chore(publishing): approve editorial snapshot" ]]; then
-            node scripts/editorial-release.mjs acknowledge
-          else
-            echo "Ordinary site deployment: no editorial acknowledgement"
-          fi
+        run: node scripts/editorial-release.mjs acknowledge
+      - name: report ordinary deployment (no editorial acknowledgement)
+        if: steps.editorial.outputs.acknowledge == 'false'
+        run: echo "Skipped editorial acknowledgement; no new editorial release in this deployment"
