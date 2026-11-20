@@ -6,15 +6,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: "deployment purpose"
-        required: true
-        type: choice
-        default: site
-        options:
-          - site
-          - editorial
 
 permissions:
   contents: read
@@ -22,8 +13,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: pages-${{ github.ref == 'refs/heads/main' && 'production' || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -40,27 +31,7 @@ jobs:
           cache-dependency-path: astro-site/package-lock.json
       - run: npm ci
       - run: npm run test:publishing
-      - name: capture queued editorial changes
-        if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
-        env:
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: node scripts/editorial-release.mjs capture
       - run: npm run build
-        env:
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-      - name: verify queued articles against built site
-        if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
-        env:
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: node scripts/editorial-release.mjs verify-built
-      - name: preserve editorial release record
-        if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v6
-        with:
-          name: editorial-release-record
-          path: astro-site/.release/queued.json
-          if-no-files-found: error
-          retention-days: 7
       - uses: actions/upload-pages-artifact@v5
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
@@ -77,21 +48,20 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v5
 
-  editorial-writeback:
-    if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v7
+        if: github.event_name == 'push'
       - uses: actions/setup-node@v7
+        if: github.event_name == 'push'
         with:
           node-version: "24"
-      - uses: actions/download-artifact@v7
-        with:
-          name: editorial-release-record
-          path: astro-site/.release
-      - name: acknowledge successfully deployed articles in Notion
+      - name: acknowledge editorial release in Notion
+        if: github.event_name == 'push'
         working-directory: astro-site
         env:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: node scripts/editorial-release.mjs acknowledge
+        run: |
+          if [[ "$(git log -1 --format=%s)" == "chore(publishing): approve editorial snapshot" ]]; then
+            node scripts/editorial-release.mjs acknowledge
+          else
+            echo "Ordinary site deployment: no editorial acknowledgement"
+          fi

@@ -1,28 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import {
-  getFieldGuideEntries,
-  getPublishableEntries,
-  getArticleBlocks,
-  validateFieldGuidePublication,
-} from "../../lib/notion";
+import { getApprovedEntries, getApprovedArticleBlocks } from "../../lib/approved-content";
 import NotionLists from "../../components/field-guide/NotionLists.astro";
 import NotionRichText from "../../components/field-guide/notion-rich-text.astro";
 import { Code } from "astro:components";
 
 export async function getStaticPaths() {
-  const entries = await getFieldGuideEntries();
-  const errors = validateFieldGuidePublication(entries);
-
-  if (errors.length > 0) {
-    throw new Error(
-      `Field Guide publication validation failed:\n${errors
-        .map((error) => `- ${error}`)
-        .join("\n")}`,
-    );
-  }
-
-  const publishableEntries = getPublishableEntries(entries);
+  const publishableEntries = await getApprovedEntries();
 
   return publishableEntries.map((entry) => ({
     params: { slug: entry.slug },
@@ -34,7 +18,7 @@ const { entry } = Astro.props;
 const { title, summary } = entry;
 
 const notionBlocks = entry.notionPageId
-  ? await getArticleBlocks(entry.notionPageId)
+  ? await getApprovedArticleBlocks(entry.notionPageId)
   : [];
 
 const notionHeadings = notionBlocks
