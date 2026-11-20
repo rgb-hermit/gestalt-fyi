@@ -51,3 +51,9 @@ test("snapshot rejects classifications outside approved domains", () => {
   const withUnknownDomain = { ...article("a", "existing"), domains: ["Unapproved"] };
   assert.throws(() => assertApprovedContent({ ...baseline, articles: [withUnknownDomain] }), /Unknown domain/);
 });
+
+test("duplicate operations fail rather than silently overriding a release", () => {
+  assert.throws(() => applyEditorialOperations(baseline,
+    [{ id: "a", status: "Queued Publish" }, { id: "a", status: "Queued Unpublish" }],
+    [article("a", "existing", "Revised")]), /Duplicate editorial operation/);
+});
