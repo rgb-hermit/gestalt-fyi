@@ -76,6 +76,13 @@ jobs:
           cd astro-site
           node scripts/editorial-release.mjs verify-built
           cd ..
+          # Fail closed if another release or site change reached main since capture.
+          original="$(git rev-parse HEAD)"
+          current="$(gh api "repos/${GH_REPO}/git/ref/heads/main" --jq '.object.sha')"
+          if [[ "$original" != "$current" ]]; then
+            echo "::error::Main changed during editorial release; recapture from the latest approved snapshot"
+            exit 1
+          fi
           gh pr merge "${{ steps.pr.outputs.url }}" --squash --delete-branch --subject "chore(publishing): approve editorial snapshot"
 ; then
               ready=1
