@@ -70,8 +70,8 @@ export function validateApprovedContent(snapshot) {
       // signed notion-hosted file links expire; snapshot media must be durable.
       const inspect = (blocks) => {
         for (const block of blocks) {
-          if (block.type === "image" && block.image?.type === "file") {
-            errors.push(`Expiring notion image in article: ${article.slug}`);
+          if (["image", "video", "audio", "file", "pdf"].includes(block.type) && block[block.type]?.type === "file") {
+            errors.push(`Expiring notion media in article: ${article.slug}`);
           }
           if (Array.isArray(block.children)) inspect(block.children);
         }
