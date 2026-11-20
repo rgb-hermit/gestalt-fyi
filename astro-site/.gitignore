@@ -14,8 +14,11 @@ yarn-error.log*
 pnpm-debug.log*
 
 # environment variables
+# Keep local credentials out of Git; safe example files may be tracked.
 .env
-.env.production
+.env.*
+!.env.example
+!.env.sample
 
 # macOS-specific files
 .DS_Store
