@@ -40,3 +40,14 @@ test("unexpected operations fail closed", () => {
   assert.throws(() => applyEditorialOperations(baseline,
     [{ id: "a", status: "Published" }], []), /Unsupported editorial operation/);
 });
+
+test("snapshot rejects expiring notion-hosted images", () => {
+  const withImage = article("a", "existing");
+  withImage.blocks.push({ type: "image", image: { type: "file", file: { url: "https://example.com/temporary" } } });
+  assert.throws(() => assertApprovedContent({ ...baseline, articles: [withImage] }), /Expiring notion image/);
+});
+
+test("snapshot rejects classifications outside approved domains", () => {
+  const withUnknownDomain = { ...article("a", "existing"), domains: ["Unapproved"] };
+  assert.throws(() => assertApprovedContent({ ...baseline, articles: [withUnknownDomain] }), /Unknown domain/);
+});
