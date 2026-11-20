@@ -49,14 +49,19 @@ jobs:
         uses: actions/deploy-pages@v5
 
       - uses: actions/checkout@v7
-        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'chore(publishing): approve editorial snapshot')
+        if: github.event_name == 'push'
       - uses: actions/setup-node@v7
-        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'chore(publishing): approve editorial snapshot')
+        if: github.event_name == 'push'
         with:
           node-version: "24"
       - name: acknowledge editorial release in Notion
-        if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'chore(publishing): approve editorial snapshot')
+        if: github.event_name == 'push'
         working-directory: astro-site
         env:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: node scripts/editorial-release.mjs acknowledge
+        run: |
+          if [[ "$(git log -1 --format=%s)" == "chore(publishing): approve editorial snapshot" ]]; then
+            node scripts/editorial-release.mjs acknowledge
+          else
+            echo "Ordinary site deployment: no editorial acknowledgement"
+          fi
