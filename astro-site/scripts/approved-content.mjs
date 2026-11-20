@@ -86,6 +86,7 @@ export function applyEditorialOperations(baseline, operations, candidateArticles
     if (operated.has(operation.id)) throw new Error(`Duplicate editorial operation: ${operation.id}`);
     operated.add(operation.id);
     if (operation.status === "Queued Unpublish") {
+      if (!articles.has(operation.id)) throw new Error(`Cannot unpublish article absent from approved snapshot: ${operation.id}`);
       articles.delete(operation.id);
     } else if (operation.status === "Queued Publish") {
       const candidate = candidates.get(operation.id);
