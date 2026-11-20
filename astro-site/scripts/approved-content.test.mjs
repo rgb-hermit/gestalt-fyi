@@ -80,3 +80,11 @@ test("unpublishing an article absent from the approved baseline fails closed", (
   assert.throws(() => applyEditorialOperations(baseline,
     [{ id: "missing", status: "Queued Unpublish" }], []), /absent from approved snapshot/);
 });
+
+test("release metadata must agree with the approved article set", () => {
+  const operation = { id: "a", slug: "existing", status: "Queued Publish", lastEdited: "2026-11-20T00:00:00Z" };
+  assert.equal(assertApprovedContent({ ...baseline, releaseOperations: [operation] }).articles.length, 1);
+  assert.throws(() => assertApprovedContent({ ...baseline, releaseOperations: [{ ...operation, slug: "incorrect" }] }), /does not match snapshot/);
+  assert.throws(() => assertApprovedContent({ ...baseline, releaseOperations: [{ ...operation, status: "Queued Unpublish" }] }), /remains in snapshot/);
+  assert.throws(() => assertApprovedContent({ ...baseline, releaseOperations: [operation, operation] }), /Duplicate release operation/);
+});
