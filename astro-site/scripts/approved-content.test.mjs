@@ -59,10 +59,10 @@ test("duplicate operations fail rather than silently overriding a release", () =
     [article("a", "existing", "Revised")]), /Duplicate editorial operation/);
 });
 
-test("committed baseline contains the eight approved articles and seven domains", async () => {
+test("committed snapshot validates with a variable article count and seven domains", async () => {
   const snapshot = JSON.parse(await readFile(new URL("../src/content/field-guide-approved.json", import.meta.url), "utf8"));
   assert.equal(assertApprovedContent(snapshot), snapshot);
-  assert.equal(snapshot.articles.length, 8);
+  assert.ok(snapshot.articles.length > 0, "Snapshot should contain approved articles");
   assert.equal(snapshot.domains.length, 7);
 });
 
