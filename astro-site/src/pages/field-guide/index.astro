@@ -1,26 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import {
-  getCanonicalFieldGuideDomains,
-  getFieldGuideEntries,
-  getPublishableEntries,
-  validateFieldGuidePublication,
-} from "../../lib/notion";
+import { getApprovedEntries, getApprovedDomains } from "../../lib/approved-content";
 
-const allEntries = await getFieldGuideEntries();
-const publicationErrors = validateFieldGuidePublication(allEntries);
-
-if (publicationErrors.length > 0) {
-  throw new Error(
-    `Field Guide publication validation failed:\n${publicationErrors.join("\n")}`,
-  );
-}
-
-const publishedEntries = getPublishableEntries(allEntries).sort((a, b) =>
+const publishedEntries = (await getApprovedEntries()).sort((a, b) =>
   a.title.localeCompare(b.title, "en"),
 );
-
-const configuredDomains = await getCanonicalFieldGuideDomains();
+const configuredDomains = await getApprovedDomains();
 
 const activeDomains = new Set(
   publishedEntries.flatMap((entry) => entry.domains),
