@@ -69,22 +69,10 @@ jobs:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
         run: |
           set -euo pipefail
-          # Newly created PRs may not have a check run yet. Wait for one to appear.
           ready=0
           for attempt in $(seq 1 30); do
-            if gh pr checks "${{ steps.pr.outputs.url }}" --required --json name,state --jq 'length' 2>/dev/null | grep -Eq '^[1-9][0-9]*
-          cd astro-site
-          node scripts/editorial-release.mjs verify-built
-          cd ..
-          # Fail closed if another release or site change reached main since capture.
-          original="$(git rev-parse HEAD)"
-          current="$(gh api "repos/${GH_REPO}/git/ref/heads/main" --jq '.object.sha')"
-          if [[ "$original" != "$current" ]]; then
-            echo "::error::Main changed during editorial release; recapture from the latest approved snapshot"
-            exit 1
-          fi
-          gh pr merge "${{ steps.pr.outputs.url }}" --squash --delete-branch --subject "chore(publishing): approve editorial snapshot"
-; then
+            count="$(gh pr checks "${{ steps.pr.outputs.url }}" --required --json name,state --jq 'length' 2>/dev/null || true)"
+            if [[ "$count" =~ ^[1-9][0-9]*$ ]]; then
               ready=1
               break
             fi
@@ -98,4 +86,10 @@ jobs:
           cd astro-site
           node scripts/editorial-release.mjs verify-built
           cd ..
+          original="$(git rev-parse HEAD)"
+          current="$(gh api "repos/${GH_REPO}/git/ref/heads/main" --jq '.object.sha')"
+          if [[ "$original" != "$current" ]]; then
+            echo "::error::Main changed during editorial release; recapture from latest approved snapshot"
+            exit 1
+          fi
           gh pr merge "${{ steps.pr.outputs.url }}" --squash --delete-branch --subject "chore(publishing): approve editorial snapshot"
