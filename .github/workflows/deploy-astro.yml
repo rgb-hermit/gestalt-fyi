@@ -6,15 +6,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: "deployment purpose"
-        required: true
-        type: choice
-        default: site
-        options:
-          - site
-          - editorial
 
 permissions:
   contents: read
