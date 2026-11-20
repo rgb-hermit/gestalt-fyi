@@ -17,13 +17,13 @@ on:
           - editorial
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: pages-production
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -56,7 +56,9 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: editorial-release-record
-          path: astro-site/.release/queued.json
+          path: |
+            astro-site/.release/queued.json
+            astro-site/.release/candidate.json
           if-no-files-found: error
           retention-days: 7
       - uses: actions/upload-pages-artifact@v5
@@ -79,8 +81,12 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
     needs: deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: true
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
@@ -88,6 +94,15 @@ jobs:
         with:
           name: editorial-release-record
           path: astro-site/.release
+      - name: promote deployed snapshot to the approved baseline
+        working-directory: astro-site
+        run: |
+          cp .release/candidate.json src/content/field-guide-approved.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/field-guide-approved.json
+          git commit -m "chore(publishing): promote deployed editorial snapshot"
+          git push origin HEAD:main
       - name: acknowledge successfully deployed articles in Notion
         working-directory: astro-site
         env:
