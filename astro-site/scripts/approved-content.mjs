@@ -81,7 +81,10 @@ export function applyEditorialOperations(baseline, operations, candidateArticles
   assertApprovedContent(baseline);
   const articles = new Map(baseline.articles.map((article) => [article.notionPageId, article]));
   const candidates = new Map(candidateArticles.map((article) => [article.notionPageId, article]));
+  const operated = new Set();
   for (const operation of operations) {
+    if (operated.has(operation.id)) throw new Error(`Duplicate editorial operation: ${operation.id}`);
+    operated.add(operation.id);
     if (operation.status === "Queued Unpublish") {
       articles.delete(operation.id);
     } else if (operation.status === "Queued Publish") {
