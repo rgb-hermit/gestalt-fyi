@@ -1,6 +1,7 @@
 /** Capture queued changes before build; acknowledge only after Pages deployment. */
 import { readFile, writeFile, mkdir, access } from "node:fs/promises";
 import { resolve } from "node:path";
+import { assertApprovedContent, applyEditorialOperations } from "./approved-content.mjs";
 
 const base = "https://api.notion.com/v1";
 const databaseId = "052459fcf9df4a0985d0a0e68375c93b";
@@ -67,10 +68,66 @@ async function queued() {
   return entries;
 }
 
+
+async function getBlocks(pageId) {
+  const blocks = [];
+  let cursor;
+  do {
+    const query = new URLSearchParams({ page_size: "100" });
+    if (cursor) query.set("start_cursor", cursor);
+    const data = await request(`/blocks/${pageId}/children?${query}`);
+    for (const block of data.results) {
+      if (block.has_children) block.children = await getBlocks(block.id);
+      blocks.push(block);
+    }
+    cursor = data.next_cursor;
+  } while (cursor);
+  return blocks;
+}
+
+function articleFromPage(page, blocks) {
+  const properties = page.properties;
+  const plain = (property) => (property?.title ?? property?.rich_text ?? []).map((item) => item.plain_text).join("");
+  return {
+    notionPageId: page.id,
+    title: plain(properties.Name),
+    slug: plain(properties.Slug),
+    summary: plain(properties.Summary),
+    domains: (properties.Domains?.multi_select ?? []).map((item) => item.name),
+    types: (properties.Type?.type === "multi_select"
+      ? properties.Type.multi_select
+      : properties["Type Revision"]?.multi_select ?? []).map((item) => item.name),
+    blocks,
+  };
+}
+
+async function createCandidate(entries) {
+  const baseline = assertApprovedContent(JSON.parse(await readFile("src/content/field-guide-approved.json", "utf8")));
+  const candidates = [];
+  for (const entry of entries) {
+    if (entry.status !== "Queued Publish") continue;
+    const page = await request(`/pages/${entry.id}`);
+    const issue = releaseChange(entry, details(page));
+    if (issue) throw new Error(`${entry.id}: ${issue}`);
+    const blocks = await getBlocks(entry.id);
+    // Catch edits made while fetching descendants.
+    const after = details(await request(`/pages/${entry.id}`));
+    const changed = releaseChange(entry, after);
+    if (changed) throw new Error(`${entry.id}: ${changed}`);
+    candidates.push(articleFromPage(page, blocks));
+  }
+  const snapshot = applyEditorialOperations(baseline, entries, candidates);
+  snapshot.releaseId = process.env.GITHUB_RUN_ID ?? `editorial-${Date.now()}`;
+  await writeFile("src/content/field-guide-approved.json", JSON.stringify(snapshot, null, 2) + "\n");
+  await writeFile(".release/candidate.json", JSON.stringify(snapshot, null, 2) + "\n");
+  console.log(`Prepared candidate snapshot with ${snapshot.articles.length} articles`);
+}
+
 async function capture() {
   const entries = await queued();
   await mkdir(".release", { recursive: true });
   await writeFile(recordPath, JSON.stringify(entries, null, 2));
+  await createCandidate(entries);
   console.log(`Captured ${entries.length} queued operation(s)`);
 }
 
