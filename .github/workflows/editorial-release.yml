@@ -1,38 +1,30 @@
-name: Editorial release
+name: Prepare editorial snapshot
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: editorial-release
+  group: editorial-snapshot-preparation
   cancel-in-progress: false
 
 jobs:
-  prepare-and-merge:
+  prepare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
           ref: main
-          persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
           cache-dependency-path: astro-site/package-lock.json
-      - name: verify publishing credentials
-        env:
-          RELEASE_TOKEN: ${{ secrets.EDITORIAL_RELEASE_TOKEN }}
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: |
-          test -n "$RELEASE_TOKEN" || { echo "::error::EDITORIAL_RELEASE_TOKEN is not configured"; exit 1; }
-          test -n "$NOTION_API_TOKEN" || { echo "::error::NOTION_API_TOKEN is not configured"; exit 1; }
       - run: npm ci
         working-directory: astro-site
-      - name: capture explicitly queued changes
+      - name: capture explicitly queued editorial changes
         working-directory: astro-site
         env:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
@@ -41,16 +33,15 @@ jobs:
         working-directory: astro-site
       - run: npm run build
         working-directory: astro-site
-      - name: verify candidate and current Notion state
+      - name: verify captured articles against built site and Notion
         working-directory: astro-site
         env:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
         run: node scripts/editorial-release.mjs verify-built
-      - name: create snapshot pull request
-        id: pr
+      - name: prepare reviewable branch
         env:
-          GH_TOKEN: ${{ secrets.EDITORIAL_RELEASE_TOKEN }}
           GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           branch="editorial/release-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
@@ -59,37 +50,8 @@ jobs:
           git checkout -b "$branch"
           git add astro-site/src/content/field-guide-approved.json
           git commit -m "chore(publishing): prepare editorial snapshot"
-          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin "HEAD:refs/heads/$branch"
-          url="$(gh pr create --base main --head "$branch" --title "chore(publishing): approve editorial snapshot" --body "Automatically prepared from explicitly queued Notion publication operations. Build checks must pass before merge.")"
-          echo "url=$url" >> "$GITHUB_OUTPUT"
-      - name: await required checks and merge approved snapshot
-        env:
-          GH_TOKEN: ${{ secrets.EDITORIAL_RELEASE_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: |
-          set -euo pipefail
-          ready=0
-          for attempt in $(seq 1 30); do
-            count="$(gh pr checks "${{ steps.pr.outputs.url }}" --required --json name,state --jq 'length' 2>/dev/null || true)"
-            if [[ "$count" =~ ^[1-9][0-9]*$ ]]; then
-              ready=1
-              break
-            fi
-            sleep 10
-          done
-          if [[ "$ready" != 1 ]]; then
-            echo "::error::Required PR checks did not appear within five minutes"
-            exit 1
-          fi
-          gh pr checks "${{ steps.pr.outputs.url }}" --required --watch --fail-fast
-          cd astro-site
-          node scripts/editorial-release.mjs verify-built
-          cd ..
-          original="$(git rev-parse HEAD)"
-          current="$(gh api "repos/${GH_REPO}/git/ref/heads/main" --jq '.object.sha')"
-          if [[ "$original" != "$current" ]]; then
-            echo "::error::Main changed during editorial release; recapture from latest approved snapshot"
-            exit 1
-          fi
-          gh pr merge "${{ steps.pr.outputs.url }}" --squash --delete-branch --subject "chore(publishing): approve editorial snapshot"
+          git push origin "HEAD:refs/heads/$branch"
+          echo "### Snapshot ready for review" >> "$GITHUB_STEP_SUMMARY"
+          echo "Create a pull request from \`$branch\` into \`main\` using the title \`chore(publishing): approve editorial snapshot\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "The pull request will trigger the required build check. Merge only after the check passes and the snapshot is reviewed." >> "$GITHUB_STEP_SUMMARY"
+          echo "[Open the compare page](https://github.com/${GH_REPO}/compare/main...${branch}?expand=1)" >> "$GITHUB_STEP_SUMMARY"
