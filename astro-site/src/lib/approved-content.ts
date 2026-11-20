@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { assertApprovedContent } from "../../scripts/approved-content.mjs";
 import type { NotionBlock, NotionDomain, NotionFieldGuideEntry } from "./notion";
 
@@ -19,12 +19,12 @@ export interface ApprovedSnapshot {
   articles: ApprovedArticle[];
 }
 
-const snapshotUrl = new URL("../content/field-guide-approved.json", import.meta.url);
+// Astro bundles this module into dist/.prerender; module-relative file URLs\n// would point inside the build output rather than the checked-in source.\nconst snapshotPath = resolve(process.cwd(), "src/content/field-guide-approved.json");
 
 export async function readApprovedSnapshot(): Promise<ApprovedSnapshot> {
   let source: string;
   try {
-    source = await readFile(fileURLToPath(snapshotUrl), "utf8");
+    source = await readFile(snapshotPath, "utf8");
   } catch (error) {
     throw new Error(
       "No approved Field Guide snapshot is available. Run the controlled initial editorial snapshot bootstrap before enabling snapshot builds.",
