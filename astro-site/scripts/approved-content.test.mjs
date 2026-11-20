@@ -45,7 +45,7 @@ test("unexpected operations fail closed", () => {
 test("snapshot rejects expiring notion-hosted images", () => {
   const withImage = article("a", "existing");
   withImage.blocks.push({ type: "image", image: { type: "file", file: { url: "https://example.com/temporary" } } });
-  assert.throws(() => assertApprovedContent({ ...baseline, articles: [withImage] }), /Expiring notion image/);
+  assert.throws(() => assertApprovedContent({ ...baseline, articles: [withImage] }), /Expiring notion media/);
 });
 
 test("snapshot rejects classifications outside approved domains", () => {
@@ -87,4 +87,12 @@ test("release metadata must agree with the approved article set", () => {
   assert.throws(() => assertApprovedContent({ ...baseline, releaseOperations: [{ ...operation, slug: "incorrect" }] }), /does not match snapshot/);
   assert.throws(() => assertApprovedContent({ ...baseline, releaseOperations: [{ ...operation, status: "Queued Unpublish" }] }), /remains in snapshot/);
   assert.throws(() => assertApprovedContent({ ...baseline, releaseOperations: [operation, operation] }), /Duplicate release operation/);
+});
+
+test("snapshot rejects other expiring Notion-hosted media", () => {
+  for (const type of ["video", "audio", "file", "pdf"]) {
+    const withMedia = article("a", "existing");
+    withMedia.blocks.push({ type, [type]: { type: "file", file: { url: "https://example.com/temporary" } } });
+    assert.throws(() => assertApprovedContent({ ...baseline, articles: [withMedia] }), /Expiring notion media/);
+  }
 });
