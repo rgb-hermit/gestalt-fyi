@@ -2,7 +2,7 @@ name: Build and deploy Astro site
 
 on:
   push:
-    branches: [main, astro-proof-of-concept, feature/editorial-snapshot-separation]
+    branches: [main, astro-proof-of-concept]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -26,67 +26,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  capture-initial-snapshot:
-    if: github.ref == 'refs/heads/feature/editorial-snapshot-separation' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    defaults:
-      run:
-        working-directory: astro-site
-    steps:
-      - uses: actions/checkout@v7
-      - name: check whether baseline has already been captured
-        id: baseline
-        run: |
-          if [ -f src/content/field-guide-approved.json ]; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-          fi
-      - uses: actions/setup-node@v7
-        if: steps.baseline.outputs.exists == 'false'
-        with:
-          node-version: "24"
-          cache: npm
-          cache-dependency-path: astro-site/package-lock.json
-      - name: capture candidate from published notion articles
-        if: steps.baseline.outputs.exists == 'false'
-        env:
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
-        run: node scripts/capture-initial-snapshot.mjs
-      - name: prepare candidate snapshot for local build
-        if: steps.baseline.outputs.exists == 'false'
-        run: |
-          mkdir -p src/content
-          cp .release/initial-baseline-candidate.json src/content/field-guide-approved.json
-      - run: npm ci
-        if: steps.baseline.outputs.exists == 'false'
-      - name: verify publishing tests and build without notion credentials
-        if: steps.baseline.outputs.exists == 'false'
-        env:
-          NOTION_API_TOKEN: ""
-        run: |
-          npm run test:publishing
-          npm run build
-      - uses: actions/upload-artifact@v6
-        if: steps.baseline.outputs.exists == 'false'
-        with:
-          name: initial-snapshot-candidate
-          path: astro-site/.release/initial-baseline-candidate.json
-          if-no-files-found: error
-          retention-days: 7
-      - name: commit captured baseline to the feature branch
-        if: steps.baseline.outputs.exists == 'false'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/content/field-guide-approved.json
-          git commit -m "chore(publishing): commit initial approved snapshot candidate"
-          git push origin HEAD:feature/editorial-snapshot-separation
-
   build:
-    if: github.ref != 'refs/heads/feature/editorial-snapshot-separation'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -106,8 +46,6 @@ jobs:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
         run: node scripts/editorial-release.mjs capture
       - run: npm run build
-        env:
-          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
       - name: verify queued articles against built site
         if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
         env:
