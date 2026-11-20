@@ -118,6 +118,7 @@ async function createCandidate(entries) {
   }
   const snapshot = applyEditorialOperations(baseline, entries, candidates);
   snapshot.releaseId = process.env.GITHUB_RUN_ID ?? `editorial-${Date.now()}`;
+  snapshot.releaseOperations = entries;
   await writeFile("src/content/field-guide-approved.json", JSON.stringify(snapshot, null, 2) + "\n");
   await writeFile(".release/candidate.json", JSON.stringify(snapshot, null, 2) + "\n");
   console.log(`Prepared candidate snapshot with ${snapshot.articles.length} articles`);
@@ -155,7 +156,11 @@ async function verifyBuilt() {
 }
 
 async function acknowledge() {
-  const entries = JSON.parse(await readFile(recordPath, "utf8"));
+  const snapshot = assertApprovedContent(JSON.parse(await readFile("src/content/field-guide-approved.json", "utf8")));
+  const entries = snapshot.releaseOperations;
+  if (!Array.isArray(entries) || entries.length === 0) {
+    throw new Error("No editorial release operations in deployed snapshot");
+  }
   let skipped = 0;
   for (const entry of entries) {
     const current = details(await request(`/pages/${entry.id}`));
