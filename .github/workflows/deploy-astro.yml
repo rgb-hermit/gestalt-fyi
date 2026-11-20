@@ -101,8 +101,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/content/field-guide-approved.json
-          git commit -m "chore(publishing): promote deployed editorial snapshot"
+          git commit -m "chore(publishing): promote deployed editorial snapshot [skip ci]"
           git push origin HEAD:main
+      - name: verify deployed snapshot was promoted
+        working-directory: astro-site
+        run: |
+          cmp .release/candidate.json src/content/field-guide-approved.json
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
       - name: acknowledge successfully deployed articles in Notion
         working-directory: astro-site
         env:
