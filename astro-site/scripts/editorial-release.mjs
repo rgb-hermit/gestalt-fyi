@@ -110,7 +110,7 @@ async function acknowledge() {
     }
     const deployed = entry.status === "Queued Publish";
     const properties = {
-      "Publication status": { select: { name: deployed ? "Deployed" : "Unpublished" } },
+      "Publication status": { select: { name: deployed ? "Deployed" : "Undeployed" } },
     };
     if (deployed) {
       const now = new Date().toISOString();
