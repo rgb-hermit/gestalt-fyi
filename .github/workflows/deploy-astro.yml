@@ -40,6 +40,11 @@ jobs:
           cache-dependency-path: astro-site/package-lock.json
       - run: npm ci
       - run: npm run test:publishing
+      - name: block editorial deployment until snapshot promotion is safe
+        if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
+        run: |
+          echo "::error::Editorial releases are temporarily blocked: the protected main branch requires a pull request, so post-deployment snapshot promotion cannot succeed safely."
+          exit 1
       - name: capture queued editorial changes
         if: github.event_name == 'workflow_dispatch' && inputs.release_type == 'editorial' && github.ref == 'refs/heads/main'
         env:
