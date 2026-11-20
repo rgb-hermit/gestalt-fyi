@@ -69,7 +69,25 @@ jobs:
           NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
         run: |
           set -euo pipefail
-          gh pr checks "${{ steps.pr.outputs.url }}" --watch --fail-fast
+          # Newly created PRs may not have a check run yet. Wait for one to appear.
+          ready=0
+          for attempt in $(seq 1 30); do
+            if gh pr checks "${{ steps.pr.outputs.url }}" --required --json name,state --jq 'length' 2>/dev/null | grep -Eq '^[1-9][0-9]*
+          cd astro-site
+          node scripts/editorial-release.mjs verify-built
+          cd ..
+          gh pr merge "${{ steps.pr.outputs.url }}" --squash --delete-branch --subject "chore(publishing): approve editorial snapshot"
+; then
+              ready=1
+              break
+            fi
+            sleep 10
+          done
+          if [[ "$ready" != 1 ]]; then
+            echo "::error::Required PR checks did not appear within five minutes"
+            exit 1
+          fi
+          gh pr checks "${{ steps.pr.outputs.url }}" --required --watch --fail-fast
           cd astro-site
           node scripts/editorial-release.mjs verify-built
           cd ..
