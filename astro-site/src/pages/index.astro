@@ -23,9 +23,9 @@ import Layout from "../layouts/Layout.astro";
       </aside>
 
       <nav class="home-navigation" aria-label="Main navigation">
-    <a href="/" aria-current="page">Home</a>
+    <a href="/" class="text-link" aria-current="page">Home</a>
   
-    <a href="/field-guide/" target="_blank" rel="noopener noreferrer">
+    <a href="/field-guide/" class="text-link" target="_blank" rel="noopener noreferrer">
       Field Guide
       <svg
         class="home-external-icon"
@@ -44,12 +44,12 @@ import Layout from "../layouts/Layout.astro";
       <span class="visually-hidden">(opens in a new tab)</span>
     </a>
   
-    <span class="home-nav-soon" tabindex="0" aria-label="Words — coming soon">
+    <span class="home-nav-soon text-link is-unavailable" tabindex="0" aria-label="Words — coming soon">
       Words
       <span class="home-nav-tooltip" aria-hidden="true">Coming soon</span>
     </span>
   
-    <span class="home-nav-soon" tabindex="0" aria-label="Experiments — coming soon">
+    <span class="home-nav-soon text-link is-unavailable" tabindex="0" aria-label="Experiments — coming soon">
       Experiments
       <span class="home-nav-tooltip" aria-hidden="true">Coming soon</span>
     </span>

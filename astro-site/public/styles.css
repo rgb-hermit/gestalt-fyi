@@ -84,6 +84,36 @@ a {
   color: inherit;
 }
 
+/* shared text links */
+
+.text-link {
+  color: var(--smart-blue);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text-link:hover {
+  color: var(--forest);
+}
+
+.text-link:focus-visible {
+  outline: 2px solid var(--smart-blue);
+  outline-offset: 4px;
+}
+
+.text-link[aria-current="page"],
+.text-link.is-current {
+  color: var(--forest);
+  text-decoration: none;
+}
+
+.text-link.is-unavailable {
+  color: var(--forest-muted);
+  text-decoration: none;
+}
+
 :focus-visible {
   outline: 2px solid var(--smart-blue);
   outline-offset: 4px;

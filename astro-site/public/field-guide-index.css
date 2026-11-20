@@ -155,22 +155,8 @@
   position: relative;
   display: block;
   padding: 8px 0;
-  color: var(--smart-blue);
-  font-size: 12px;
   line-height: 1.4;
-  text-decoration: underline;
   transition: color 150ms ease;
-  font-family: var(--mono);
-  text-underline-offset: 2px;
-}
-
-.domain-item.is-unavailable {
-  color: var(--forest-muted);
-  text-decoration: none;
-}
-
-a.domain-item:hover {
-  color: var(--forest);
 }
 
 .domain-item:focus-visible {
@@ -179,9 +165,7 @@ a.domain-item:hover {
 }
 
 .domain-item.is-selected {
-  color: var(--forest);
   font-weight: 400;
-  text-decoration: none;
 }
 
 .domain-item.is-selected::before {

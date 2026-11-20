@@ -85,18 +85,6 @@
   align-items: baseline;
   gap: 4px;
   width: fit-content;
-  font: inherit;
-}
-
-.home-navigation > a {
-  color: var(--smart-blue);
-  text-decoration: underline;
-}
-
-.home-navigation > a[aria-current="page"] {
-  color: var(--forest);
-  font-weight: 400;
-  text-decoration: none;
 }
 
 .home-navigation > a[aria-current="page"]::before {
@@ -114,8 +102,6 @@
 }
 
 .home-navigation > .home-nav-soon {
-  color: var(--forest-muted);
-  text-decoration: none;
   cursor: help;
 }
 
