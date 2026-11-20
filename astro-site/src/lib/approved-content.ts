@@ -19,7 +19,9 @@ export interface ApprovedSnapshot {
   articles: ApprovedArticle[];
 }
 
-// Astro bundles this module into dist/.prerender; module-relative file URLs\n// would point inside the build output rather than the checked-in source.\nconst snapshotPath = resolve(process.cwd(), "src/content/field-guide-approved.json");
+// Astro bundles this module into dist/.prerender; module-relative file URLs
+// would point inside the build output rather than the checked-in source.
+const snapshotPath = resolve(process.cwd(), "src/content/field-guide-approved.json");
 
 export async function readApprovedSnapshot(): Promise<ApprovedSnapshot> {
   let source: string;
