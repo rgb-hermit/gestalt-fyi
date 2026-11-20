@@ -13,6 +13,7 @@ export function validateApprovedContent(snapshot) {
   if (!snapshot.releaseId || typeof snapshot.releaseId !== "string") {
     errors.push("Approved content requires a releaseId");
   }
+  const domainNames = new Set(snapshot.domains.map((domain) => domain?.name));
   const slugs = new Set();
   const ids = new Set();
   for (const article of snapshot.articles) {
@@ -38,7 +39,25 @@ export function validateApprovedContent(snapshot) {
     if (!Array.isArray(article.domains) || !Array.isArray(article.types)) {
       errors.push(`Missing classification arrays: ${article.slug}`);
     }
-    if (!Array.isArray(article.blocks)) errors.push(`Missing article blocks: ${article.slug}`);
+    if (!Array.isArray(article.blocks)) {
+      errors.push(`Missing article blocks: ${article.slug}`);
+    } else {
+      // signed notion-hosted file links expire; snapshot media must be durable.
+      const inspect = (blocks) => {
+        for (const block of blocks) {
+          if (block.type === "image" && block.image?.type === "file") {
+            errors.push(`Expiring notion image in article: ${article.slug}`);
+          }
+          if (Array.isArray(block.children)) inspect(block.children);
+        }
+      };
+      inspect(article.blocks);
+    }
+    if (Array.isArray(article.domains)) {
+      for (const domain of article.domains) {
+        if (!domainNames.has(domain)) errors.push(`Unknown domain "${domain}" in article: ${article.slug}`);
+      }
+    }
   }
   for (const domain of snapshot.domains) {
     if (!domain || typeof domain.name !== "string" || typeof domain.description !== "string") {
