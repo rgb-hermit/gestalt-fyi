@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import { applyEditorialOperations, assertApprovedContent } from "./approved-content.mjs";
 
 const article = (id, slug, title = slug) => ({
@@ -56,4 +57,21 @@ test("duplicate operations fail rather than silently overriding a release", () =
   assert.throws(() => applyEditorialOperations(baseline,
     [{ id: "a", status: "Queued Publish" }, { id: "a", status: "Queued Unpublish" }],
     [article("a", "existing", "Revised")]), /Duplicate editorial operation/);
+});
+
+test("committed baseline contains the eight approved articles and seven domains", async () => {
+  const snapshot = JSON.parse(await readFile(new URL("../src/content/field-guide-approved.json", import.meta.url), "utf8"));
+  assert.equal(assertApprovedContent(snapshot), snapshot);
+  assert.equal(snapshot.articles.length, 8);
+  assert.equal(snapshot.domains.length, 7);
+});
+
+test("unrelated editorial operations cannot alter a published article", () => {
+  const original = article("a", "existing", "Approved text");
+  const saved = { ...baseline, articles: [original] };
+  const result = applyEditorialOperations(saved,
+    [{ id: "b", status: "Queued Publish" }],
+    [article("b", "new-article", "New article"), article("a", "existing", "Unqueued draft")]);
+  assert.equal(result.articles.find((entry) => entry.notionPageId === "a").title, "Approved text");
+  assert.equal(result.articles.find((entry) => entry.notionPageId === "b").title, "New article");
 });
