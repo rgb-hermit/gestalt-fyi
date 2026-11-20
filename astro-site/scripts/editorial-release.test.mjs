@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { releaseChange } from "./editorial-release.mjs";
+import { releaseChange, alreadyAcknowledged } from "./editorial-release.mjs";
 
 const queued = {
   id: "page-a", status: "Queued Publish", editorial: "Ready",
@@ -31,4 +31,13 @@ test("article no longer ready is not acknowledged", () => {
 });
 test("missing current record is rejected", () => {
   assert.match(releaseChange(queued, null), /changed/);
+});
+
+test("acknowledgement retries do not rewrite already deployed publication dates", () => {
+  assert.equal(alreadyAcknowledged(queued, { ...queued, status: "Deployed" }), true);
+  assert.equal(alreadyAcknowledged(queued, { ...queued, status: "Published" }), true);
+  assert.equal(alreadyAcknowledged(queued, { ...queued, status: "Queued Publish" }), false);
+  const removing = { ...queued, status: "Queued Unpublish" };
+  assert.equal(alreadyAcknowledged(removing, { ...removing, status: "Undeployed" }), true);
+  assert.equal(alreadyAcknowledged(removing, { ...removing, status: "Queued Unpublish" }), false);
 });
