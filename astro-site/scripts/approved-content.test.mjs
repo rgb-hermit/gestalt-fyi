@@ -75,3 +75,8 @@ test("unrelated editorial operations cannot alter a published article", () => {
   assert.equal(result.articles.find((entry) => entry.notionPageId === "a").title, "Approved text");
   assert.equal(result.articles.find((entry) => entry.notionPageId === "b").title, "New article");
 });
+
+test("unpublishing an article absent from the approved baseline fails closed", () => {
+  assert.throws(() => applyEditorialOperations(baseline,
+    [{ id: "missing", status: "Queued Unpublish" }], []), /absent from approved snapshot/);
+});
