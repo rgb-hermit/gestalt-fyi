@@ -158,9 +158,7 @@ if (referencesHeadingIndex !== -1) {
     <div class="article-content">
       <nav class="article-breadcrumb" aria-label="Breadcrumb">
   <ol>
-    <li>
-      <a href="/field-guide/">Field Guide</a>
-    </li>
+    <li><a href="/field-guide/" class="text-link">Field Guide</a></li>
     <li aria-current="page">{title}</li>
   </ol>
 </nav>
@@ -178,12 +176,12 @@ if (referencesHeadingIndex !== -1) {
             <ol>
               {tocSections.map((section) => (
                 <li>
-                  <a href={`#${section.id}`}>{section.heading}</a>
+                  <a href={`#${section.id}`} class="text-link">{section.heading}</a>
                   {section.children.length > 0 && (
                     <ol class="toc-subsections">
                       {section.children.map((child) => (
                         <li>
-                          <a href={`#${child.id}`}>{child.heading}</a>
+                          <a href={`#${child.id}`} class="text-link">{child.heading}</a>
                         </li>
                       ))}
                     </ol>
@@ -201,12 +199,12 @@ if (referencesHeadingIndex !== -1) {
             <ol>
               {tocSections.map((section) => (
                 <li>
-                  <a href={`#${section.id}`}>{section.heading}</a>
+                  <a href={`#${section.id}`} class="text-link">{section.heading}</a>
                   {section.children.length > 0 && (
                     <ol class="toc-subsections">
                       {section.children.map((child) => (
                         <li>
-                          <a href={`#${child.id}`}>{child.heading}</a>
+                          <a href={`#${child.id}`} class="text-link">{child.heading}</a>
                         </li>
                       ))}
                     </ol>
@@ -443,6 +441,7 @@ if (referencesHeadingIndex !== -1) {
                   <span class="reference-title">{reference.title}</span>{" "}
                   <a
                     href={reference.url}
+                    class="text-link"
                     aria-label={`Open source: ${reference.title}`}
                   >
                     [link]

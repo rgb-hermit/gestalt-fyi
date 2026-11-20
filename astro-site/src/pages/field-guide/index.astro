@@ -64,7 +64,7 @@ const domainDescriptions = Object.fromEntries(
               {domains.map((domain) => (
                 <li>
                   {domain !== "All" && !activeDomains.has(domain) ? (
-                    <span class="domain-item is-unavailable">{domain}</span>
+                    <span class="domain-item text-link is-unavailable">{domain}</span>
                   ) : (
                     <a
                       href={
@@ -74,6 +74,7 @@ const domainDescriptions = Object.fromEntries(
                       }
                       class:list={[
                         "domain-item",
+                        "text-link",
                         { "is-selected": domain === "All" },
                       ]}
                       aria-current={domain === "All" ? "page" : undefined}
@@ -103,7 +104,7 @@ const domainDescriptions = Object.fromEntries(
               {domains.map((domain) => (
                 <li>
                   {domain !== "All" && !activeDomains.has(domain) ? (
-                    <span class="domain-item is-unavailable">{domain}</span>
+                    <span class="domain-item text-link is-unavailable">{domain}</span>
                   ) : (
                     <a
                       href={
@@ -113,6 +114,7 @@ const domainDescriptions = Object.fromEntries(
                       }
                       class:list={[
                         "domain-item",
+                        "text-link",
                         { "is-selected": domain === "All" },
                       ]}
                       aria-current={domain === "All" ? "page" : undefined}
