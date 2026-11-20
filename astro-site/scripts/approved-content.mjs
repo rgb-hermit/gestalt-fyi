@@ -13,6 +13,31 @@ export function validateApprovedContent(snapshot) {
   if (!snapshot.releaseId || typeof snapshot.releaseId !== "string") {
     errors.push("Approved content requires a releaseId");
   }
+  if (snapshot.releaseOperations !== undefined) {
+    if (!Array.isArray(snapshot.releaseOperations) || snapshot.releaseOperations.length === 0) {
+      errors.push("Release operations must be a non-empty array");
+    } else {
+      const seenOperations = new Set();
+      for (const operation of snapshot.releaseOperations) {
+        if (!operation || !["Queued Publish", "Queued Unpublish"].includes(operation.status) ||
+            typeof operation.id !== "string" || typeof operation.slug !== "string" ||
+            typeof operation.lastEdited !== "string") {
+          errors.push("Invalid release operation");
+          continue;
+        }
+        if (seenOperations.has(operation.id)) errors.push(`Duplicate release operation: ${operation.id}`);
+        seenOperations.add(operation.id);
+        const matchingArticle = snapshot.articles.find((article) => article.notionPageId === operation.id);
+        if (operation.status === "Queued Publish" &&
+            (!matchingArticle || matchingArticle.slug !== operation.slug)) {
+          errors.push(`Published release operation does not match snapshot: ${operation.id}`);
+        }
+        if (operation.status === "Queued Unpublish" && matchingArticle) {
+          errors.push(`Unpublished release operation remains in snapshot: ${operation.id}`);
+        }
+      }
+    }
+  }
   const domainNames = new Set(snapshot.domains.map((domain) => domain?.name));
   const slugs = new Set();
   const ids = new Set();
