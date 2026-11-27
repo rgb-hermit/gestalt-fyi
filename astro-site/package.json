@@ -13,7 +13,7 @@
     "test:publishing": "node --test scripts/editorial-release.test.mjs scripts/approved-content.test.mjs scripts/release-trigger.test.mjs"
   },
   "dependencies": {
-    "astro": "^7.4.12",
+    "astro": "^7.4.13",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
