@@ -35,6 +35,9 @@
   --body: "Roboto", system-ui, sans-serif;
   --serif: "Roboto Serif", georgia, serif;
   --mono: "Roboto Mono", "SFMono-Regular", consolas, monospace;
+  --site-navigation-width: 180px;
+  --site-column-gap: 32px;
+  --field-guide-breadcrumb-gap: 64px;
   --field-guide-gutter: clamp(24px, 5vw, 80px);
   --page-width: 1440px;
   --page-gutter: clamp(24px, 5.5vw, 80px);
@@ -153,20 +156,49 @@ a {
 }
 
 .breadcrumb-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  position: relative;
+  padding-inline-start: 20px;
 }
 
 .breadcrumb-back svg {
-  display: block;
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
   width: 16px;
   height: 16px;
-  flex: none;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .breadcrumb [aria-current="page"] {
   color: var(--forest);
+}
+
+.guide-header {
+  margin-bottom: 80px;
+}
+
+.guide-header h1 {
+  margin: 0 0 28px;
+  color: var(--forest);
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+}
+
+.guide-summary {
+  max-width: 560px;
+  margin: 0;
+  color: var(--ink);
+  font: 400 16px/1.85 var(--body);
+}
+
+@media (width <= 760px) {
+  .guide-header {
+    margin-bottom: 56px;
+  }
 }
 
 .page-shell {
