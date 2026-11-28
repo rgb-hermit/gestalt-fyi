@@ -1,4 +1,5 @@
 ---
+import FieldGuideBreadcrumb from "../../components/FieldGuideBreadcrumb.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getApprovedEntries, getApprovedDomains } from "../../lib/approved-content";
 
@@ -25,12 +26,7 @@ const domainDescriptions = Object.fromEntries(
   <link rel="stylesheet" href="/field-guide-index.css" />
   <div class="page-shell field-guide-shell">
     <div class="field-guide-header-band">
-      <nav class="breadcrumb index-breadcrumb" aria-label="Breadcrumb">
-        <ol>
-          <li><a href="/" class="text-link">Home</a></li>
-          <li aria-current="page">Field Guide</li>
-        </ol>
-      </nav>
+      <FieldGuideBreadcrumb class="index-breadcrumb" href="/" parent="Home" current="Field Guide" />
 
       <header class="index-intro">
         <img class="index-intro-artwork" src="/images/mono-botanical.png" alt="" />
