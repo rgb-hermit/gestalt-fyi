@@ -35,6 +35,9 @@
   --body: "Roboto", system-ui, sans-serif;
   --serif: "Roboto Serif", georgia, serif;
   --mono: "Roboto Mono", "SFMono-Regular", consolas, monospace;
+  --site-navigation-width: 180px;
+  --site-column-gap: 32px;
+  --field-guide-breadcrumb-gap: 64px;
   --field-guide-gutter: clamp(24px, 5vw, 80px);
   --page-width: 1440px;
   --page-gutter: clamp(24px, 5.5vw, 80px);
@@ -152,21 +155,37 @@ a {
   color: var(--sage);
 }
 
-.breadcrumb-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.breadcrumb-back svg {
-  display: block;
-  width: 16px;
-  height: 16px;
-  flex: none;
-}
-
 .breadcrumb [aria-current="page"] {
   color: var(--forest);
+}
+
+.guide-header {
+  margin-bottom: 80px;
+}
+
+.guide-header h1,
+.home-content .hero-title {
+  margin: 0 0 28px;
+  color: var(--forest);
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+}
+
+.guide-summary,
+.home-content .hero-copy {
+  max-width: 560px;
+  margin: 0;
+  color: var(--ink);
+  font: 400 16px/1.85 var(--body);
+}
+
+@media (width <= 760px) {
+  .guide-header {
+    margin-bottom: 56px;
+  }
 }
 
 .page-shell {
@@ -177,6 +196,18 @@ a {
   min-height: 100vh;
   margin-inline: auto;
   padding: 0 var(--page-gutter);
+}
+
+.field-guide-shell {
+  max-width: calc(900px + 2 * var(--field-guide-gutter));
+  padding: var(--field-guide-gutter);
+  background: var(--ivory);
+  color: var(--ink);
+  color-scheme: light;
+}
+
+.field-guide-breadcrumb {
+  margin-bottom: var(--field-guide-breadcrumb-gap);
 }
 
 /* --------------------------------

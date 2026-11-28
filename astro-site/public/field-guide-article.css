@@ -1,37 +1,6 @@
 /* field guide article styles */
 
-.field-guide-article {
-  min-height: 100vh;
-  background: var(--ivory);
-  color: var(--ink);
-  color-scheme: light;
-  padding: var(--field-guide-gutter);
-  box-sizing: border-box;
-}
 
-.article-content {
-  width: 100%;
-  max-width: 900px;
-  margin-inline: auto;
-}
-
-.article-content h1 {
-  margin: 48px 0 32px;
-  color: var(--forest);
-  font-family: var(--serif);
-  font-size: clamp(36px, 5vw, 52px);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.055em;
-}
-
-/* article nav */
-
-/* article breadcrumb */
-
-.article-breadcrumb {
-  margin-bottom: 64px;
-}
 
 .article-toc a {
   line-height: 1.6;
@@ -50,35 +19,24 @@
 /* article header */
 
 .article-header {
-  margin-bottom: 80px;
   position: relative;
   isolation: isolate;
 }
 
-.article-category {
+.article-category,
+.article-toc .toc-label,
+.article-references-preview h2 {
   margin: 0 0 20px;
   color: var(--forest);
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 400;
+  line-height: 1.7;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.article-header h1 {
-  margin: 0 0 28px;
-}
-
 /* article typography */
-
-.article-content .article-summary {
-  font-family: var(--body);
-  color: var(--ink);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.85;
-  max-width: 560px;
-}
 
 .article-body p {
   margin: 0 0 24px;
@@ -124,15 +82,6 @@
   margin: 0 0 48px;
 }
 
-.article-toc .toc-label {
-  margin: 0 0 20px;
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--forest);
-}
-
 .article-toc ol {
   margin: 0;
   padding: 0;
@@ -164,15 +113,6 @@
 .article-references-preview {
   margin-top: 0;
   padding-top: 0;
-}
-
-.article-references-preview h2 {
-  margin: 0 0 20px;
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--forest);
 }
 
 .article-references-preview ol {
@@ -218,9 +158,9 @@
 
 .article-layout {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
+  grid-template-columns: var(--site-navigation-width) minmax(0, 1fr);
   grid-template-rows: auto 1fr;
-  gap: 32px;
+  gap: var(--site-column-gap);
   align-items: start;
 }
 
@@ -301,11 +241,6 @@
     grid-template-columns: 1fr;
     grid-template-rows: none;
     gap: 32px;
-  }
-
-  /* mobile: reduce space below article header */
-  .article-header {
-    margin-bottom: 56px;
   }
 
   /* mobile: separate references from article content */

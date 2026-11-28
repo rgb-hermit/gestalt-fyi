@@ -1,49 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import SiteCopyPage from "../components/SiteCopyPage.astro";
 import home from "../content/home-copy.json";
 ---
 
-<Layout
+<SiteCopyPage
   title="gestalt.fyi / People before technology"
   description="Product design, human behaviour and thoughtful technology."
->
-  <link rel="stylesheet" href="/home.css" />
-  <div class="page-shell home-page">
-    <div class="home-layout">
-    <aside class="home-sidebar">
-      <div class="home-artwork">
-        <p class="home-status site-label">Perpetually under construction</p>
-        <img
-          src="/images/mono-botanical.png"
-          alt=""
-          class="home-botanical"
-          width="466"
-          height="861"
-        />
-      </div>
-      </aside>
-
-      <nav class="home-navigation" aria-label="Main navigation">
-        <a href="/" class="text-link" aria-current="page">Home</a>
-        <a href="/field-guide/" class="text-link">Field Guide</a>
-      </nav>
-
-    <main id="main-content" class="home-content">
-     <h1 class="hero-title">
-  {home.heading.split("\n").map((line, index) => (
-    <Fragment>
-      {index > 0 && <br />}
-      {line}
-    </Fragment>
-  ))}
-</h1>
-
-<div class="hero-copy">
-  {home.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-</div>
-      
-    </main>
-    </div>
-  </div>
-
-</Layout>
+  current="home"
+  copy={home}
+/>

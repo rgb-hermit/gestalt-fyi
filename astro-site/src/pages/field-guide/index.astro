@@ -25,21 +25,16 @@ const domainDescriptions = Object.fromEntries(
 >
   <link rel="stylesheet" href="/field-guide-index.css" />
   <div class="page-shell field-guide-shell">
-    <div class="field-guide-header-band">
-      <FieldGuideBreadcrumb class="index-breadcrumb" href="/" parent="Home" current="Field Guide" />
+    <FieldGuideBreadcrumb current="Field Guide" />
 
-      <header class="index-intro">
-        <img class="index-intro-artwork" src="/images/mono-botanical.png" alt="" />
-        <div class="index-intro-content">
-          <h1>Field Guide</h1>
-          <p>
-            A growing collection of UX concepts, cognitive biases, research
-            methods and design principles, with a focus on how people actually
-            think, feel and behave.
-          </p>
-        </div>
-      </header>
-    </div>
+    <header class="guide-header index-intro">
+      <h1>Field Guide</h1>
+      <p class="guide-summary">
+        A growing collection of UX concepts, cognitive biases, research
+        methods and design principles, with a focus on how people actually
+        think, feel and behave.
+      </p>
+    </header>
 
     <main id="main-content" class="field-guide-index">
       <div class="index-layout">

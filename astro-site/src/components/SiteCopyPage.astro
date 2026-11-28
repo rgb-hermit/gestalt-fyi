@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  current: "home" | "about";
+  copy: { heading: string; paragraphs: string[] };
+}
+
+const { title, description, current, copy } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <link rel="stylesheet" href="/home.css" />
+  <div class="page-shell home-page">
+    <div class="home-layout">
+      <nav class="breadcrumb home-navigation" aria-label="Main navigation">
+        <ol>
+          <li><a href="/" class="text-link" aria-current={current === "home" ? "page" : undefined}>Home</a></li>
+          <li><a href="/about/" class="text-link" aria-current={current === "about" ? "page" : undefined}>About</a></li>
+          <li><a href="/field-guide/" class="text-link">Field Guide</a></li>
+        </ol>
+      </nav>
+
+      <main id="main-content" class="home-content">
+        <p class="home-status site-label">Perpetually under construction</p>
+        <h1 class="hero-title">
+          {copy.heading.split("\n").map((line, index) => (
+            <Fragment>
+              {index > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
+        </h1>
+        <div class="hero-copy">
+          {copy.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </main>
+
+      <div class="home-artwork">
+        <img
+          src="/images/mono-botanical.png"
+          alt=""
+          class="home-botanical"
+          width="466"
+          height="861"
+        />
+      </div>
+    </div>
+  </div>
+
+</Layout>
