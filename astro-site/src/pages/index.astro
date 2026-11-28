@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import home from "../content/home-copy.json";
 ---
 
 <Layout
-  title="gestalt.fyi — People before technology"
+  title="gestalt.fyi / People before technology"
   description="Product design, human behaviour and thoughtful technology."
 >
   <link rel="stylesheet" href="/home.css" />
@@ -56,26 +57,18 @@ import Layout from "../layouts/Layout.astro";
   </nav>
 
     <main id="main-content" class="home-content">
-      <h1 class="hero-title">
-        People before technology.
-        <br />
-        Technology for people.
-      </h1>
+     <h1 class="hero-title">
+  {home.heading.split("\n").map((line, index) => (
+    <Fragment>
+      {index > 0 && <br />}
+      {line}
+    </Fragment>
+  ))}
+</h1>
 
-      <div class="hero-copy">
-        <p>
-          An ongoing attempt to make sense of the messy, complicated, and often
-          absurd experience of being human. Why we think the way we think, and
-          do the things we do. How the systems we create inevitably shape us in
-          return, and whether the technology we're building actually makes
-          anything better.
-        </p>
-
-        <p>
-          Connecting dots, questioning assumptions, noticing patterns. Pulling
-          at threads to see where they lead, or if they lead anywhere at all.
-        </p>
-      </div>
+<div class="hero-copy">
+  {home.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+</div>
       
     </main>
     </div>

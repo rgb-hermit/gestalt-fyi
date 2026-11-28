@@ -3,8 +3,11 @@ import { writeFile } from "node:fs/promises";
 const token = process.env.NOTION_SITE_COPY_TOKEN;
 if (!token) throw new Error("NOTION_SITE_COPY_TOKEN is missing.");
 
-const pageLink = process.argv[2];
-if (!pageLink) throw new Error("Pass the Notion About page link.");
+const [pageLink, page = "about"] = process.argv.slice(2);
+if (page !== "home" && page !== "about") {
+  throw new Error("Choose home or about.");
+}
+if (!pageLink) throw new Error("Pass the Notion page link.");
 
 const path = new URL(pageLink).pathname.replace(/\/$/, "");
 const pageId = path.match(/[a-f0-9]{32}$/i)?.[0];
@@ -23,18 +26,30 @@ const response = await fetch(
 if (!response.ok) throw new Error(`Notion returned HTTP ${response.status}.`);
 
 const { results, has_more: hasMore } = await response.json();
-if (hasMore) throw new Error("The draft exceeds the 100-block pilot limit.");
+if (hasMore) throw new Error("The page exceeds the 100-block import limit.");
+
+const plainText = (block) =>
+  block[block.type].rich_text.map((part) => part.plain_text).join("");
 
 const paragraphs = results
   .filter((block) => block.type === "paragraph")
-  .map((block) => block.paragraph.rich_text.map((part) => part.plain_text).join(""))
+  .map(plainText)
   .filter((paragraph) => paragraph.trim());
 
 if (paragraphs.length === 0) {
-  throw new Error("No paragraphs found. The draft file was left as it was.");
+  throw new Error("No paragraphs found. No copy was written.");
 }
 
-const draft = { heading: "About", paragraphs };
-const output = new URL("../src/content/about-draft.json", import.meta.url);
-await writeFile(output, JSON.stringify(draft, null, 2) + "\n");
-console.log("Updated about-draft.json from Notion.");
+let heading = "About";
+let filename = "about-draft.json";
+
+if (page === "home") {
+  const headingBlock = results.find((block) => block.type === "heading_1");
+  heading = headingBlock ? plainText(headingBlock).trim() : "";
+  if (!heading) throw new Error("Home needs a Heading 1 block in Notion.");
+  filename = "home-copy.json";
+}
+
+const output = new URL(`../src/content/${filename}`, import.meta.url);
+await writeFile(output, JSON.stringify({ heading, paragraphs }, null, 2) + "\n");
+console.log(`Updated ${filename} from Notion.`);
