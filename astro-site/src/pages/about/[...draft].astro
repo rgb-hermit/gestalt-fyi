@@ -1,6 +1,10 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import about from "../content/about-draft.json";
+import Layout from "../../layouts/Layout.astro";
+import about from "../../content/about-draft.json";
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { draft: undefined } }] : [];
+}
 ---
 
 <Layout title={`${about.heading} · gestalt.fyi`}>
