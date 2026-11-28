@@ -198,6 +198,18 @@ a {
   padding: 0 var(--page-gutter);
 }
 
+.field-guide-shell {
+  max-width: calc(900px + 2 * var(--field-guide-gutter));
+  padding: var(--field-guide-gutter);
+  background: var(--ivory);
+  color: var(--ink);
+  color-scheme: light;
+}
+
+.field-guide-breadcrumb {
+  margin-bottom: var(--field-guide-breadcrumb-gap);
+}
+
 /* --------------------------------
    5. reduced motion
 -------------------------------- */
