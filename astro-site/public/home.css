@@ -16,29 +16,12 @@
 }
 
 .home-navigation {
-  display: grid;
-  justify-items: start;
-  width: min(100%, var(--site-navigation-width));
-  gap: 8px;
-  font: 400 12px/1.6 var(--mono);
-}
-
-.home-navigation > a {
-  position: relative;
-  padding-block: 4px;
-  transition: color 150ms ease;
-}
-
-.home-navigation > a[aria-current="page"]::before {
-  content: "/";
-  position: absolute;
-  inset-inline-start: -16px;
+  padding-top: var(--field-guide-gutter);
+  margin-bottom: var(--field-guide-breadcrumb-gap);
 }
 
 .home-content {
   min-width: 0;
-  padding-top: calc(var(--field-guide-gutter) + var(--field-guide-breadcrumb-gap));
-  margin-bottom: 80px;
 }
 
 .home-page .hero-title {
@@ -75,7 +58,9 @@
 }
 
 .home-status {
-  margin: 0 0 32px;
+  margin: 0 0 20px;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
 }
 
 .home-botanical {
@@ -93,8 +78,7 @@
   }
 
   .home-content {
-    padding: var(--field-guide-gutter) var(--field-guide-gutter) 0 0;
-    margin-bottom: 56px;
+    padding-inline-end: var(--field-guide-gutter);
   }
 
   .home-page .hero-title {
