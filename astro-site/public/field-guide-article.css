@@ -5,7 +5,7 @@
   background: var(--ivory);
   color: var(--ink);
   color-scheme: light;
-  padding: clamp(24px, 5vw, 80px);
+  padding: var(--field-guide-gutter);
   box-sizing: border-box;
 }
 
