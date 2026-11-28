@@ -25,6 +25,12 @@ const domainDescriptions = Object.fromEntries(
   <link rel="stylesheet" href="/field-guide-index.css" />
   <div class="page-shell field-guide-shell">
     <div class="field-guide-header-band">
+      <nav class="breadcrumb index-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/" class="text-link">Home</a></li>
+          <li aria-current="page">Field Guide</li>
+        </ol>
+      </nav>
 
       <header class="index-intro">
         <img class="index-intro-artwork" src="/images/mono-botanical.png" alt="" />
@@ -43,7 +49,7 @@ const domainDescriptions = Object.fromEntries(
       <div class="index-layout">
         <nav class="domain-navigation" aria-label="Field Guide domains">
           <div class="domain-navigation-desktop">
-            <h2 class="index-section-label">Domains</h2>
+            <h2 class="index-section-label site-label">Domains</h2>
 
             <ul>
               {domains.map((domain) => (
@@ -75,7 +81,7 @@ const domainDescriptions = Object.fromEntries(
 
           <details class="domain-navigation-disclosure">
             <summary>
-              <span class="domain-disclosure-label">DOMAINS</span>
+              <span class="domain-disclosure-label site-label">Domains</span>
               <span
                 class="domain-disclosure-current"
                 id="selected-domain-label"
@@ -119,7 +125,7 @@ const domainDescriptions = Object.fromEntries(
             <h2 id="results-heading" class="visually-hidden">
               All concepts
             </h2>
-            <span class="index-section-label">Alphabetical index</span>
+            <span class="index-section-label site-label">Alphabetical index</span>
           </div>
 
           <div
