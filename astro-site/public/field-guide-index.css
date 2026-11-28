@@ -28,19 +28,7 @@
 
 /* field guide index */
 
-.field-guide-shell {
-  --page-gutter: var(--field-guide-gutter);
 
-  max-width: calc(900px + 2 * var(--page-gutter));
-  background: var(--ivory);
-  color: var(--ink);
-  color-scheme: light;
-}
-
-.index-breadcrumb {
-  padding-top: var(--field-guide-gutter);
-  margin-bottom: var(--field-guide-breadcrumb-gap);
-}
 
 .field-guide-index {
   flex: 1;
