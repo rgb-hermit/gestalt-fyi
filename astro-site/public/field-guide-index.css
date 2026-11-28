@@ -38,6 +38,8 @@
 /* field guide index */
 
 .field-guide-shell {
+  --page-gutter: var(--field-guide-gutter);
+
   max-width: calc(900px + 2 * var(--page-gutter));
   background: var(--ivory);
   color: var(--ink);
@@ -64,7 +66,7 @@
 }
 
 .index-breadcrumb {
-  padding-top: 24px;
+  padding-top: var(--field-guide-gutter);
 }
 
 .field-guide-index {
