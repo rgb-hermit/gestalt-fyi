@@ -139,9 +139,9 @@ if (referencesHeadingIndex !== -1) {
 
 <Layout title={`${title} — UX Field Guide — gestalt.fyi`} description={summary}>
   <link rel="stylesheet" href="/field-guide-article.css" />
-  <main id="main-content" class="field-guide-article">
+  <main id="main-content" class="page-shell field-guide-shell">
     <div class="article-content">
-      <FieldGuideBreadcrumb class="article-breadcrumb" href="/field-guide/" parent="Field Guide" current={title} />
+      <FieldGuideBreadcrumb current={title} article />
 
       <header class="guide-header article-header">
         <p class="article-category">{entry.types.join(" · ").toUpperCase()}</p>
