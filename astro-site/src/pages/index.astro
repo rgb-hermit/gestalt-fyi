@@ -10,7 +10,15 @@ import home from "../content/home-copy.json";
   <link rel="stylesheet" href="/home.css" />
   <div class="page-shell home-page">
     <div class="home-layout">
+      <nav class="breadcrumb home-navigation" aria-label="Main navigation">
+        <ol>
+          <li><a href="/" class="text-link" aria-current="page">Home</a></li>
+          <li><a href="/field-guide/" class="text-link">Field Guide</a></li>
+        </ol>
+      </nav>
+
       <main id="main-content" class="home-content">
+        <p class="home-status site-label">Perpetually under construction</p>
         <h1 class="hero-title">
           {home.heading.split("\n").map((line, index) => (
             <Fragment>
@@ -23,12 +31,6 @@ import home from "../content/home-copy.json";
           {home.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
         </div>
       </main>
-
-      <nav class="home-navigation" aria-label="Main navigation">
-        <h2 class="home-status site-label">Perpetually under construction</h2>
-        <a href="/" class="text-link" aria-current="page">Home</a>
-        <a href="/field-guide/" class="text-link">Field Guide</a>
-      </nav>
 
       <div class="home-artwork">
         <img
