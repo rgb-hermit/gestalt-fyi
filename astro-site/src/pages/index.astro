@@ -10,7 +10,25 @@ import home from "../content/home-copy.json";
   <link rel="stylesheet" href="/home.css" />
   <div class="page-shell home-page">
     <div class="home-layout">
-    <aside class="home-sidebar">
+      <nav class="home-navigation" aria-label="Main navigation">
+        <a href="/" class="text-link" aria-current="page">Home</a>
+        <a href="/field-guide/" class="text-link">Field Guide</a>
+      </nav>
+
+      <main id="main-content" class="home-content">
+        <h1 class="hero-title">
+          {home.heading.split("\n").map((line, index) => (
+            <Fragment>
+              {index > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
+        </h1>
+        <div class="hero-copy">
+          {home.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </main>
+
       <div class="home-artwork">
         <p class="home-status site-label">Perpetually under construction</p>
         <img
@@ -21,28 +39,6 @@ import home from "../content/home-copy.json";
           height="861"
         />
       </div>
-      </aside>
-
-      <nav class="home-navigation" aria-label="Main navigation">
-        <a href="/" class="text-link" aria-current="page">Home</a>
-        <a href="/field-guide/" class="text-link">Field Guide</a>
-      </nav>
-
-    <main id="main-content" class="home-content">
-     <h1 class="hero-title">
-  {home.heading.split("\n").map((line, index) => (
-    <Fragment>
-      {index > 0 && <br />}
-      {line}
-    </Fragment>
-  ))}
-</h1>
-
-<div class="hero-copy">
-  {home.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-</div>
-      
-    </main>
     </div>
   </div>
 
