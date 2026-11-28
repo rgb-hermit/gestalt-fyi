@@ -1,0 +1,25 @@
+name: Test About import
+
+on:
+  push:
+    branches:
+      - feature/notion-site-copy
+
+permissions:
+  contents: read
+
+jobs:
+  import-about:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Import About copy from Notion
+        env:
+          NOTION_SITE_COPY_TOKEN: ${{ secrets.NOTION_SITE_COPY_TOKEN }}
+          NOTION_ABOUT_PAGE_LINK: ${{ secrets.NOTION_ABOUT_PAGE_LINK }}
+        run: node astro-site/scripts/import-about-copy.mjs "$NOTION_ABOUT_PAGE_LINK"

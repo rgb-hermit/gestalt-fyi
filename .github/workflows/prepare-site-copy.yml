@@ -1,0 +1,44 @@
+name: Prepare site copy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-about:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Import About copy from Notion
+        env:
+          NOTION_SITE_COPY_TOKEN: ${{ secrets.NOTION_SITE_COPY_TOKEN }}
+          NOTION_ABOUT_PAGE_LINK: ${{ secrets.NOTION_ABOUT_PAGE_LINK }}
+        run: node astro-site/scripts/import-about-copy.mjs "$NOTION_ABOUT_PAGE_LINK"
+
+      - name: Prepare copy for review
+        run: |
+          copy_file=astro-site/src/content/about-draft.json
+
+          if git diff --quiet -- "$copy_file"; then
+            echo "About copy already matches Notion." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          branch="site-copy/about-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$branch"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "$copy_file"
+          git commit -m "update about copy from notion"
+          git push origin "$branch"
+
+          echo "[Review the About copy change](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...${branch}?expand=1)" >> "$GITHUB_STEP_SUMMARY"

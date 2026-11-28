@@ -154,8 +154,8 @@
 .domain-item {
   position: relative;
   display: block;
-  padding: 8px 0;
-  line-height: 1.4;
+  padding: 4px 0;
+  line-height: 1.6;
   transition: color 150ms ease;
 }
 
