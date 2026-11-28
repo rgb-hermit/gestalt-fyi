@@ -1,27 +1,6 @@
 /* field guide article styles */
 
-.field-guide-article {
-  min-height: 100vh;
-  background: var(--ivory);
-  color: var(--ink);
-  color-scheme: light;
-  padding: var(--field-guide-gutter);
-  box-sizing: border-box;
-}
 
-.article-content {
-  width: 100%;
-  max-width: 900px;
-  margin-inline: auto;
-}
-
-/* article nav */
-
-/* article breadcrumb */
-
-.article-breadcrumb {
-  margin-bottom: var(--field-guide-breadcrumb-gap);
-}
 
 .article-toc a {
   line-height: 1.6;
@@ -44,12 +23,15 @@
   isolation: isolate;
 }
 
-.article-category {
+.article-category,
+.article-toc .toc-label,
+.article-references-preview h2 {
   margin: 0 0 20px;
   color: var(--forest);
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 400;
+  line-height: 1.7;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -100,15 +82,6 @@
   margin: 0 0 48px;
 }
 
-.article-toc .toc-label {
-  margin: 0 0 20px;
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--forest);
-}
-
 .article-toc ol {
   margin: 0;
   padding: 0;
@@ -140,15 +113,6 @@
 .article-references-preview {
   margin-top: 0;
   padding-top: 0;
-}
-
-.article-references-preview h2 {
-  margin: 0 0 20px;
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  color: var(--forest);
 }
 
 .article-references-preview ol {
