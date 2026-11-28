@@ -1,19 +1,16 @@
 ---
 interface Props {
-  class: string;
-  href: string;
-  parent: string;
   current: string;
+  article?: boolean;
 }
 
-const { class: placement, href, parent, current } = Astro.props;
+const { current, article = false } = Astro.props;
 ---
 
-<nav class:list={["breadcrumb", placement]} aria-label="Breadcrumb">
+<nav class="breadcrumb field-guide-breadcrumb" aria-label="Breadcrumb">
   <ol>
-    <li>
-      <a href={href} class="text-link">{parent}</a>
-    </li>
+    <li><a href="/" class="text-link">Home</a></li>
+    {article && <li><a href="/field-guide/" class="text-link">Field Guide</a></li>}
     <li aria-current="page">{current}</li>
   </ol>
 </nav>
