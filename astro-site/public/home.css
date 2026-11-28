@@ -24,25 +24,6 @@
   min-width: 0;
 }
 
-.home-page .hero-title {
-  max-width: 480px;
-  margin: 0;
-  color: var(--forest);
-  font-family: var(--serif);
-  font-size: clamp(27px, 2.2vw, 34px);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
-}
-
-.home-page .hero-copy {
-  max-width: 480px;
-  margin-top: 32px;
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.65;
-}
-
 .home-page .hero-copy p {
   margin: 0;
 }
@@ -79,10 +60,6 @@
 
   .home-content {
     padding-inline-end: var(--field-guide-gutter);
-  }
-
-  .home-page .hero-title {
-    font-size: clamp(28px, 7vw, 36px);
   }
 
   .home-artwork {
