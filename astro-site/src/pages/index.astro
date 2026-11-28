@@ -10,11 +10,6 @@ import home from "../content/home-copy.json";
   <link rel="stylesheet" href="/home.css" />
   <div class="page-shell home-page">
     <div class="home-layout">
-      <nav class="home-navigation" aria-label="Main navigation">
-        <a href="/" class="text-link" aria-current="page">Home</a>
-        <a href="/field-guide/" class="text-link">Field Guide</a>
-      </nav>
-
       <main id="main-content" class="home-content">
         <h1 class="hero-title">
           {home.heading.split("\n").map((line, index) => (
@@ -29,8 +24,13 @@ import home from "../content/home-copy.json";
         </div>
       </main>
 
+      <nav class="home-navigation" aria-label="Main navigation">
+        <h2 class="home-status site-label">Perpetually under construction</h2>
+        <a href="/" class="text-link" aria-current="page">Home</a>
+        <a href="/field-guide/" class="text-link">Field Guide</a>
+      </nav>
+
       <div class="home-artwork">
-        <p class="home-status site-label">Perpetually under construction</p>
         <img
           src="/images/mono-botanical.png"
           alt=""
