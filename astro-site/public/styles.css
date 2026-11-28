@@ -35,6 +35,7 @@
   --body: "Roboto", system-ui, sans-serif;
   --serif: "Roboto Serif", georgia, serif;
   --mono: "Roboto Mono", "SFMono-Regular", consolas, monospace;
+  --field-guide-gutter: clamp(24px, 5vw, 80px);
   --page-width: 1440px;
   --page-gutter: clamp(24px, 5.5vw, 80px);
 }
@@ -117,6 +118,55 @@ a {
 :focus-visible {
   outline: 2px solid var(--smart-blue);
   outline-offset: 4px;
+}
+
+.site-label {
+  font: 12px/1.5 var(--mono);
+  text-transform: uppercase;
+}
+
+.breadcrumb {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.breadcrumb ol {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  color: var(--sage);
+}
+
+.breadcrumb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumb-back svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--forest);
 }
 
 .page-shell {

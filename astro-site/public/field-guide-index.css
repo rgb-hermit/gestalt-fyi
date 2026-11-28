@@ -38,6 +38,8 @@
 /* field guide index */
 
 .field-guide-shell {
+  --page-gutter: var(--field-guide-gutter);
+
   max-width: calc(900px + 2 * var(--page-gutter));
   background: var(--ivory);
   color: var(--ink);
@@ -63,6 +65,10 @@
   z-index: 1;
 }
 
+.index-breadcrumb {
+  padding-top: var(--field-guide-gutter);
+}
+
 .field-guide-index {
   flex: 1;
   width: 100%;
@@ -75,7 +81,7 @@
   grid-template-columns: 180px minmax(0, 1fr);
   gap: 32px;
   align-items: center;
-  padding-block: 64px 32px;
+  padding-block: 40px 32px;
 }
 
 .index-intro-artwork {
@@ -125,11 +131,6 @@
 .index-section-label {
   margin: 0;
   color: var(--forest);
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .domain-navigation .index-section-label {
@@ -304,7 +305,7 @@
   }
 
   .index-intro {
-    padding-top: 48px;
+    padding-top: 32px;
   }
 
   .index-intro-artwork {
@@ -376,9 +377,6 @@
   }
 
   .domain-disclosure-label {
-    font-family: var(--mono);
-    font-size: 14px;
-    letter-spacing: 0.12em;
     color: var(--forest);
   }
 
