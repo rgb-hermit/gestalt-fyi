@@ -1,4 +1,5 @@
 ---
+import FieldGuideBreadcrumb from "../../components/FieldGuideBreadcrumb.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getApprovedEntries, getApprovedArticleBlocks } from "../../lib/approved-content";
 import NotionLists from "../../components/field-guide/NotionLists.astro";
@@ -140,12 +141,7 @@ if (referencesHeadingIndex !== -1) {
   <link rel="stylesheet" href="/field-guide-article.css" />
   <main id="main-content" class="field-guide-article">
     <div class="article-content">
-      <nav class="breadcrumb article-breadcrumb" aria-label="Breadcrumb">
-  <ol>
-    <li><a href="/field-guide/" class="text-link">Field Guide</a></li>
-    <li aria-current="page">{title}</li>
-  </ol>
-</nav>
+      <FieldGuideBreadcrumb class="article-breadcrumb" href="/field-guide/" parent="Field Guide" current={title} />
 
       <header class="article-header">
         <p class="article-category">{entry.types.join(" · ").toUpperCase()}</p>
