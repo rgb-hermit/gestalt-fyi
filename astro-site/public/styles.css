@@ -155,21 +155,6 @@ a {
   color: var(--sage);
 }
 
-.breadcrumb-back {
-  position: relative;
-  padding-inline-start: 20px;
-}
-
-.breadcrumb-back svg {
-  position: absolute;
-  inset-inline-start: 0;
-  top: 50%;
-  width: 16px;
-  height: 16px;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
 .breadcrumb [aria-current="page"] {
   color: var(--forest);
 }
