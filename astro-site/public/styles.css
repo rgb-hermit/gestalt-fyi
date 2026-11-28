@@ -119,6 +119,42 @@ a {
   outline-offset: 4px;
 }
 
+.site-label {
+  font: 12px/1.5 var(--mono);
+  text-transform: uppercase;
+}
+
+.breadcrumb {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.breadcrumb ol {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  color: var(--sage);
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--forest);
+}
+
 .page-shell {
   display: flex;
   flex-direction: column;
